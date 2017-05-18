@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.isit_mp3c.projet.MainActivity">
+
+    <group android:id="@+id/action_settings">
+        <item android:id="@+id/item1"
+            android:title="@string/english_v"
+            />
+        <item android:id="@+id/item2"
+            android:title="@string/french_v"
+            />
+    </group>
+</menu>

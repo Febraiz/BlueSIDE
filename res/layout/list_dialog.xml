@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:hint="Please select a patient"
+        />
+    <Spinner
+        android:id="@+id/dialog_spinner"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        />
+    <Button
+        android:id="@+id/ok_dialog_button"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/dialog_spinner"
+        />
+    <Button
+        android:id="@+id/cancel_dialog_button"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/dialog_spinner"
+        android:layout_toRightOf="@id/ok_dialog_button"
+        />
+
+</RelativeLayout>

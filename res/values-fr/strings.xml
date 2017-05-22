@@ -47,7 +47,7 @@
 
     <string-array name="setGender">
         <item>(none)</item>
-        <item>Féminin</item>
+        <item>Feminin</item>
         <item>Masculin</item>
     </string-array>
 

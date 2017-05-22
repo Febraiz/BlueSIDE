@@ -408,7 +408,7 @@ public class ExportDBActivity extends AppCompatActivity {
                     String serum_iron_value = users.get(i).getSerum_iron();
                     String serum_iron_unit = users.get(i).getSerum_iron_unit();
                     String serum_iron = "";
-                    if (serum_iron_unit != "(unité)" && serum_iron_unit != "(unit)") {
+                    if (!serum_iron_unit.equalsIgnoreCase("(unité)") && !serum_iron_unit.equalsIgnoreCase("(unit)")) {
                         serum_iron = serum_iron_value + " " + serum_iron_unit;
                     }
                     String cst = users.get(i).getCst();

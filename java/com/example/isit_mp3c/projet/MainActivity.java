@@ -185,13 +185,14 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startActivity(intent[0]);
+                        if (intent[0] != null)
+                            startActivity(intent[0]);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startActivity(getIntent());
+                        //startActivity(getIntent());
                     }
                 });
         alertDialog = builder.create();

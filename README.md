@@ -1,5 +1,15 @@
 # BlueSIDE
 
+#### Download project
+
+    git clone https://github.com/Febraiz/BlueSIDE.git
+    
+## Team members
+- Jeremy **MEZHOUD**
+- Wilfried **NGOUANA**
+- Coralie **RODRIGUES**
+
+## Gradle file
 <pre><code>
 apply plugin: 'com.android.application'
 

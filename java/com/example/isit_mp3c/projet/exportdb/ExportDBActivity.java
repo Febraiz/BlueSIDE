@@ -448,6 +448,7 @@ public class ExportDBActivity extends AppCompatActivity {
         try {
             dbHelper.createDatabase();
         } catch (IOException e) {
+            dbHelper.close();
             throw new Error("unable to create database");
         }
         if(dbHelper.openDatabase()){

@@ -115,6 +115,7 @@ public class AddPatientAnonym extends AppCompatActivity
         try {
             dbH.createDatabase();
         } catch (IOException e) {
+            dbH.close();
             throw new Error("unable to create database");
         }
         if(dbH.openDatabase()){
@@ -171,10 +172,10 @@ public class AddPatientAnonym extends AppCompatActivity
         try {
             dbH.createDatabase();
         } catch (IOException e) {
+            dbH.close();
             throw new Error("unable to create database");
         }
         if(dbH.openDatabase()) {
-            SQLiteDatabase db;
             lastID = dbH.addPatient(new User( GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
                     VGM, TCMH, IDR_CV, HYPO, RET_HE, PLATELET, FERRITIN,
                     TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER, "TRUE", PSEUDO));

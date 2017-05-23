@@ -413,14 +413,12 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
         String query = "SELECT * FROM " + TABLE_USER + " where user.IDuser=" + id;
         Cursor cursor = db.rawQuery(query, null);
-        //check if patient exist
-        //while((cursor != null)&&(cursor.getCount() > 0 )) {
-            SQLiteDatabase db = this.getWritableDatabase();
 
-            String where = "IDuser=?";
-            String[] whereArgs = new String[]{String.valueOf(id)};
-            db.delete(TABLE_USER, where, whereArgs);
-        //}
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = "IDuser=?";
+        String[] whereArgs = new String[]{String.valueOf(id)};
+        db.delete(TABLE_USER, where, whereArgs);
         db.close();
     }
 
@@ -454,8 +452,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
             }
 
         }
-
-
+        db.close();
     }
 
 }

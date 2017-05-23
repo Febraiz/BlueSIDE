@@ -42,7 +42,7 @@ public class AddPatientActivity extends AppCompatActivity
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin, transferrin, serum_iron, cst,
             fibrinogen, crp, other;
     private Spinner genderSpinner, ironSpinner;
-    private List<User> users;
+    private List<User> patientsList;
     private boolean isMailValid = true;
     private boolean isDateValid = true;
     private boolean isPhoneValid = true;
@@ -179,20 +179,15 @@ public class AddPatientActivity extends AppCompatActivity
             }
         });
 
+        // Récupère la liste des patients en base de données
+        patientsList = getPatient();
 
-        users = getPatient();
-/*        if(users.size() != -1) {
-            lastID2 = users.size()+1;
-        } else {
-            lastID2 = 0;
-        } */
         final long lastID2;
-        if(users.size() != -1) {
-            lastID2 = users.size()+1;
+        if(patientsList.size() != -1) {
+            lastID2 = patientsList.size()+1;
         } else {
             lastID2 = 0;
         }
-
 
         Button save = (Button)findViewById(R.id.save_button);
         save.setOnClickListener(new View.OnClickListener(){
@@ -324,6 +319,7 @@ public class AddPatientActivity extends AppCompatActivity
     //Add a new Patient
     public long addNewPatient(){
         long lastID =0;
+        int ID;
 
         name = (EditText)findViewById(R.id.name_patient);
         first_Name = (EditText)findViewById(R.id.first_name_patient);
@@ -374,49 +370,19 @@ public class AddPatientActivity extends AppCompatActivity
         String GENDER = String.valueOf(genderSpinner.getSelectedItem());
         String UNIT = String.valueOf(ironSpinner.getSelectedItem());
 
+        if (patientsList.size() == 0)
+            ID = 1;
+        else
+            ID = patientsList.get(patientsList.size()-1).getUserID()+1;
 
-
-        //set pseudo
-        //first method : only the name field is required :
-        // that means we can have many patients with the same PSEUDO
-/*        String firstName;
-        String dateBirth = "";
-        if(!FIRST_NAME.isEmpty()){
-            firstName = String.valueOf(FIRST_NAME.charAt(0));
-        } else {
-            firstName = "";
-        }
-
-        if(validDate(DATE_BIRTH)){
-            if(!DATE_BIRTH.isEmpty()){
-                dateBirth = String.valueOf(DATE_BIRTH.charAt(8))
-                        + String.valueOf(DATE_BIRTH.charAt(9));
-            } else {
-                dateBirth = "00";
-            }
-        }
-
-        String PSEUDO = "PNA_" + String.valueOf(NAME.charAt(0)) + firstName +dateBirth;*/
-
-        int ID = users.get(users.size()-1).getUserID()+1;
-        /*String PSEUDO = "PNA" + ID;
-            Log.i("pseudo", "ID for pseudo created is : " + ID);
-            Log.i("pseudo", "pseudo created is : " + PSEUDO);*/
         String PSEUDO = name + "_" + first_Name + "_" + ID;
-
-        //String SECURED = String.valueOf(security);
-
-        // long is the return type of the method: insert(String table,String nullColumnHack,ContentValues values)) == it returns the last ID/row inserted
-/*        long lastID = db.addPatient(new User( NAME, FIRST_NAME, DATE_BIRTH, MAIL,
-                ADDRESS, PHONE, GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
-                VGM, TCMH, IDR_CV,HYPO, RET_HE, PLATELET, FERRITIN,
-                TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER, security)); */
 
         SQLiteDBHelper dbH = new SQLiteDBHelper(this);
 
         try {
             dbH.createDatabase();
         } catch (IOException e) {
+            dbH.close();
             throw new Error("unable to create database");
         }
         if(dbH.openDatabase()) {
@@ -530,6 +496,7 @@ public class AddPatientActivity extends AppCompatActivity
         try {
             dbH.createDatabase();
         } catch (IOException e) {
+            dbH.close();
             throw new Error("unable to create database");
         }
         if(dbH.openDatabase()){
@@ -555,10 +522,10 @@ public class AddPatientActivity extends AppCompatActivity
                 return true;
             case R.id.save:
                 if(isInputValid()) {
-                    users = getPatient();
+                    patientsList = getPatient();
                     final long lastID2;
-                    if(users.size() != -1) {
-                        lastID2 = users.size()+1;
+                    if(patientsList.size() != -1) {
+                        lastID2 = patientsList.size()+1;
                     } else {
                         lastID2 = 0;
                     }

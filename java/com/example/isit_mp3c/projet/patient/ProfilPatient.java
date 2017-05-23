@@ -84,6 +84,7 @@ public class ProfilPatient extends AppCompatActivity {
         try {
             dbHelper.createDatabase();
         } catch (IOException e) {
+            dbHelper.close();
             throw new Error("unable to create database");
         }
         if(dbHelper.openDatabase()){
@@ -247,6 +248,7 @@ public class ProfilPatient extends AppCompatActivity {
         try {
             dbH.createDatabase();
         } catch (IOException e) {
+            dbH.close();
             throw new Error("unable to create database");
         }
         if(dbH.openDatabase()){

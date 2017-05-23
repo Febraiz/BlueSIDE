@@ -158,7 +158,6 @@ public class CameraActivity extends AppCompatActivity
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, openCVLoaderCallback);
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -298,6 +297,7 @@ public class CameraActivity extends AppCompatActivity
         try {
             dbHelper.createDatabase();
         } catch (IOException e) {
+            dbHelper.close();
             throw new Error("unable to create database");
         }
         if(dbHelper.openDatabase()){

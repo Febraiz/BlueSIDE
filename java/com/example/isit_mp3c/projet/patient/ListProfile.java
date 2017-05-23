@@ -140,6 +140,7 @@ public class ListProfile extends AppCompatActivity {
         try {
             dbH.createDatabase();
         } catch (IOException e) {
+            dbH.close();
             throw new Error("unable to create database");
         }
         if (dbH.openDatabase()) {

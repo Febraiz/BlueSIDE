@@ -217,7 +217,7 @@ public class ExportDBActivity extends AppCompatActivity {
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
             SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
             users = getPatient();
-            printWriter.println("PATIENT TABLE");
+            printWriter.println("sep=;");
             printWriter.println("NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO, RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
@@ -296,7 +296,7 @@ public class ExportDBActivity extends AppCompatActivity {
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
             SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
             users = getPatient();
-            printWriter.println("PATIENT TABLE");
+            printWriter.println("sep=;");
             printWriter.println("NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
@@ -373,7 +373,7 @@ public class ExportDBActivity extends AppCompatActivity {
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
             SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
             users = getPatient();
-            printWriter.println("PATIENT TABLE");
+            printWriter.println("sep=;");
             printWriter.println("ID; NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +

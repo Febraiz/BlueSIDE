@@ -46,6 +46,10 @@
     <string name="fibrinogen">Fibrinogen (g/L) </string>
     <string name="crp">C-reactive protein CRP (mg/L) </string>
     <string name="others">Others </string>
+    <string name="deficiency">Iron deficiency</string>
+    <string name="deficiencyClear">Deficiency clear</string>
+    <string name="noDeficiency">No deficiency</string>
+    <string name="deficiencyUnclear">Deficiency unclear</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
 

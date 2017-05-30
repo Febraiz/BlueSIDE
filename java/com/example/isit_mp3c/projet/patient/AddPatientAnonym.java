@@ -2,7 +2,6 @@ package com.example.isit_mp3c.projet.patient;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.RadioButton;
 
 import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
@@ -47,7 +47,6 @@ public class AddPatientAnonym extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         pseudo = (EditText)findViewById(R.id.pseudo);
         genderSpinner = (Spinner) findViewById(R.id.sexe_patient);
         ironSpinner =(Spinner)findViewById(R.id.iron_unit);
@@ -75,8 +74,7 @@ public class AddPatientAnonym extends AppCompatActivity
 
             @Override
             public void onClick(View v) {
-                Intent cancelIntent = new Intent(AddPatientAnonym.this, MainActivity.class);
-                startActivity(cancelIntent);
+                onBackPressed();
             }
         });
 
@@ -265,5 +263,26 @@ public class AddPatientAnonym extends AppCompatActivity
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radioDeficiencyClear:
+                if (checked)
+                    // Pirates are the best
+                    break;
+            case R.id.radioNoDeficiency:
+                if (checked)
+                    // Ninjas rule
+                    break;
+            case R.id.radioDeficiencyUnclear:
+                if (checked)
+                    // AH
+                    break;
+        }
     }
 }

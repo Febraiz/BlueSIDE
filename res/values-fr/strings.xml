@@ -38,6 +38,10 @@
     <string name="fibrinogen">Fibrinogène (g/L) </string>
     <string name="crp">Protéine C Réactive CRP (mg/L) </string>
     <string name="others">Autres </string>
+    <string name="deficiency">Carence en fer</string>
+    <string name="deficiencyClear">Carence certaine</string>
+    <string name="noDeficiency">Abscence de carence</string>
+    <string name="deficiencyUnclear">Carence incertaine</string>
     <string name="male">Masculin</string>
     <string name="female">Féminin</string>
 

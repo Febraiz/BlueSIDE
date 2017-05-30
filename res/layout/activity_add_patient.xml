@@ -24,6 +24,4 @@
     <include layout="@layout/content_add_patient" />
 
 
-
-
 </android.support.design.widget.CoordinatorLayout>

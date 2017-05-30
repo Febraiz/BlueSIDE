@@ -46,6 +46,7 @@ public class ExportDBActivity extends AppCompatActivity {
     private Boolean get_anonym = false;
     private Boolean get_non_anonym = false;
     private Boolean get_all_data = false;
+    private SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -443,14 +444,12 @@ public class ExportDBActivity extends AppCompatActivity {
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
-        SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
-
-        try {
+        /*try {
             dbHelper.createDatabase();
         } catch (IOException e) {
             dbHelper.close();
             throw new Error("unable to create database");
-        }
+        }*/
         if(dbHelper.openDatabase()){
             users = dbHelper.getPatient();
         }

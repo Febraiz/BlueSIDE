@@ -46,6 +46,7 @@ public class AddPatientActivity extends AppCompatActivity
     private boolean isMailValid = true;
     private boolean isDateValid = true;
     private boolean isPhoneValid = true;
+    SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -375,16 +376,14 @@ public class AddPatientActivity extends AppCompatActivity
         else
             ID = patientsList.get(patientsList.size()-1).getUserID()+1;
 
-        String PSEUDO = name + "_" + first_Name + "_" + ID;
+        String PSEUDO = NAME + "_" + FIRST_NAME + "_" + ID;
 
-        SQLiteDBHelper dbH = new SQLiteDBHelper(this);
-
-        try {
+        /*try {
             dbH.createDatabase();
         } catch (IOException e) {
             dbH.close();
             throw new Error("unable to create database");
-        }
+        }*/
         if(dbH.openDatabase()) {
             lastID = dbH.addPatient(new User(NAME, FIRST_NAME, DATE_BIRTH, MAIL,
                     ADDRESS, PHONE, GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
@@ -492,13 +491,12 @@ public class AddPatientActivity extends AppCompatActivity
     //get all patients
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
-        SQLiteDBHelper dbH = new SQLiteDBHelper(getApplicationContext());
-        try {
+        /*try {
             dbH.createDatabase();
         } catch (IOException e) {
             dbH.close();
             throw new Error("unable to create database");
-        }
+        }*/
         if(dbH.openDatabase()){
             users = dbH.getPatient();
         }

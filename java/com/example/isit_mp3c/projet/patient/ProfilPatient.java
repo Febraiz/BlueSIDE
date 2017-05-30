@@ -32,6 +32,7 @@ public class ProfilPatient extends AppCompatActivity {
             transferrin, serum_iron, cst, fibrinogen, crp, other, imc;
     private List<User> users;
     private int id ;
+    private SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,14 +80,12 @@ public class ProfilPatient extends AppCompatActivity {
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
-        SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
-
-        try {
+        /*try {
             dbHelper.createDatabase();
         } catch (IOException e) {
             dbHelper.close();
             throw new Error("unable to create database");
-        }
+        }*/
         if(dbHelper.openDatabase()){
             users = dbHelper.getPatient();
         }
@@ -244,20 +243,19 @@ public class ProfilPatient extends AppCompatActivity {
         final int ID;
         ID = users.get(id-1).getUserID();
         Log.i("deletePatient", "the ID is : " + ID);
-        SQLiteDBHelper dbH = new SQLiteDBHelper(this);
-        try {
-            dbH.createDatabase();
+        /*try {
+            dbHelper.createDatabase();
         } catch (IOException e) {
-            dbH.close();
+            dbHelper.close();
             throw new Error("unable to create database");
-        }
-        if(dbH.openDatabase()){
-            dbH.deletePatient(ID);
+        }*/
+        if(dbHelper.openDatabase()){
+            dbHelper.deletePatient(ID);
             isDeleted = true;
         } else{
             isDeleted = false;
         }
-        dbH.close();
+        dbHelper.close();
         return isDeleted ? true:false;
     }
 

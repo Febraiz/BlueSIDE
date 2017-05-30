@@ -36,6 +36,7 @@ public class AddPatientAnonym extends AppCompatActivity
             fibrinogen, crp, other, pseudo;
     private Spinner genderSpinner, ironSpinner;
     private List<User> users;
+    SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,13 +112,12 @@ public class AddPatientAnonym extends AppCompatActivity
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
-        SQLiteDBHelper dbH = new SQLiteDBHelper(getApplicationContext());
-        try {
+        /*try {
             dbH.createDatabase();
         } catch (IOException e) {
             dbH.close();
             throw new Error("unable to create database");
-        }
+        }*/
         if(dbH.openDatabase()){
             // users = db.getPatient();
             users = dbH.getPatient();
@@ -168,13 +168,12 @@ public class AddPatientAnonym extends AppCompatActivity
         String GENDER = String.valueOf(genderSpinner.getSelectedItem());
         String UNIT = String.valueOf(ironSpinner.getSelectedItem());
 
-        SQLiteDBHelper dbH = new SQLiteDBHelper(this);
-        try {
+        /*try {
             dbH.createDatabase();
         } catch (IOException e) {
             dbH.close();
             throw new Error("unable to create database");
-        }
+        }*/
         if(dbH.openDatabase()) {
             lastID = dbH.addPatient(new User( GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
                     VGM, TCMH, IDR_CV, HYPO, RET_HE, PLATELET, FERRITIN,

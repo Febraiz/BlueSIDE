@@ -39,6 +39,7 @@ public class User {
     private String serum_iron_unit;
     private String secured;
     private String pseudo;
+    private String carence;
 
 
     public int getUserID(){
@@ -230,6 +231,13 @@ public class User {
     public String getPseudo(){return pseudo;}
     public void setPseudo(String pseudo){
         this.pseudo = pseudo;
+    }
+
+    public String getCarence() {
+        return carence;
+    }
+    public void setCarence(String carence) {
+        this.carence = carence;
     }
 
 

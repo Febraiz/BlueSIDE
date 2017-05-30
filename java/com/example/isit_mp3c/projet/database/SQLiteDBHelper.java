@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,23 +19,20 @@ import java.util.List;
 /**
  * Created by ISIT on 21/07/2016.
  */
-public class SQLiteDBHelper extends SQLiteOpenHelper {
+public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstants {
 
     private static String dbPath = "";
-    private static String dbName = "bluesidedb";
-    private static String TABLE_IMAGE = "image";
-    private static String TABLE_USER = "user";
-    private static String TABLE_TAG = "tag";
-    private static String TABLE_TYPE = "type";
+
     private SQLiteDatabase db;
     private static Context mycontext;
     private static int DB_VERSION = 1;
 
 
+
     //To avoid getting error : to verify
     private static SQLiteDBHelper singleton;
 
-    public static SQLiteDBHelper getInstance(final Context context){
+    public static SQLiteDBHelper getInstance(final Context context) {
         if(singleton == null){
             singleton = new SQLiteDBHelper(context);
         }
@@ -43,101 +41,20 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
     //Takes and keeps a reference of the passed context in order to access to the application assets and resources.
     public SQLiteDBHelper(Context context) {
-        super(context, dbName, null, DB_VERSION);
+        super(context, DB_NAME, null, DB_VERSION);
 
 
-        // this code gives error : do not use it !
-
-/*        if (android.os.Build.VERSION.SDK_INT >= 17) {
-            dbPath = context.getApplicationInfo().dataDir + "/databases/";
-        } else {
-            dbPath = "/data/data/" + context.getPackageName() + "/databases/";
-        }*/
-
-
-        //Hard Coding PATH : not the best solution but at least it works !
-        dbPath = "/data/data/" + context.getPackageName() + "/databases/"; //this code does not work in every situation
-        //dbPath = "/data/data/com.example.isit.testapplication/databases/"; //this code works in every situation : but remember to change the package name!
-
-        //emplacement non securise, possibilite de recuperer le fichier via le Nexus,
-        // utilise seulement pour le test.
-        //dbPath = context.getExternalFilesDir("bluesideDB") + File.separator;
+        dbPath = "/data/data/" + context.getPackageName() + "/databases/";
 
         this.mycontext = context;
-        //Does not work for  Nexus !
-       /* String fileDir = mycontext.getFilesDir().getPath(); // /data/data/com.package.nom/files/
-        dbPath = fileDir.substring(0, fileDir.lastIndexOf("/")) + "/databases/"; // /data/data/com.package.nom/databases/*/
-    }
 
-    // Creates a empty database on the system and rewrites it with your own database.
-    public void createDatabase() throws IOException {
-        boolean dbExist = checkDatabase();
-        if(dbExist){
-            //do nothing - database already exist
-        }else {
-            //By calling this method and empty database will be created into the default system path
-            //of your application so we are gonna be able to overwrite that database with our database
-            this.getReadableDatabase();
-            try {
-                copyDatabase();
-            }catch (IOException e){
-                throw new Error("Error copying database");
-            }
-        }
-
-    }
-
-    // Check if the database exist to avoid re-copy the data
-    private boolean checkDatabase(){
-        SQLiteDatabase checkDB = null;
-        try{
-            String path = dbPath + dbName;
-
-            checkDB = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
-
-        }catch (SQLiteException e){
-            //throw new Error("db does not exist");
-            e.printStackTrace();
-        }
-
-        if(checkDB != null){
-            checkDB.close();
-        }
-
-     /*   if(checkDB != null) {
-            return true;
-        }
-        else {
-            return false;
-        }
-        The same meaning below*/
-        return checkDB != null ? true : false;
-    }
-
-    private  void copyDatabase() throws IOException {
-        //Open the local db as the input stream
-        InputStream input = mycontext.getAssets().open(dbName);
-        // path to the created empty db
-        String outFileName = dbPath + dbName;
-        //open the empty db as output file
-        OutputStream output = new FileOutputStream(outFileName);
-
-        //transfer bytes from the input file to the output file
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length=input.read(buffer)) > 0){
-            output.write(buffer, 0, length);
-        }
-
-        //close the streams
-        output.flush();
-        output.close();
-        input.close();
+        this.db = this.getWritableDatabase();
+         createDB(db);
     }
 
     public boolean openDatabase() {
         try {
-            String path = dbPath + dbName;
+            String path = dbPath + DB_NAME;
 
             db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READWRITE);
 
@@ -150,7 +67,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
     public boolean openDatabaseReading() {
         try {
-            String path = dbPath + dbName;
+            String path = dbPath + DB_NAME;
 
             db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
 
@@ -172,9 +89,117 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
     }
 
+    public void createDB(SQLiteDatabase db) {
+        String create_table_user =
+                "create table " + TABLE_USER + " ("
+                        + USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+                        + USER_NAME + " TEXT,"
+                        + USER_PASSWORD + " TEXT,"
+                        + USER_FIRST_NAME + " TEXT,"
+                        + USER_DATE_OF_BIRTH + " NUMERIC,"
+                        + USER_MAIL + " TEXT,"
+                        + USER_ADDRESS + " TEXT,"
+                        + USER_USERNAME + " TEXT,"
+                        + USER_SEXE + " TEXT,"
+                        + USER_HEIGHT + " REAL,"
+                        + USER_WEIGHT + " REAL,"
+                        + USER_IMC + " REAL,"
+                        + USER_HB + " REAL,"
+                        + USER_VGM + " REAL,"
+                        + USER_TCMH + " REAL,"
+                        + USER_IDR_CV + " REAL,"
+                        + USER_HYPO + " REAL,"
+                        + USER_RET_HE + " REAL,"
+                        + USER_PLATELET + " REAL,"
+                        + USER_FERRITIN + " REAL,"
+                        + USER_TRANSFERRIN + " REAL,"
+                        + USER_SERUM_IRON + " REAL,"
+                        + USER_CST + " REAL,"
+                        + USER_FIBRINOGEN + " REAL,"
+                        + USER_CRP + " REAL,"
+                        + USER_OTHERS + " TEXT,"
+                        + USER_PHONE + " TEXT,"
+                        + USER_SERUM_IRON_UNIT + " TEXT,"
+                        + USER_SECURED + " TEXT,"
+                        + USER_PSEUDO + " TEXT,"
+                        + USER_CARENCE + " TEXT" + ");";
+
+        String create_table_acquisition =
+                "create table " + TABLE_ACQUISITION + " ("
+                        + ACQUISITION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+                        + ACQUISITION_ID_PATIENT + " INTEGER NOT NULL,"
+                        + ACQUISITION_NUMBER + " INTEGER NOT NULL,"
+                        + ACQUISITION_DATE + " DATE NOT NULL,"
+                        + "FOREIGN KEY(" + ACQUISITION_ID_PATIENT + ") REFERENCES " + TABLE_USER + "(" + USER_ID + "));";
+
+        String create_table_image =
+                "create table " + TABLE_IMAGE + " ("
+                        + IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+                        + IMAGE_REF_IMAGE + " TEXT NOT NULL,"
+                        + IMAGE_TITLE + " TEXT NOT NULL,"
+                        + IMAGE_DATE + " NUMERIC,"
+                        + IMAGE_FLASH + " NUMERIC,"
+                        + IMAGE_EXPOSURE_TIME + " INTEGER,"
+                        + IMAGE_RESULT + " TEXT" + ");";
+
+        String create_table_type =
+                "create table " + TABLE_TYPE + " ("
+                        + TYPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+                        + TYPE_NAME + " TEXT NOT NULL,"
+                        + TYPE_DESC + " TEXT NOT NULL,"
+                        + TYPE_SECURED + " BOOLEAN NOT NULL DEFAULT TRUE" + ");";
+
+        String create_table_tag =
+                "create table " + TABLE_TAG + " ("
+                        + TAG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+                        + TAG_VALUE + " TEXT NOT NULL,"
+                        + TAG_ID_TYPE + " INTEGER NOT NULL,"
+                        + TAG_IDTAGPARENT + " INTEGER NOT NULL,"
+                        + "FOREIGN KEY(" + TAG_ID_TYPE + ") REFERENCES " + TABLE_TYPE + "(" + TYPE_ID + "),"
+                        + "FOREIGN KEY(" + TAG_IDTAGPARENT + ") REFERENCES " + TABLE_TAG + "(" + TAG_ID + "));";
+
+        String create_table_taguser =
+                "create table " + TABLE_TAGUSER + " ("
+                        + TAGUSER_ID_TAG + " INTEGER NOT NULL,"
+                        + TAGUSER_ID_USER + " INTEGER NOT NULL,"
+                        + "PRIMARY KEY(" + TAGUSER_ID_TAG + "," + TAGUSER_ID_USER + "),"
+                        + "FOREIGN KEY(" + TAGUSER_ID_TAG + ") REFERENCES " + TABLE_TAG + "(" + TAG_ID + "),"
+                        + "FOREIGN KEY(" + TAGUSER_ID_USER + ") REFERENCES " + TABLE_USER + "(" + USER_ID + "));";
+
+        String create_table_datatag =
+                "create table " + TABLE_DATATAG + " ("
+                        + DATATAG_ID_TAG + " INTEGER NOT NULL,"
+                        + DATATAG_ID_DATA + " INTEGER NOT NULL,"
+                        + "PRIMARY KEY(" + DATATAG_ID_TAG + "," + DATATAG_ID_DATA + "),"
+                        + "FOREIGN KEY(" + DATATAG_ID_TAG + ") REFERENCES " + TABLE_TAG + "(" + TAG_ID + "),"
+                        + "FOREIGN KEY(" + DATATAG_ID_DATA + ") REFERENCES " + TABLE_IMAGE + "(" + IMAGE_ID + "));";
+
+
+        try {
+            db.execSQL(create_table_user);
+            db.execSQL(create_table_image);
+            db.execSQL(create_table_type);
+            db.execSQL(create_table_tag);
+            db.execSQL(create_table_taguser);
+            db.execSQL(create_table_datatag);
+            db.execSQL(create_table_acquisition);
+        }
+        catch (Exception e) {
+            //e.printStackTrace();
+        }
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACQUISITION);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DATATAG);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TAGUSER);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TAG);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TYPE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
 
+        onCreate(db);
     }
 
 
@@ -184,7 +209,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
         try{
             //get all row from Image table
             String query = "SELECT * FROM " + TABLE_IMAGE;
-            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+dbName, null
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+DB_NAME, null
                     , SQLiteDatabase.OPEN_READWRITE);
             Cursor cursor = db.rawQuery(query, null);
 
@@ -208,7 +233,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
         List<User> patients = new ArrayList<>();
         try{
             String query = "SELECT * FROM " + TABLE_USER;
-            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+dbName, null,
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+DB_NAME, null,
                     SQLiteDatabase.OPEN_READWRITE);
             Cursor cursor = db.rawQuery(query, null);
 
@@ -269,15 +294,9 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
         try{
             //get all row from Tag table
             String query = "SELECT * FROM " + TABLE_TAG;
-            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+dbName, null
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+DB_NAME, null
                     , SQLiteDatabase.OPEN_READWRITE);
             Cursor cursor = db.rawQuery(query, null);
-
-/*            while (cursor.moveToNext()) {
-                int tagID = Integer.parseInt(cursor.getString(0));
-                String value = cursor.getString(1);
-                int typeID = Integer.parseInt(cursor.getString(2));
-                int parentID = Integer.parseInt(cursor.getString(3));*/
 
             if(cursor.moveToFirst()){
                 do{
@@ -305,7 +324,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
         try{
             //get all row from Image table
             String query = "SELECT * FROM " + TABLE_TYPE;
-            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+dbName, null
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+DB_NAME, null
                     , SQLiteDatabase.OPEN_READWRITE);
             Cursor cursor = db.rawQuery(query, null);
 
@@ -332,33 +351,34 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     public long addPatient(User patient){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("name", patient.getName());
-        values.put("first_name", patient.getFirstName());
-        values.put("date_of_birth", patient.getDateBirth());
-        values.put("mail",patient.getMail());
-        values.put("address",patient.getAddress());
-        values.put("sexe",patient.getSexe());
-        values.put("height",patient.getHeight());
-        values.put("weight",patient.getWeight());
-        values.put("IMC",patient.getImc());
-        values.put("HB",patient.getHb());
-        values.put("VGM",patient.getVgm());
-        values.put("TCMH",patient.gettcmh());
-        values.put("IDR_CV",patient.getIdr_cv());
-        values.put("Hypo",patient.getHypo());
-        values.put("Ret_He",patient.getRet_he());
-        values.put("Platelet",patient.getPlatelet());
-        values.put("Ferritin",patient.getFerritin());
-        values.put("Transferrin",patient.getTransferrin());
-        values.put("Serum_iron",patient.getSerum_iron());
-        values.put("CST",patient.getCst());
-        values.put("Fibrinogen",patient.getFibrinogen());
-        values.put("CRP", patient.getCrp());
-        values.put("others", patient.getOther());
-        values.put("phone", patient.getPhone());
-        values.put("Serum_iron_unit", patient.getSerum_iron_unit());
-        values.put("secured", patient.getSecured());
-        values.put("pseudo", patient.getPseudo());
+        values.put(USER_NAME, patient.getName());
+        values.put(USER_FIRST_NAME, patient.getFirstName());
+        values.put(USER_DATE_OF_BIRTH, patient.getDateBirth());
+        values.put(USER_MAIL,patient.getMail());
+        values.put(USER_ADDRESS,patient.getAddress());
+        values.put(USER_SEXE,patient.getSexe());
+        values.put(USER_HEIGHT,patient.getHeight());
+        values.put(USER_WEIGHT,patient.getWeight());
+        values.put(USER_IMC,patient.getImc());
+        values.put(USER_HB,patient.getHb());
+        values.put(USER_VGM,patient.getVgm());
+        values.put(USER_TCMH,patient.gettcmh());
+        values.put(USER_IDR_CV,patient.getIdr_cv());
+        values.put(USER_HYPO,patient.getHypo());
+        values.put(USER_RET_HE,patient.getRet_he());
+        values.put(USER_PLATELET,patient.getPlatelet());
+        values.put(USER_PLATELET,patient.getFerritin());
+        values.put(USER_TRANSFERRIN,patient.getTransferrin());
+        values.put(USER_SERUM_IRON,patient.getSerum_iron());
+        values.put(USER_CST,patient.getCst());
+        values.put(USER_FIBRINOGEN,patient.getFibrinogen());
+        values.put(USER_CRP, patient.getCrp());
+        values.put(USER_OTHERS, patient.getOther());
+        values.put(USER_PHONE, patient.getPhone());
+        values.put(USER_SERUM_IRON_UNIT, patient.getSerum_iron_unit());
+        values.put(USER_SECURED, patient.getSecured());
+        values.put(USER_PSEUDO, patient.getPseudo());
+        values.put(USER_CARENCE, patient.getCarence());
 
         //insert row
         // long is the return type of the method: insert(String table,String nullColumnHack,ContentValues values)) == it returns the last ID/row inserted
@@ -372,33 +392,34 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put("name", patient.getName());
-        values.put("first_name", patient.getFirstName());
-        values.put("date_of_birth", patient.getDateBirth());
-        values.put("mail",patient.getMail());
-        values.put("address",patient.getAddress());
-        values.put("sexe",patient.getSexe());
-        values.put("height",patient.getHeight());
-        values.put("weight",patient.getWeight());
-        values.put("IMC",patient.getImc());
-        values.put("HB",patient.getHb());
-        values.put("VGM",patient.getVgm());
-        values.put("TCMH",patient.gettcmh());
-        values.put("IDR_CV",patient.getIdr_cv());
-        values.put("Hypo",patient.getHypo());
-        values.put("Ret_He",patient.getRet_he());
-        values.put("Platelet",patient.getPlatelet());
-        values.put("Ferritin",patient.getFerritin());
-        values.put("Transferrin",patient.getTransferrin());
-        values.put("Serum_iron",patient.getSerum_iron());
-        values.put("CST",patient.getCst());
-        values.put("Fibrinogen",patient.getFibrinogen());
-        values.put("CRP", patient.getCrp());
-        values.put("others", patient.getOther());
-        values.put("phone", patient.getPhone());
-        values.put("Serum_iron_unit", patient.getSerum_iron_unit());
-        values.put("secured", patient.getSecured());
-        values.put("pseudo", patient.getPseudo());
+        values.put(USER_NAME, patient.getName());
+        values.put(USER_FIRST_NAME, patient.getFirstName());
+        values.put(USER_DATE_OF_BIRTH, patient.getDateBirth());
+        values.put(USER_MAIL,patient.getMail());
+        values.put(USER_ADDRESS,patient.getAddress());
+        values.put(USER_SEXE,patient.getSexe());
+        values.put(USER_HEIGHT,patient.getHeight());
+        values.put(USER_WEIGHT,patient.getWeight());
+        values.put(USER_IMC,patient.getImc());
+        values.put(USER_HB,patient.getHb());
+        values.put(USER_VGM,patient.getVgm());
+        values.put(USER_TCMH,patient.gettcmh());
+        values.put(USER_IDR_CV,patient.getIdr_cv());
+        values.put(USER_HYPO,patient.getHypo());
+        values.put(USER_RET_HE,patient.getRet_he());
+        values.put(USER_PLATELET,patient.getPlatelet());
+        values.put(USER_PLATELET,patient.getFerritin());
+        values.put(USER_TRANSFERRIN,patient.getTransferrin());
+        values.put(USER_SERUM_IRON,patient.getSerum_iron());
+        values.put(USER_CST,patient.getCst());
+        values.put(USER_FIBRINOGEN,patient.getFibrinogen());
+        values.put(USER_CRP, patient.getCrp());
+        values.put(USER_OTHERS, patient.getOther());
+        values.put(USER_PHONE, patient.getPhone());
+        values.put(USER_SERUM_IRON_UNIT, patient.getSerum_iron_unit());
+        values.put(USER_SECURED, patient.getSecured());
+        values.put(USER_PSEUDO, patient.getPseudo());
+        values.put(USER_CARENCE, patient.getCarence());
 
         String where = "IDuser=?";
         //String[] whereArgs = new String[] {String.valueOf(patient.getUserID())};
@@ -428,9 +449,9 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         //values.put("IDtag", tag.getIdTag());
-        values.put("value", tag.getValue());
-        values.put("IDtype", tag.getIdType());
-        values.put("idtagparent", tag.getIdParent());
+        values.put(TAG_VALUE, tag.getValue());
+        values.put(TAG_ID_TYPE, tag.getIdType());
+        values.put(TAG_IDTAGPARENT, tag.getIdParent());
 
         //insert row
         db.insert(TABLE_TAG, "nullColumnHack", values);
@@ -453,6 +474,39 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
         }
         db.close();
+    }
+
+    //Adding a new acquisition
+    public long addAcquisition(Acquisition acquisition){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ACQUISITION_ID_PATIENT, acquisition.getPatientID());
+        values.put(ACQUISITION_NUMBER, acquisition.getAcquisition_number());
+        values.put(ACQUISITION_DATE,acquisition.getDate_acquisition());
+
+        //insert row
+        // long is the return type of the method: insert(String table,String nullColumnHack,ContentValues values)) == it returns the last ID/row inserted
+        long lastID = db.insert(TABLE_ACQUISITION,"nullColumnHack",values);
+        db.close();
+        return lastID;
+    }
+
+    public int getNextAcquisitionNumer(int patientID){
+        int  number = 0;
+        try {
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath + DB_NAME, null,
+                    SQLiteDatabase.OPEN_READWRITE);
+            Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_ACQUISITION + " WHERE IDPatient = " + patientID, null);
+            while (cursor.moveToNext()) {
+                number = Integer.parseInt(cursor.getString(0)) + 1;
+            }
+            cursor.close();
+        } catch (Exception e) {
+            Log.d("database ", e.getMessage());
+        }
+        db.close();
+        Log.i("acq","Numéro acquisition :" + number);
+        return number;
     }
 
 }

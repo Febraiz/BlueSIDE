@@ -52,6 +52,8 @@ public class EditPatient extends AppCompatActivity
     private boolean isDateValid = true;
     private boolean isPhoneValid = true;
 
+    SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -319,14 +321,12 @@ public class EditPatient extends AppCompatActivity
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
-        SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
-
-        try {
+        /*try {
             dbHelper.createDatabase();
         } catch (IOException e) {
             dbHelper.close();
             throw new Error("unable to create database");
-        }
+        }*/
         if(dbHelper.openDatabase()){
             // users = db.getPatient();
             users = dbHelper.getPatient();
@@ -383,8 +383,6 @@ public class EditPatient extends AppCompatActivity
     //Update patient data
     public void updatePatient(){
         try {
-            SQLiteDBHelper dbHelper = new SQLiteDBHelper(this);
-
             String NAME = name.getText().toString();
             String FIRST_NAME = first_Name.getText().toString();
             String DATE_BIRTH = date_Birth.getText().toString();

@@ -73,7 +73,7 @@ public class FileProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, "*", 1);
         return false;*/
 
-        File file = new File(getContext().getFilesDir(), fileName);
+        /*File file = new File(getContext().getFilesDir(), fileName);
         if(!file.exists()){
             AssetManager assetManager = getContext().getResources().getAssets();
             try{
@@ -83,7 +83,7 @@ public class FileProvider extends ContentProvider {
                 Log.e("File Provider", "Exception copying from assets", e);
                 return false;
             }
-        }
+        }*/
         return true;
     }
 

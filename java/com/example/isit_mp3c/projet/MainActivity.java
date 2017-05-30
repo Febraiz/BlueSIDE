@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInstaller;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -45,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Button addPatientBtn, searchBtn, photoBtn, exportBtn;
     private String android_id;
+    List<User> users = new ArrayList<>();
+    ExportDBActivity exportDBActivity;
+    SQLiteDBHelper dbHelper;
 
 
     @Override
@@ -55,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         android_id = Secure.getString(this.getContentResolver(), Secure.ANDROID_ID);
+
+        dbHelper = SQLiteDBHelper.getInstance(this);
 
         if (isOnline()) {
             Toast.makeText(this, "Connecté", Toast.LENGTH_LONG).show();
@@ -244,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("a","Directory exists IsDir="+attrs.isDir());
                     } else {
                         Log.i("a","Creating dir "+dir);
-                        sftp.mkdir(dir);
+                        sftp.mkdir(directory+"/"+dir);
                     }
 
                     sftp.cd(directory+"/"+dir);
@@ -268,9 +274,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public FileInputStream createFile(Context context) throws IOException {
-        List<User> users;
-        ExportDBActivity exportDBActivity = new ExportDBActivity();
-
+        users = dbHelper.getPatient();
         String fileName = "blueSIDE.csv";
         File cacheFile = new File(context.getCacheDir() + File.separator + fileName);
         cacheFile.createNewFile();
@@ -280,8 +284,6 @@ public class MainActivity extends AppCompatActivity {
             fileOutputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, "UTF8");
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
-            SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
-            users = exportDBActivity.getPatient();
             printWriter.println("sep=;");
             printWriter.println("ID; NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
@@ -346,8 +348,10 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return openFileInput(fileName);
-
     }
+
 }
+
+
 
 

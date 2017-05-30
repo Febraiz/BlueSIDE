@@ -36,6 +36,7 @@ public class EditAnonymPatient extends AppCompatActivity
     private List<User> users;
     private int id;
     private ArrayAdapter<CharSequence> genderSpinnerAdapter, ironSpinnerAdapter;
+    SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,19 +123,17 @@ public class EditAnonymPatient extends AppCompatActivity
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
-        SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
-
-        try {
-            dbHelper.createDatabase();
+        /*try {
+            dbH.createDatabase();
         } catch (IOException e) {
-            dbHelper.close();
+            dbH.close();
             throw new Error("unable to create database");
-        }
-        if(dbHelper.openDatabase()){
+        }*/
+        if(dbH.openDatabase()){
             // users = db.getPatient();
-            users = dbHelper.getPatient();
+            users = dbH.getPatient();
         }
-        dbHelper.close();
+        dbH.close();
         return users;
     }
 
@@ -182,8 +181,6 @@ public class EditAnonymPatient extends AppCompatActivity
 
     private void updatePatient() {
         try {
-            SQLiteDBHelper dbHelper = new SQLiteDBHelper(this);
-
             String PSEUDO = idPatient.getText().toString();
             String HEIGHT = height.getText().toString();
             String WEIGHT = weight.getText().toString();
@@ -210,11 +207,11 @@ public class EditAnonymPatient extends AppCompatActivity
 
             int ID = users.get(id - 1).getUserID();
 
-            dbHelper.updatePatient(new User(GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
+            dbH.updatePatient(new User(GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
                     VGM, TCMH, IDR_CV, HYPO, RET_HE, PLATELET, FERRITIN,
                     TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER,
                     SECURED, PSEUDO), ID);
-            dbHelper.close();
+            dbH.close();
         }catch (Exception e){
             e.printStackTrace();
         }

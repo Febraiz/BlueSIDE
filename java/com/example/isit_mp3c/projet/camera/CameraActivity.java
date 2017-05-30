@@ -9,7 +9,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -40,7 +39,6 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -49,34 +47,24 @@ import android.widget.Toast;
 
 import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
+import com.example.isit_mp3c.projet.database.Acquisition;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.photo.CalibrateDebevec;
-import org.opencv.photo.MergeDebevec;
-import org.opencv.photo.MergeMertens;
-import org.opencv.photo.Photo;
-import org.opencv.photo.TonemapDurand;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class CameraActivity extends AppCompatActivity
@@ -129,8 +117,11 @@ public class CameraActivity extends AppCompatActivity
     private String directoryPatient;
     private String directoryFiles = "Images";
     private ImageView imageDisplay;
+    private int idPatient;
 
     private List<User> users;
+
+    private SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
 
     private BaseLoaderCallback openCVLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -203,7 +194,17 @@ public class CameraActivity extends AppCompatActivity
 
     public void enterDirectoryName(){
 
-        AlertDialog.Builder builder =  new AlertDialog.Builder(CameraActivity.this);
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        idPatient = Integer.parseInt(directoryPatient.split("-")[0]);
+        int nb_acq = dbHelper.getNextAcquisitionNumer(idPatient);
+        String nameDirectory = "patient_" + idPatient + "_" + sdf.format(date) + "_acq" + nb_acq;
+        if (directoryPatient != getResources().getString(R.string.none)) {
+            directoryFiles = directoryPatient + "/";
+            directoryFiles += nameDirectory;
+        }
+
+        /*AlertDialog.Builder builder =  new AlertDialog.Builder(CameraActivity.this);
         LayoutInflater inflater = CameraActivity.this.getLayoutInflater();
         View dialog_view = inflater.inflate(R.layout.directory_dialog, null);
         final EditText nameDirectory = (EditText) dialog_view.findViewById(R.id.textView);
@@ -236,7 +237,7 @@ public class CameraActivity extends AppCompatActivity
                 })
                 .create();
 
-        builder.show();
+        builder.show();*/
     }
 
     public void getNameFileDialog(){
@@ -256,8 +257,9 @@ public class CameraActivity extends AppCompatActivity
 
                 //id or name depending on the protocol
 
-                if(users.get(i).getName()== null) listPatient[i+1] = users.get(i).getPseudo();
-                else listPatient[i+1] = users.get(i).getName() + "_" + users.get(i).getFirstName() + users.get(i).getUserID();
+                //if(users.get(i).getName()== null)
+                    listPatient[i+1] = users.get(i).getUserID() + "-" + users.get(i).getPseudo();
+                //else listPatient[i+1] = users.get(i).getName() + "_" + users.get(i).getFirstName() + "_" + users.get(i).getUserID();
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -293,13 +295,12 @@ public class CameraActivity extends AppCompatActivity
     //get all patients
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
-        SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
-        try {
+        /*try {
             dbHelper.createDatabase();
         } catch (IOException e) {
             dbHelper.close();
             throw new Error("unable to create database");
-        }
+        }*/
         if(dbHelper.openDatabase()){
             users = dbHelper.getPatient();
         }
@@ -1128,6 +1129,16 @@ public class CameraActivity extends AppCompatActivity
 
                 }
 
+                //Add acquisition in DB
+                SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
+                idPatient = Integer.parseInt(directoryPatient.split("-")[0]);
+                Date date = Calendar.getInstance().getTime();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Acquisition acq = new Acquisition(idPatient,dbHelper.getNextAcquisitionNumer(idPatient), sdf.format(date));
+                dbHelper.addAcquisition(acq);
+                dbHelper.close();
+
+                Log.i("Acquisition", acq.getAcquisitionID() + " - " + acq.getPatientID() + " - " + acq.getAcquisition_number() + " - " + acq.getDate_acquisition());
                 Log.i(TAG, "Images Saved");
                 progressDialog.dismiss();
 

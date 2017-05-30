@@ -41,6 +41,8 @@ public class ListProfile extends AppCompatActivity {
     private List<User> users;
     private ListView listProfile;
 
+    SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,14 +137,12 @@ public class ListProfile extends AppCompatActivity {
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
-        SQLiteDBHelper dbH = new SQLiteDBHelper(getApplicationContext());
-
-        try {
+        /*try {
             dbH.createDatabase();
         } catch (IOException e) {
             dbH.close();
             throw new Error("unable to create database");
-        }
+        }*/
         if (dbH.openDatabase()) {
             users = dbH.getPatient();
         }

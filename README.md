@@ -4,6 +4,8 @@
 
     git clone https://github.com/Febraiz/BlueSIDE.git
     
+    ** Don't forget to download jsch file here: https://sourceforge.net/projects/jsch/files/jsch.jar/0.1.54/jsch-0.1.54.jar/download
+    
 ## Team members
 - Jeremy **MEZHOUD**
 - Wilfried **NGOUANA**

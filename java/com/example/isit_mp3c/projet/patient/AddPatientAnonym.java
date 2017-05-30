@@ -1,5 +1,6 @@
 package com.example.isit_mp3c.projet.patient;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class AddPatientAnonym extends AppCompatActivity
     private EditText height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin, transferrin, serum_iron, cst,
             fibrinogen, crp, other, pseudo;
+    private RadioButton rbCertain, rbAbsence, rbIncertain;
     private Spinner genderSpinner, ironSpinner;
     private List<User> users;
     SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
@@ -143,6 +145,11 @@ public class AddPatientAnonym extends AppCompatActivity
         fibrinogen = (EditText)findViewById(R.id.fibrinogen);
         crp = (EditText)findViewById(R.id.crp);
         other = (EditText)findViewById(R.id.other);
+
+        rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
+        rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
+        rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
+
         //pseudo = (EditText)findViewById(R.id.pseudo);
 
         String HEIGHT = height.getText().toString();
@@ -166,16 +173,13 @@ public class AddPatientAnonym extends AppCompatActivity
         String GENDER = String.valueOf(genderSpinner.getSelectedItem());
         String UNIT = String.valueOf(ironSpinner.getSelectedItem());
 
-        /*try {
-            dbH.createDatabase();
-        } catch (IOException e) {
-            dbH.close();
-            throw new Error("unable to create database");
-        }*/
+        // Récupération de la carence
+        String DEFICIENCY = deficiencyType(this.findViewById(android.R.id.content));
+
         if(dbH.openDatabase()) {
             lastID = dbH.addPatient(new User( GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
                     VGM, TCMH, IDR_CV, HYPO, RET_HE, PLATELET, FERRITIN,
-                    TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER, "TRUE", PSEUDO));
+                    TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER, "TRUE", PSEUDO, DEFICIENCY));
         }
 
         Log.i("last ID is ", "AddNonAnonymPatientActivity_java, Last ID set is =" + lastID);
@@ -264,6 +268,7 @@ public class AddPatientAnonym extends AppCompatActivity
 
     }
 
+    // Méthode nécessaire au bon fonctionnement des radioButtons
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
@@ -283,5 +288,17 @@ public class AddPatientAnonym extends AppCompatActivity
                     // AH
                     break;
         }
+    }
+
+    public String deficiencyType(View view)
+    {
+        if (rbCertain.isChecked())
+            return "Carence certaine";
+        else if(rbAbsence.isChecked())
+            return "Absence de carence";
+        else if(rbIncertain.isChecked())
+            return "Carence incertaine";
+        else
+            return "";
     }
 }

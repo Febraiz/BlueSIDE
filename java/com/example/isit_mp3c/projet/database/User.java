@@ -39,7 +39,7 @@ public class User {
     private String serum_iron_unit;
     private String secured;
     private String pseudo;
-    private String carence;
+    private String deficiency;
 
 
     public int getUserID(){
@@ -233,22 +233,22 @@ public class User {
         this.pseudo = pseudo;
     }
 
-    public String getCarence() {
-        return carence;
+    public String getDeficiency() {
+        return deficiency;
     }
-    public void setCarence(String carence) {
-        this.carence = carence;
+    public void setDeficiency(String deficiency) {
+        this.deficiency = deficiency;
     }
 
 
-    //Constructor for getting patient profil
+    //Constructor used to list all patient in DB
     public User(int userID, String name, String firstName, String dateBirth,
                 String mail, String address, String phone, String sexe,
                 String height, String weight, String imc, String hb,
                 String vgm, String tcmh, String idr_cv, String hypo,
                 String ret_he, String platelet, String ferritin,
                 String transferrin, String serum_iron, String serum_iron_unit, String cst,
-                String fibrinogen, String crp, String other, String secured, String pseudo){
+                String fibrinogen, String crp, String other, String secured, String pseudo, String deficiency){
         this.userID = userID;
         this.name = name;
         this.firstName = firstName;
@@ -277,11 +277,10 @@ public class User {
         this.other = other;
         this.secured = secured;
         this.pseudo = pseudo;
+        this.deficiency = deficiency;
     }
 
-
-
-    //Constructor for Add Patient
+    //Constructor to add non-anonym patient
     public User( String name, String firstName, String dateBirth,
                  String mail, String adress, String phone, String sexe,
                  String height, String weight, String hb,
@@ -289,7 +288,7 @@ public class User {
                  String ret_he, String platelet, String ferritin,
                  String transferrin, String serum_iron, String serum_iron_unit,
                  String cst, String fibrinogen, String crp, String other,
-                 String secured, String pseudo){
+                 String secured, String pseudo, String deficiency){
         this.name = name;
         this.firstName = firstName;
         this.dateBirth = dateBirth;
@@ -316,52 +315,16 @@ public class User {
         this.other = other;
         this.secured = secured;
         this.pseudo = pseudo;
-        this.pseudo = pseudo;
+        this.deficiency = deficiency;
     }
 
-    //Constructor for Add Patient
-    public User( String name, String firstName, String dateBirth,
-                 String mail, String address, String phone, String sexe,
-                 String height, String weight, String hb,
-                 String vgm, String tcmh, String idr_cv, String hypo,
-                 String ret_he, String platelet, String ferritin,
-                 String transferrin, String serum_iron, String serum_iron_unit,
-                 String cst, String fibrinogen, String crp, String other){
-        this.name = name;
-        this.firstName = firstName;
-        this.dateBirth = dateBirth;
-        this.mail = mail;
-        this.address = address;
-        this.phone = phone;
-        this.sexe = sexe;
-        this.height = height;
-        this.weight = weight;
-        //this.imc = imc;
-        this.hb = hb;
-        this.vgm = vgm;
-        this.tcmh = tcmh;
-        this.idr_cv = idr_cv;
-        this.hypo = hypo;
-        this.ret_he = ret_he;
-        this.platelet = platelet;
-        this.ferritin = ferritin;
-        this.transferrin = transferrin;
-        this.serum_iron = serum_iron;
-        this.serum_iron_unit = serum_iron_unit;
-        this.cst = cst;
-        this.fibrinogen = fibrinogen;
-        this.crp = crp;
-        this.other = other;
-    }
-
-
-    //Constructor for Add Patient
+    //Constructor to create/update anonym patient
     public User( String sexe, String height, String weight, String hb,
                  String vgm, String tcmh, String idr_cv, String hypo,
                  String ret_he, String platelet, String ferritin,
                  String transferrin, String serum_iron, String serum_iron_unit,
                  String cst, String fibrinogen, String crp, String other,
-                 String secured, String pseudo){
+                 String secured, String pseudo, String deficiency){
 
         this.sexe = sexe;
         this.height = height;
@@ -383,9 +346,10 @@ public class User {
         this.other = other;
         this.secured = secured;
         this.pseudo = pseudo;
+        this.deficiency = deficiency;
     }
 
-    //Constructor for Add Patient
+    //NOT USED
     public User( String sexe, String height, String weight, String hb,
                  String vgm, String tcmh, String idr_cv, String hypo,
                  String ret_he, String platelet, String ferritin,
@@ -413,7 +377,7 @@ public class User {
         this.pseudo = pseudo;
     }
 
-    //Constructor for Add Patient
+    //NOT USED
     public User( String sexe, String height, String weight, String hb,
                  String vgm, String tcmh, String idr_cv, String hypo,
                  String ret_he, String platelet, String ferritin,
@@ -423,6 +387,41 @@ public class User {
         this.sexe = sexe;
         this.height = height;
         this.weight = weight;
+        this.hb = hb;
+        this.vgm = vgm;
+        this.tcmh = tcmh;
+        this.idr_cv = idr_cv;
+        this.hypo = hypo;
+        this.ret_he = ret_he;
+        this.platelet = platelet;
+        this.ferritin = ferritin;
+        this.transferrin = transferrin;
+        this.serum_iron = serum_iron;
+        this.serum_iron_unit = serum_iron_unit;
+        this.cst = cst;
+        this.fibrinogen = fibrinogen;
+        this.crp = crp;
+        this.other = other;
+    }
+
+    //NOT USED
+    public User( String name, String firstName, String dateBirth,
+                 String mail, String address, String phone, String sexe,
+                 String height, String weight, String hb,
+                 String vgm, String tcmh, String idr_cv, String hypo,
+                 String ret_he, String platelet, String ferritin,
+                 String transferrin, String serum_iron, String serum_iron_unit,
+                 String cst, String fibrinogen, String crp, String other){
+        this.name = name;
+        this.firstName = firstName;
+        this.dateBirth = dateBirth;
+        this.mail = mail;
+        this.address = address;
+        this.phone = phone;
+        this.sexe = sexe;
+        this.height = height;
+        this.weight = weight;
+        //this.imc = imc;
         this.hb = hb;
         this.vgm = vgm;
         this.tcmh = tcmh;

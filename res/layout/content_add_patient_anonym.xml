@@ -110,18 +110,24 @@
 
             <RadioButton android:id="@+id/radioDeficiencyClear"
                 android:text="@string/deficiencyClear"
+                android:button="@null"
+                android:drawableLeft="@android:drawable/btn_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onRadioButtonClicked" />
 
             <RadioButton android:id="@+id/radioNoDeficiency"
                 android:text="@string/noDeficiency"
+                android:button="@null"
+                android:drawableLeft="@android:drawable/btn_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onRadioButtonClicked" />
 
             <RadioButton android:id="@+id/radioDeficiencyUnclear"
                 android:text="@string/deficiencyUnclear"
+                android:button="@null"
+                android:drawableLeft="@android:drawable/btn_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onRadioButtonClicked" />
@@ -369,8 +375,6 @@
             android:layout_columnSpan="2"
             android:layout_column="1"
             android:layout_row="17"/>
-
-
 
         <TextView
             android:id="@+id/textview16"

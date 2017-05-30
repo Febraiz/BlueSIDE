@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ public class EditPatient extends AppCompatActivity
             address, mail, phone, height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin,
             transferrin, serum_iron, cst, fibrinogen, crp, other;
+    private RadioButton rbCertain, rbAbsence, rbIncertain;
     private Spinner genderSpinner, ironSpinner;
     private TextView idPatient;
     private List<User> users;
@@ -87,6 +89,9 @@ public class EditPatient extends AppCompatActivity
         fibrinogen = (EditText) findViewById(R.id.fibrinogen);
         crp = (EditText) findViewById(R.id.crp);
         other = (EditText) findViewById(R.id.other);
+        rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
+        rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
+        rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
         //sex = (EditText) findViewById(R.id.sexe_patient);
 
         genderSpinner = (Spinner) findViewById(R.id.sexe_patient);
@@ -375,6 +380,21 @@ public class EditPatient extends AppCompatActivity
                 int ironUnitPosition = ironSpinnerAdapter.getPosition(serum_iron_unit);
                 ironSpinner.setSelection(ironUnitPosition);
             }
+
+            //Mise en place du bon radioButton
+            String carence = users.get(id - 1).getDeficiency();
+            switch(carence) {
+                case "Carence certaine":
+                    rbCertain.toggle();
+                    break;
+                case "Absence de carence":
+                    rbAbsence.toggle();
+                    break;
+                case "Carence incertaine":
+                    rbIncertain.toggle();
+                    break;
+            }
+
         } catch (Exception e) {
             Log.e("DB error", "It did not read the ID value");
         }
@@ -412,13 +432,15 @@ public class EditPatient extends AppCompatActivity
             String GENDER = String.valueOf(genderSpinner.getSelectedItem());
             String UNIT = String.valueOf(ironSpinner.getSelectedItem());
 
+            String DEFICIENCY = deficiencyType(this.findViewById(android.R.id.content));
+
             int ID = users.get(id-1).getUserID();
 
             dbHelper.updatePatient(new User(NAME, FIRST_NAME, DATE_BIRTH, MAIL,
                     ADDRESS, PHONE, GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
                     VGM, TCMH, IDR_CV, HYPO, RET_HE, PLATELET, FERRITIN,
                     TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER,
-                    SECURED, PSEUDO), ID);
+                    SECURED, PSEUDO, DEFICIENCY), ID);
             dbHelper.close();
         }catch(Exception e){
             e.printStackTrace();
@@ -488,5 +510,39 @@ public class EditPatient extends AppCompatActivity
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    // Méthode nécessaire au bon fonctionnement des radioButtons
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radioDeficiencyClear:
+                if (checked)
+                    // Pirates are the best
+                    break;
+            case R.id.radioNoDeficiency:
+                if (checked)
+                    // Ninjas rule
+                    break;
+            case R.id.radioDeficiencyUnclear:
+                if (checked)
+                    // AH
+                    break;
+        }
+    }
+
+    public String deficiencyType(View view)
+    {
+        if (rbCertain.isChecked())
+            return "Carence certaine";
+        else if(rbAbsence.isChecked())
+            return "Absence de carence";
+        else if(rbIncertain.isChecked())
+            return "Carence incertaine";
+        else
+            return "";
     }
 }

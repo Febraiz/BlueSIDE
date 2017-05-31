@@ -4,6 +4,10 @@
 
     git clone https://github.com/Febraiz/BlueSIDE.git
     
+    ** Don't forget to download jsch file here (put in /app/libs): 
+            https://sourceforge.net/projects/jsch/files/jsch.jar/0.1.54/jsch-0.1.54.jar/download
+            http://mirrors.ircam.fr/pub/apache//commons/io/binaries/commons-io-2.5-bin.zip
+    
 ## Team members
 - Jeremy **MEZHOUD**
 - Wilfried **NGOUANA**
@@ -57,5 +61,6 @@ dependencies {
     compile 'com.android.support:design:23.2.0'
     compile project(':openCVLibrary300')
     compile files('libs/jsch-0.1.54.jar')
+    compile files('libs/commons-io-2.5.jar')
 }
 </code></pre>

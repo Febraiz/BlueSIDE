@@ -129,7 +129,10 @@ public class ListProfile extends AppCompatActivity {
         ArrayList<String> value = new ArrayList<String>();
         users = getPatient();
         for (int i = 1; i <= users.size(); i++) {
-            value.add("patient " + i);
+            if(users.get(i-1).getName() !=  null)
+                value.add("Patient n°" + i + " : " + users.get(i-1).getName() + " " + users.get(i-1).getFirstName());
+            else
+                value.add("Patient n°" + i + " : " + users.get(i-1).getPseudo() + " (anonyme)");
         }
         return value;
     }

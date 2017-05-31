@@ -396,7 +396,7 @@ public class ExportDBActivity extends AppCompatActivity {
                     String sex = users.get(i).getSexe();
                     String height = users.get(i).getHeight();
                     String weight = users.get(i).getWeight();
-                    String imc = users.get(i).getImc().toString(); //les chiffres après la virgule se déplacent ds la colonne de Hb.
+                    String imc = users.get(i).getImc().toString();
                     Log.i("IMC", "ExportDB, the value of IMC is : "+ imc);
                     String hb = users.get(i).getHb();
                     Log.i("HB", "ExportDB, the value of hb is "+ hb);

@@ -293,6 +293,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void upload(File src, ChannelSftp sftp, String dir) throws IOException, SftpException {
         if (src.isDirectory()) {
+            if(src.getName().contains("patient") && src.getName().contains("_acq")){
+                String string = src.getName();
+                String[] parts = string.split("_");
+                String id = parts[1];
+                String[] parts1 = string.split("_acq");
+                String acquisition_number = parts1[1];
+
+                Log.i("id patient",id);
+                Log.i("acquisition",acquisition_number);
+            }
             SftpATTRS attrs = null;
             try {
                 attrs = sftp.stat(dir + "/" + src.getName());
@@ -414,6 +424,87 @@ public class MainActivity extends AppCompatActivity {
         }
         return openFileInput(fileName);
     }
+    public FileInputStream createdataFile(Context context) throws IOException {
+        users = dbHelper.getPatient();
+        String fileName = "data.csv";
+        File cacheFile = new File(context.getCacheDir() + File.separator + fileName);
+        cacheFile.createNewFile();
+
+        FileOutputStream fileOutputStream;
+        try {
+            fileOutputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, "UTF8");
+            PrintWriter printWriter = new PrintWriter(outputStreamWriter);
+            printWriter.println("sep=;");
+            printWriter.println("ID; NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; DATE; ACQ_IDX; SEX;" +
+                    " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
+                    " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
+                    " PSEUDO; DEFICIENCY");
+
+            for (int i = 0; i < users.size(); i++) {
+                try {
+                    int id = users.get(i).getUserID();
+                    String secured = users.get(i).getSecured();
+                    Log.i("secured", "ExportDB, secured : " + secured);
+                    String name = users.get(i).getName();
+                    String firstName = users.get(i).getFirstName();
+                    String birthDate = users.get(i).getDateBirth();
+                    String adress = users.get(i).getAddress();
+                    String mail = users.get(i).getMail();
+                    String phone = users.get(i).getPhone();
+                    //string date = users.getDate_acquisition();
+                    //Remplir string qui contient la date d'acquisition
+                    //Remplir string qui contient le numéro d'acquisition
+                    String sex = users.get(i).getSexe();
+                    String height = users.get(i).getHeight();
+                    String weight = users.get(i).getWeight();
+                    String imc = users.get(i).getImc().toString();
+                    Log.i("IMC", "ExportDB, the value of IMC is : " + imc);
+                    String hb = users.get(i).getHb();
+                    Log.i("HB", "ExportDB, the value of hb is " + hb);
+                    String vgm = users.get(i).getVgm();
+                    String tcmh = users.get(i).gettcmh();
+                    String idr_cv = users.get(i).getIdr_cv();
+                    String hypo = users.get(i).getHypo();
+                    String ret_he = users.get(i).getRet_he();
+                    String platelet = users.get(i).getPlatelet();
+                    String ferritin = users.get(i).getFerritin();
+                    String transferrin = users.get(i).getTransferrin();
+                    String serum_iron_value = users.get(i).getSerum_iron();
+                    String serum_iron_unit = users.get(i).getSerum_iron_unit();
+                    String serum_iron = "";
+                    if (!serum_iron_unit.equalsIgnoreCase("(unité)") && !serum_iron_unit.equalsIgnoreCase("(unit)")) {
+                        serum_iron = serum_iron_value + " " + serum_iron_unit;
+                    }
+                    String cst = users.get(i).getCst();
+                    String fibrinogen = users.get(i).getFibrinogen();
+                    String crp = users.get(i).getCrp();
+                    String notes = users.get(i).getOther();
+                    String pseudo = users.get(i).getPseudo();
+                    String carence = users.get(i).getDeficiency();
+
+                    String record = id + ";" + name + ";" + firstName + ";" + birthDate + ";" + adress
+                            + ";" + mail + ";" + phone + ";" + sex + ";" + height + ";"
+                            + weight + ";" + imc + ";" + hb + ";" + vgm + ";" + tcmh
+                            + ";" + idr_cv + ";" + hypo + ";" + ret_he + ";" + platelet
+                            + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
+                            + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
+                            + ";" + pseudo + ";" + carence;
+                    printWriter.println(record);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("ExportDB", "Error in for : " + e.getMessage());
+                }
+            }
+            dbHelper.close();
+            printWriter.flush();
+            printWriter.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return openFileInput(fileName);
+    }
+
 
     public String getDataDir(final Context context) throws Exception {
         return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).applicationInfo.dataDir;

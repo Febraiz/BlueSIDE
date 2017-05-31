@@ -220,7 +220,7 @@ public class ExportDBActivity extends AppCompatActivity {
             users = getPatient();
             printWriter.println("sep=;");
             printWriter.println("NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; SEX;" +
-                    " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO, RET_HE; PLATELET;" +
+                    " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
                     " PSEUDO ");
 
@@ -251,7 +251,7 @@ public class ExportDBActivity extends AppCompatActivity {
                         String serum_iron_value = users.get(i).getSerum_iron();
                         String serum_iron_unit = users.get(i).getSerum_iron_unit();
                         String serum_iron = "";
-                        if (serum_iron_unit != "(unité)" && serum_iron_unit != "(unit)") {
+                        if (!serum_iron_unit.equalsIgnoreCase("(unité)") && !serum_iron_unit.equalsIgnoreCase("(unit)")) {
                             serum_iron = serum_iron_value + " " + serum_iron_unit;
                         }
                         String cst = users.get(i).getCst();
@@ -330,7 +330,7 @@ public class ExportDBActivity extends AppCompatActivity {
                         String serum_iron_value = users.get(i).getSerum_iron();
                         String serum_iron_unit = users.get(i).getSerum_iron_unit();
                         String serum_iron = "";
-                        if (serum_iron_unit != "(unité)" && serum_iron_unit != "(unit)") {
+                        if (!serum_iron_unit.equalsIgnoreCase("(unité)") && !serum_iron_unit.equalsIgnoreCase("(unit)")) {
                             serum_iron = serum_iron_value + " " + serum_iron_unit;
                         }
                         String cst = users.get(i).getCst();
@@ -394,7 +394,7 @@ public class ExportDBActivity extends AppCompatActivity {
                     String sex = users.get(i).getSexe();
                     String height = users.get(i).getHeight();
                     String weight = users.get(i).getWeight();
-                    String imc = users.get(i).getImc().toString(); //les chiffres après la virgule se déplacent ds la colonne de Hb.
+                    String imc = users.get(i).getImc().toString();
                     Log.i("IMC", "ExportDB, the value of IMC is : "+ imc);
                     String hb = users.get(i).getHb();
                     Log.i("HB", "ExportDB, the value of hb is "+ hb);

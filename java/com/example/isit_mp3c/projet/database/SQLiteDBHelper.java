@@ -24,7 +24,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
     private static String dbPath = "";
 
     private SQLiteDatabase db;
-    private static Context mycontext;
+    public static Context mycontext;
     private static int DB_VERSION = 1;
 
 
@@ -49,7 +49,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         this.mycontext = context;
 
         this.db = this.getWritableDatabase();
-         createDB(db);
+        createDB(db);
     }
 
     public boolean openDatabase() {

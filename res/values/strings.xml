@@ -145,4 +145,8 @@
     <string name="enter_directory">Enter directory name</string>
     <string name="saving_images">Saving images...</string>
     <string name="process_hdr">Processing hdr image...</string>
+
+    <string name="senddata">Do you want to send data ?</string>
+    <string name="sending_data">Sending data...</string>
+
 </resources>

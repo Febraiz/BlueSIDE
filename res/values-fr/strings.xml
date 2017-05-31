@@ -115,4 +115,7 @@
     <string name="enter_directory">Entrez un nom pour le répertoire</string>
     <string name="saving_images">Enregistrement des images...</string>
     <string name="process_hdr">Traitement image HDR...</string>
+
+    <string name="senddata">Voulez-vous envoyer les données ?</string>
+    <string name="sending_data">Envoi des données...</string>
 </resources>

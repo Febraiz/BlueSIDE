@@ -1,9 +1,13 @@
 package com.example.isit_mp3c.projet;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageInstaller;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -32,6 +36,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -42,6 +47,8 @@ import com.jcraft.jsch.*;
 
 import android.provider.Settings.Secure;
 
+import org.apache.commons.io.IOUtils;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button addPatientBtn, searchBtn, photoBtn, exportBtn;
@@ -49,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     List<User> users = new ArrayList<>();
     ExportDBActivity exportDBActivity;
     SQLiteDBHelper dbHelper;
+    String directory = "/home/comptemicroct/blueside";
+    private ProgressDialog progressDialog;
 
 
     @Override
@@ -63,12 +72,24 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = SQLiteDBHelper.getInstance(this);
 
         if (isOnline()) {
-            Toast.makeText(this, "Connecté", Toast.LENGTH_LONG).show();
-            sendData();
-        } else
-            Toast.makeText(this, "Non connecté", Toast.LENGTH_LONG).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.senddata)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            sendData();
+                        }
+                    })
+                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+            builder.create();
+            builder.show();
+        }
 
-/*        FloatingActionButton buttonCamera = (FloatingActionButton) findViewById(R.id.buttonCamera);
+/*        FloatingActionButton buttonCamera = (FloatingActionButton
+) findViewById(R.id.buttonCamera);
         buttonCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -213,11 +234,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendData() {
-        Thread thread = new Thread(new Runnable() {
+        final Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                String directory = "/home/comptemicroct/blueside";
-
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        progressDialog = ProgressDialog.show(MainActivity.this, getResources().getString(R.string.sending_data), "", true);
+                    }
+                });
                 try {
                     JSch ssh = new JSch();
                     Session session = ssh.getSession("comptemicroct", "193.49.166.86", 22);
@@ -228,13 +252,6 @@ public class MainActivity extends AppCompatActivity {
                     session.connect();
                     Channel channel = session.openChannel("sftp");
                     channel.connect();
-
-                    // Test if your device is connected to the sftp server
-                    /*boolean connect = session.isConnected();
-                    if (connect)
-                        Log.i("connect ", "true");
-                    else
-                        Log.i("connect ", "false");*/
 
                     ChannelSftp sftp = (ChannelSftp) channel;
 
@@ -258,6 +275,13 @@ public class MainActivity extends AppCompatActivity {
                     FileInputStream fis = createFile(getApplicationContext());
                     sftp.put(fis, "blueSIDE.csv");
 
+                    sftp.cd(directory);
+                    //String localPath = "/data/data/" + getApplicationContext().getPackageName() + "/files";
+                    //String localPath = getExternalFilesDir("").getAbsolutePath();
+                    //File localSrc = new File(localPath);
+                    File localSrc = getExternalFilesDir("");
+                    upload(localSrc,sftp,directory);
+
                     channel.disconnect();
                     session.disconnect();
                 } catch (JSchException e) {
@@ -267,10 +291,63 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        progressDialog.dismiss();
+                    }
+                });
             }
         });
         thread.start();
+    }
+
+    public void upload(File src, ChannelSftp sftp, String dir) throws IOException, SftpException {
+        if (src.isDirectory()) {
+            SftpATTRS attrs = null;
+            try {
+                attrs = sftp.stat(dir + "/" + src.getName());
+            } catch (Exception e) {
+                Log.i("a",dir + "/" + src.getName()+" not found");
+            }
+
+            if (attrs != null) {
+                Log.i("a","Directory exists IsDir="+attrs.isDir());
+            } else {
+                Log.i("a","Creating dir "+dir);
+                sftp.mkdir(dir + "/" + src.getName());
+            }
+
+            sftp.cd(dir + "/" + src.getName());
+
+            for (File file : src.listFiles()) {
+                upload(file, sftp,dir+"/"+src.getName());
+            }
+            sftp.cd(directory);
+        }
+        else {
+            InputStream srcStream = null;
+            try {
+                try {
+                    sftp.lstat(src.getName());
+                } catch (SftpException e){
+                    if(e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE){
+                        // file doesn't exist
+                        srcStream = src.toURI().toURL().openStream();
+                        sftp.put(srcStream,src.getName());
+                        Log.i("src",src.getName() + " add on ftp");
+                    } else {
+                        // something else went wrong
+                        throw e;
+                    }
+                }
+            }
+            finally {
+                IOUtils.closeQuietly(srcStream);
+            }
+        }
     }
 
     public FileInputStream createFile(Context context) throws IOException {
@@ -304,7 +381,7 @@ public class MainActivity extends AppCompatActivity {
                     String sex = users.get(i).getSexe();
                     String height = users.get(i).getHeight();
                     String weight = users.get(i).getWeight();
-                    String imc = users.get(i).getImc().toString(); //les chiffres après la virgule se déplacent ds la colonne de Hb.
+                    String imc = users.get(i).getImc().toString();
                     Log.i("IMC", "ExportDB, the value of IMC is : " + imc);
                     String hb = users.get(i).getHb();
                     Log.i("HB", "ExportDB, the value of hb is " + hb);
@@ -348,6 +425,10 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return openFileInput(fileName);
+    }
+
+    public String getDataDir(final Context context) throws Exception {
+        return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).applicationInfo.dataDir;
     }
 
 }

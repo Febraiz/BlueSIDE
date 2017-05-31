@@ -1,14 +1,15 @@
 # BlueSIDE
 
-[a link](https://sourceforge.net/projects/jsch/files/jsch.jar/0.1.54/jsch-0.1.54.jar/download)
+
 
 #### Download project
 
     git clone https://github.com/Febraiz/BlueSIDE.git
     
     ** Don't forget to download jsch file here (put in /app/libs): 
-            
-            http://mirrors.ircam.fr/pub/apache//commons/io/binaries/commons-io-2.5-bin.zip
+
+[jsch-0.1.54.jar](https://sourceforge.net/projects/jsch/files/jsch.jar/0.1.54/jsch-0.1.54.jar/download)            
+[commons-io-2.5.jar](http://mirrors.ircam.fr/pub/apache//commons/io/binaries/commons-io-2.5-bin.zip)
     
 ## Team members
 - Jeremy **MEZHOUD**

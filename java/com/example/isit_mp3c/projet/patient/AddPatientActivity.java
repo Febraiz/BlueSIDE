@@ -30,7 +30,6 @@ import com.example.isit_mp3c.projet.R;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -356,7 +355,7 @@ public class AddPatientActivity extends AppCompatActivity
         String UNIT = String.valueOf(ironSpinner.getSelectedItem());
 
         // Récupération de la carence
-        String DEFICIENCY = deficiencyType(this.findViewById(android.R.id.content));
+        String DEFICIENCY = getDeficiencyType();
 
         if (patientsList.size() == 0)
             ID = 1;
@@ -532,7 +531,7 @@ public class AddPatientActivity extends AppCompatActivity
         }
     }
 
-    public String deficiencyType(View view)
+    public String getDeficiencyType()
     {
         if (rbCertain.isChecked())
             return "Carence certaine";

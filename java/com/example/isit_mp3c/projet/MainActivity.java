@@ -68,18 +68,6 @@ public class MainActivity extends AppCompatActivity {
         } else
             Toast.makeText(this, "Non connecté", Toast.LENGTH_LONG).show();
 
-/*        FloatingActionButton buttonCamera = (FloatingActionButton) findViewById(R.id.buttonCamera);
-        buttonCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //call CameraActivity
-                Intent intent = new Intent(MainActivity.this, CameraActivity.class);
-                startActivity(intent);
-            }
-        });*/
-
-
         addPatientBtn = (Button) findViewById(R.id.add_patient_button);
         addPatientBtn.setOnClickListener(new View.OnClickListener() {
             @Override

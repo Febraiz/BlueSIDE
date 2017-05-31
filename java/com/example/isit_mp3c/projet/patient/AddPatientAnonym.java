@@ -1,6 +1,5 @@
 package com.example.isit_mp3c.projet.patient;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import com.example.isit_mp3c.projet.R;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -174,7 +172,7 @@ public class AddPatientAnonym extends AppCompatActivity
         String UNIT = String.valueOf(ironSpinner.getSelectedItem());
 
         // Récupération de la carence
-        String DEFICIENCY = deficiencyType(this.findViewById(android.R.id.content));
+        String DEFICIENCY = getDeficiencyType();
 
         if(dbH.openDatabase()) {
             lastID = dbH.addPatient(new User( GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
@@ -290,7 +288,7 @@ public class AddPatientAnonym extends AppCompatActivity
         }
     }
 
-    public String deficiencyType(View view)
+    public String getDeficiencyType()
     {
         if (rbCertain.isChecked())
             return "Carence certaine";

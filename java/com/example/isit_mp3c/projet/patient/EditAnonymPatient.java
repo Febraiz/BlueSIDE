@@ -22,7 +22,6 @@ import com.example.isit_mp3c.projet.R;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -225,7 +224,7 @@ public class EditAnonymPatient extends AppCompatActivity
             String GENDER = String.valueOf(genderSpinner.getSelectedItem());
             String UNIT = String.valueOf(ironSpinner.getSelectedItem());
 
-            String DEFICIENCY = deficiencyType(this.findViewById(android.R.id.content));
+            String DEFICIENCY = getDeficiencyType();
 
             int ID = users.get(id - 1).getUserID();
             Log.i("APRES CHANGEMENT", DEFICIENCY);
@@ -307,7 +306,7 @@ public class EditAnonymPatient extends AppCompatActivity
         }
     }
 
-    public String deficiencyType(View view)
+    public String getDeficiencyType()
     {
         if (rbCertain.isChecked())
             return "Carence certaine";

@@ -318,6 +318,9 @@ public class User {
         this.deficiency = deficiency;
     }
 
+    public User() {
+    }
+
     //Constructor to create/update anonym patient
     public User( String sexe, String height, String weight, String hb,
                  String vgm, String tcmh, String idr_cv, String hypo,

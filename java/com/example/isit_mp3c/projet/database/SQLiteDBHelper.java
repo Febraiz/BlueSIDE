@@ -266,6 +266,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
                 String Serum_iron_unit = cursor.getString(27);
                 String secured = cursor.getString(28);
                 String pseudo = cursor.getString(29);
+                String carence = cursor.getString(30);
 
                 // float patientCRP = Float.parseFloat(cursor.getString(24));
 
@@ -275,7 +276,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
                         patientHB, patientVGM, patientTCMH, patientIDR_CV, patientHypo,
                         patientRet_He, patientPlatelet, patientFerritin,
                         patientTransferrin, patientSerum_iron, Serum_iron_unit, patientCST,
-                        patientFibrinogen, patientCRP, patientOthers, secured, pseudo);
+                        patientFibrinogen, patientCRP, patientOthers, secured, pseudo, carence);
 
                 patients.add(patient);
             }
@@ -345,8 +346,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
     }
 
 
-
-
     //Adding a new patient
     public long addPatient(User patient){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -378,7 +377,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         values.put(USER_SERUM_IRON_UNIT, patient.getSerum_iron_unit());
         values.put(USER_SECURED, patient.getSecured());
         values.put(USER_PSEUDO, patient.getPseudo());
-        values.put(USER_CARENCE, patient.getCarence());
+        values.put(USER_CARENCE, patient.getDeficiency());
 
         //insert row
         // long is the return type of the method: insert(String table,String nullColumnHack,ContentValues values)) == it returns the last ID/row inserted
@@ -419,7 +418,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         values.put(USER_SERUM_IRON_UNIT, patient.getSerum_iron_unit());
         values.put(USER_SECURED, patient.getSecured());
         values.put(USER_PSEUDO, patient.getPseudo());
-        values.put(USER_CARENCE, patient.getCarence());
+        Log.i("AVANT MISE A JOUR", patient.getDeficiency());
+        values.put(USER_CARENCE, patient.getDeficiency());
 
         String where = "IDuser=?";
         //String[] whereArgs = new String[] {String.valueOf(patient.getUserID())};

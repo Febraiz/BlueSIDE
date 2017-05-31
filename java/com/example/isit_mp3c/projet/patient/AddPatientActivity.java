@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class AddPatientActivity extends AppCompatActivity
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin, transferrin, serum_iron, cst,
             fibrinogen, crp, other;
     private Spinner genderSpinner, ironSpinner;
+    private RadioButton rbCertain, rbAbsence, rbIncertain;
     private List<User> patientsList;
     private boolean isMailValid = true;
     private boolean isDateValid = true;
@@ -240,28 +242,6 @@ public class AddPatientActivity extends AppCompatActivity
         return isValid ? true : false;
     }
 
-/*    public boolean validDate(CharSequence date) throws ParseException {
-        boolean isValid = false;
-        Date value;
-        String myFormat = "yyyy-MM-dd";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(myFormat);
-        try {
-            value = simpleDateFormat.parse(String.valueOf(date));
-            Log.i("validDate", "value of value is :" + value);
-            Log.i("validDate", "value of date is : "+ date);
-            if (value.equals(simpleDateFormat.format(date))) {
-                isValid = true;
-                Log.i("validate date", "Date Format is valid");
-            } else {
-                isValid = false;
-                Log.i("validate date", "Date Format is not valid");
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return isValid? true : false;
-    }*/
-
     public boolean validDate(CharSequence date){
         boolean isValid;
         String input =  String.valueOf(date);
@@ -345,6 +325,10 @@ public class AddPatientActivity extends AppCompatActivity
         crp = (EditText)findViewById(R.id.crp);
         other = (EditText)findViewById(R.id.other);
 
+        rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
+        rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
+        rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
+
         String NAME = name.getText().toString();
         String FIRST_NAME = first_Name.getText().toString();
         String DATE_BIRTH = date_Birth.getText().toString();
@@ -371,6 +355,9 @@ public class AddPatientActivity extends AppCompatActivity
         String GENDER = String.valueOf(genderSpinner.getSelectedItem());
         String UNIT = String.valueOf(ironSpinner.getSelectedItem());
 
+        // Récupération de la carence
+        String DEFICIENCY = deficiencyType(this.findViewById(android.R.id.content));
+
         if (patientsList.size() == 0)
             ID = 1;
         else
@@ -378,17 +365,11 @@ public class AddPatientActivity extends AppCompatActivity
 
         String PSEUDO = NAME + "_" + FIRST_NAME + "_" + ID;
 
-        /*try {
-            dbH.createDatabase();
-        } catch (IOException e) {
-            dbH.close();
-            throw new Error("unable to create database");
-        }*/
         if(dbH.openDatabase()) {
             lastID = dbH.addPatient(new User(NAME, FIRST_NAME, DATE_BIRTH, MAIL,
                     ADDRESS, PHONE, GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
                     VGM, TCMH, IDR_CV, HYPO, RET_HE, PLATELET, FERRITIN,
-                    TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER, "FALSE", PSEUDO));
+                    TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER, "FALSE", PSEUDO, DEFICIENCY));
         }
 
         Log.i("last ID is ", "AddPatientActivity_java, Last ID set is =" + lastID);
@@ -475,31 +456,21 @@ public class AddPatientActivity extends AppCompatActivity
                         startActivity(getIntent());
                     }
                 });
-/*                .setNeutralButton(R.string.add_patient, new DialogInterface.OnClickListener() {  //Another button on the dialog for adding new patient. It is not necessary. It takes a lot of space.
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startActivity(getIntent());
-                    }
-                });*/
 
         AlertDialog dialog = builder.create();
 
         dialog.show();
-        //return builder.create();
     }
 
     //get all patients
     public List<User> getPatient() {
+
         List<User> users = new ArrayList<>();
-        /*try {
-            dbH.createDatabase();
-        } catch (IOException e) {
-            dbH.close();
-            throw new Error("unable to create database");
-        }*/
+
         if(dbH.openDatabase()){
             users = dbH.getPatient();
         }
+
         dbH.close();
         return users;
     }
@@ -537,5 +508,39 @@ public class AddPatientActivity extends AppCompatActivity
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // Méthode nécessaire au bon fonctionnement des radioButtons
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radioDeficiencyClear:
+                if (checked)
+                    // Pirates are the best
+                    break;
+            case R.id.radioNoDeficiency:
+                if (checked)
+                    // Ninjas rule
+                    break;
+            case R.id.radioDeficiencyUnclear:
+                if (checked)
+                    // AH
+                    break;
+        }
+    }
+
+    public String deficiencyType(View view)
+    {
+        if (rbCertain.isChecked())
+            return "Carence certaine";
+        else if(rbAbsence.isChecked())
+            return "Absence de carence";
+        else if(rbIncertain.isChecked())
+            return "Carence incertaine";
+        else
+            return "";
     }
 }

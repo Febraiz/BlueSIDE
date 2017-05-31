@@ -1,8 +1,8 @@
 package com.example.isit_mp3c.projet.patient;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.RadioButton;
 
 import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
@@ -34,6 +35,7 @@ public class AddPatientAnonym extends AppCompatActivity
     private EditText height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin, transferrin, serum_iron, cst,
             fibrinogen, crp, other, pseudo;
+    private RadioButton rbCertain, rbAbsence, rbIncertain;
     private Spinner genderSpinner, ironSpinner;
     private List<User> users;
     SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
@@ -47,7 +49,6 @@ public class AddPatientAnonym extends AppCompatActivity
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         pseudo = (EditText)findViewById(R.id.pseudo);
         genderSpinner = (Spinner) findViewById(R.id.sexe_patient);
@@ -76,8 +77,7 @@ public class AddPatientAnonym extends AppCompatActivity
 
             @Override
             public void onClick(View v) {
-                Intent cancelIntent = new Intent(AddPatientAnonym.this, MainActivity.class);
-                startActivity(cancelIntent);
+                onBackPressed();
             }
         });
 
@@ -145,6 +145,11 @@ public class AddPatientAnonym extends AppCompatActivity
         fibrinogen = (EditText)findViewById(R.id.fibrinogen);
         crp = (EditText)findViewById(R.id.crp);
         other = (EditText)findViewById(R.id.other);
+
+        rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
+        rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
+        rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
+
         //pseudo = (EditText)findViewById(R.id.pseudo);
 
         String HEIGHT = height.getText().toString();
@@ -168,16 +173,13 @@ public class AddPatientAnonym extends AppCompatActivity
         String GENDER = String.valueOf(genderSpinner.getSelectedItem());
         String UNIT = String.valueOf(ironSpinner.getSelectedItem());
 
-        /*try {
-            dbH.createDatabase();
-        } catch (IOException e) {
-            dbH.close();
-            throw new Error("unable to create database");
-        }*/
+        // Récupération de la carence
+        String DEFICIENCY = deficiencyType(this.findViewById(android.R.id.content));
+
         if(dbH.openDatabase()) {
             lastID = dbH.addPatient(new User( GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
                     VGM, TCMH, IDR_CV, HYPO, RET_HE, PLATELET, FERRITIN,
-                    TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER, "TRUE", PSEUDO));
+                    TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER, "TRUE", PSEUDO, DEFICIENCY));
         }
 
         Log.i("last ID is ", "AddNonAnonymPatientActivity_java, Last ID set is =" + lastID);
@@ -264,5 +266,39 @@ public class AddPatientAnonym extends AppCompatActivity
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    // Méthode nécessaire au bon fonctionnement des radioButtons
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radioDeficiencyClear:
+                if (checked)
+                    // Pirates are the best
+                    break;
+            case R.id.radioNoDeficiency:
+                if (checked)
+                    // Ninjas rule
+                    break;
+            case R.id.radioDeficiencyUnclear:
+                if (checked)
+                    // AH
+                    break;
+        }
+    }
+
+    public String deficiencyType(View view)
+    {
+        if (rbCertain.isChecked())
+            return "Carence certaine";
+        else if(rbAbsence.isChecked())
+            return "Absence de carence";
+        else if(rbIncertain.isChecked())
+            return "Carence incertaine";
+        else
+            return "";
     }
 }

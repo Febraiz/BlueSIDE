@@ -62,8 +62,8 @@ public class ExportDBActivity extends AppCompatActivity {
         mailSubject = (EditText)findViewById(R.id.mail_subject);
         mailBody = (EditText)findViewById(R.id.mail_body);
 
-        Button exportBtn = (Button)findViewById(R.id.send_button);
-        exportBtn.setOnClickListener(new View.OnClickListener() {
+        Button sndButton = (Button)findViewById(R.id.send_button);
+        sndButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String[] filesName = new String[3];
@@ -210,7 +210,6 @@ public class ExportDBActivity extends AppCompatActivity {
         cacheFile.createNewFile();
 
         FileOutputStream fileOutputStream = new FileOutputStream(cacheFile);
-        //FileOutputStream fileOutputStream;
 
         try {
             fileOutputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
@@ -222,7 +221,7 @@ public class ExportDBActivity extends AppCompatActivity {
             printWriter.println("NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
-                    " PSEUDO ");
+                    " PSEUDO; DEFICIENCY ");
 
             for(int i =0; i<users.size(); i++) {
                 try {
@@ -259,6 +258,7 @@ public class ExportDBActivity extends AppCompatActivity {
                         String crp = users.get(i).getCrp();
                         String notes = users.get(i).getOther();
                         String pseudo = users.get(i).getPseudo();
+                        String carence = users.get(i).getDeficiency();
 
                         String record = name + ";" + firstName + ";" + birthDate + ";" + adress
                                 + ";" + mail + ";" + phone + ";" + sex + ";" + height + ";"
@@ -266,7 +266,7 @@ public class ExportDBActivity extends AppCompatActivity {
                                 + ";" + idr_cv + ";" + hypo + ";" + ret_he + ";" + platelet
                                 + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
                                 + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
-                                + ";" + pseudo;
+                                + ";" + pseudo + ";" + carence;
                         printWriter.println(record);
                     }else {
                         Log.i("export db","row not secured");
@@ -301,7 +301,7 @@ public class ExportDBActivity extends AppCompatActivity {
             printWriter.println("NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
-                    " PSEUDO");
+                    " PSEUDO; DEFICIENCY ");
 
             for(int i =0; i<users.size(); i++) {
                 try {
@@ -338,6 +338,7 @@ public class ExportDBActivity extends AppCompatActivity {
                         String crp = users.get(i).getCrp();
                         String notes = users.get(i).getOther();
                         String pseudo = users.get(i).getPseudo();
+                        String carence = users.get(i).getDeficiency();
 
                         String record = name + ";" + firstName + ";" + birthDate + ";" + adress
                                 + ";" + mail + ";" + phone + ";" + sex + ";" + height + ";"
@@ -345,7 +346,7 @@ public class ExportDBActivity extends AppCompatActivity {
                                 + ";" + idr_cv + ";" + hypo + ";" + ret_he + ";" + platelet
                                 + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
                                 + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
-                                + ";" + pseudo;
+                                + ";" + pseudo + ";" + carence;
                         printWriter.println(record);
                     }else {
                         Log.i("export db","row not secured");
@@ -363,6 +364,7 @@ public class ExportDBActivity extends AppCompatActivity {
         }
 
     }
+
     public void createFile(Context context, String fileName) throws IOException {
         File cacheFile = new File(context.getCacheDir() + File.separator + fileName);
         cacheFile.createNewFile();
@@ -378,7 +380,7 @@ public class ExportDBActivity extends AppCompatActivity {
             printWriter.println("ID; NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
-                    " PSEUDO ");
+                    " PSEUDO; DEFICIENCY ");
 
             for(int i =0; i<users.size(); i++) {
                 try {
@@ -417,6 +419,7 @@ public class ExportDBActivity extends AppCompatActivity {
                     String crp = users.get(i).getCrp();
                     String notes = users.get(i).getOther();
                     String pseudo = users.get(i).getPseudo();
+                    String carence = users.get(i).getDeficiency();
 
                     String record =id + ";" +  name + ";" + firstName + ";" + birthDate + ";" + adress
                             + ";" + mail + ";" + phone + ";" + sex + ";" + height + ";"
@@ -424,7 +427,7 @@ public class ExportDBActivity extends AppCompatActivity {
                             + ";" + idr_cv + ";" + hypo + ";" + ret_he + ";" + platelet
                             + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
                             + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
-                            + ";" + pseudo;
+                            + ";" + pseudo + ";" + carence;
                     printWriter.println(record);
                 }catch (Exception e) {
                     e.printStackTrace();

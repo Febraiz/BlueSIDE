@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,7 @@ public class ProfilPatient extends AppCompatActivity {
     private TextView idPatient, name, first_Name, date_Birth, sex,
             address, mail, phone, height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin,
-            transferrin, serum_iron, cst, fibrinogen, crp, other, imc;
+            transferrin, serum_iron, cst, fibrinogen, crp, other, imc, deficiency;
     private List<User> users;
     private int id ;
     private SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
@@ -119,12 +120,7 @@ public class ProfilPatient extends AppCompatActivity {
         crp = (TextView)findViewById(R.id.crp);
         other = (TextView)findViewById(R.id.other);
         sex = (TextView)findViewById(R.id.sexe_patient);
-
-/*        if(id != -1){
-            ID = id-1;
-        } else {
-            ID = 0;
-        }*/
+        deficiency = (TextView)findViewById(R.id.textViewDeficiency);
 
         String nameValue, firsNameValue, birthValue , addressValue, mailValue, phoneValue, sexValue;
 
@@ -167,6 +163,23 @@ public class ProfilPatient extends AppCompatActivity {
             crp.setText(users.get(id-1).getCrp());
             other.setText(users.get(id-1).getOther());
             sex.setText(users.get(id-1).getSexe());
+
+            //Mise en place du bon radioButton
+            String carence = users.get(id - 1).getDeficiency();
+            switch(carence) {
+                case "Carence certaine":
+                    deficiency.setText("Carence certaine");
+                    break;
+                case "Absence de carence":
+                    deficiency.setText("Absence de carence");
+                    break;
+                case "Carence incertaine":
+                    deficiency.setText("Carence incertaine");
+                    break;
+                case "":
+                    deficiency.setText("-");
+                    break;
+            }
 
             Log.i("get ID", "ProfilPatient, getProfil, id-1 donne : " + (id-1));
 

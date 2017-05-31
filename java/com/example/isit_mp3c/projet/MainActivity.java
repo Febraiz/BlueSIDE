@@ -365,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
             printWriter.println("ID; NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
-                    " PSEUDO ");
+                    " PSEUDO; DEFICIENCY");
 
             for (int i = 0; i < users.size(); i++) {
                 try {
@@ -404,6 +404,7 @@ public class MainActivity extends AppCompatActivity {
                     String crp = users.get(i).getCrp();
                     String notes = users.get(i).getOther();
                     String pseudo = users.get(i).getPseudo();
+                    String carence = users.get(i).getDeficiency();
 
                     String record = id + ";" + name + ";" + firstName + ";" + birthDate + ";" + adress
                             + ";" + mail + ";" + phone + ";" + sex + ";" + height + ";"
@@ -411,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
                             + ";" + idr_cv + ";" + hypo + ";" + ret_he + ";" + platelet
                             + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
                             + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
-                            + ";" + pseudo;
+                            + ";" + pseudo + ";" + carence;
                     printWriter.println(record);
                 } catch (Exception e) {
                     e.printStackTrace();

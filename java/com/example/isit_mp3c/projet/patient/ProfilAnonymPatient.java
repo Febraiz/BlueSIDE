@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +21,6 @@ import com.example.isit_mp3c.projet.R;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
 
     private TextView idPatient,sex, height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin,
-            transferrin, serum_iron, cst, fibrinogen, crp, other, imc;
+            transferrin, serum_iron, cst, fibrinogen, crp, other, imc, deficiency;
     private List<User> users;
     private int id ;
     SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
@@ -111,6 +111,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
         crp = (TextView)findViewById(R.id.crp);
         other = (TextView)findViewById(R.id.other);
         sex = (TextView)findViewById(R.id.sexe_patient);
+        deficiency = (TextView)findViewById(R.id.textViewDeficiency);
 
         //String idText = String.valueOf(id);
 
@@ -144,6 +145,25 @@ public class ProfilAnonymPatient extends AppCompatActivity {
             crp.setText(users.get(id-1).getCrp());
             other.setText(users.get(id-1).getOther());
             sex.setText(users.get(id-1).getSexe());
+
+            //Mise en place du bon radioButton
+            String carence = users.get(id - 1).getDeficiency();
+
+            switch(carence) {
+                case "Carence certaine":
+                    deficiency.setText("Carence certaine");
+                    break;
+                case "Absence de carence":
+                    deficiency.setText("Absence de carence");
+                    break;
+                case "Carence incertaine":
+                    deficiency.setText("Carence incertaine");
+                    break;
+                case "":
+                    deficiency.setText("-");
+                    break;
+            }
+
         } catch (Exception e) {
             Log.e("DB error", "ProfilPatient_java, It did not read the ID value");
         }

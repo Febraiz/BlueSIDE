@@ -18,7 +18,7 @@
         android:columnCount="2"
         android:id="@+id/gridLayout">
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mail_address"
             android:id="@+id/textview1"
@@ -29,7 +29,7 @@
             android:layout_marginEnd="29dp" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/mail_address"
             android:layout_below="@+id/create_file_button"
@@ -38,7 +38,7 @@
             android:inputType="textEmailAddress"/>
 
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mail_subject"
             android:id="@+id/textview2"
@@ -49,7 +49,7 @@
             android:layout_marginEnd="29dp" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/mail_subject"
             android:layout_below="@+id/create_file_button"
@@ -59,7 +59,7 @@
 
 
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mail_body"
             android:id="@+id/textview3"
@@ -70,7 +70,7 @@
             android:layout_marginEnd="29dp" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:ems="10"

@@ -17,6 +17,9 @@ public class Acquisition {
         this.date_acquisition = date_acquisition;
     }
 
+    public Acquisition() {
+    }
+
     public Acquisition(int patientID, int acquisition_number, String date_acquisition) {
         this.patientID = patientID;
         this.acquisition_number = acquisition_number;

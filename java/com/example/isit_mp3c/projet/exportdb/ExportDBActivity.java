@@ -20,6 +20,7 @@ import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
+import com.example.isit_mp3c.projet.email.GMailSender;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,6 +33,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
+
+import static com.example.isit_mp3c.projet.R.string.mail;
 
 public class ExportDBActivity extends AppCompatActivity {
 
@@ -62,145 +66,76 @@ public class ExportDBActivity extends AppCompatActivity {
         mailSubject = (EditText)findViewById(R.id.mail_subject);
         mailBody = (EditText)findViewById(R.id.mail_body);
 
-        Button sndButton = (Button)findViewById(R.id.send_button);
-        sndButton.setOnClickListener(new View.OnClickListener() {
+        Button sendButton = (Button)findViewById(R.id.send_button);
+        sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] filesName = new String[3];
-                Log.i("filename 1", "ExportDB, fileNames contains : "
-                        + filesName[0] + " ; " + filesName[1] + " ; " + filesName[2]);
+                final ArrayList<String> filesName = new ArrayList<String>();
                 adress = String.valueOf(mailAddress.getText());
                 subject = String.valueOf(mailSubject.getText());
                 body = String.valueOf(mailBody.getText());
 
-            if(get_anonym){
-                try {
-                    createAnonymFile(getApplicationContext(), anonymFileName);
-                    filesName[0] = anonymFileName;
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(get_anonym){
+                    try {
+                        createAnonymFile(getApplicationContext(), anonymFileName);
+                        filesName.add(anonymFileName);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-            if(get_non_anonym){
-                try {
-                    createNonAnonymFile(getApplicationContext(), nonAnonymFileName);
-                    filesName[1] = nonAnonymFileName;
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(get_non_anonym){
+                    try {
+                        createNonAnonymFile(getApplicationContext(), nonAnonymFileName);
+                        filesName.add(nonAnonymFileName);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-            if(get_all_data){
-                try {
-                    createFile(getApplicationContext(), fileName);
-                    filesName[2] = fileName;
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(get_all_data) {
+                    try {
+                        createFile(getApplicationContext(), fileName);
+                        filesName.add(fileName);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+
+                // if champs  tous rempli
+               Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            GMailSender sender = new GMailSender("blueside.project@gmail.com", "blueside123");
+                            ArrayList<File> files = new ArrayList<File>();
+                            try {
+                                for(int i = 0; i < filesName.size(); i++) {
+                                    files.add(new File(getApplicationContext().getCacheDir(), filesName.get(i)));
+                                }
+                                sender.sendMail(mailSubject.getText().toString(),
+                                        mailBody.getText().toString()
+                                        , "blueside.project@gmail.com", mailAddress.getText().toString(),files);
+
+                                for(int j = 0; j < filesName.size(); j++){
+                                    File fileToDelete = new File(getApplicationContext().getCacheDir()+
+                                            File.separator + filesName.get(j));
+                                    Log.i("delete cache", filesName.get(j) + "cache file deleted : " + fileToDelete.delete());
+                                }
+                            } catch (Exception e) {
+                                for(int j = 0; j < filesName.size(); j++){
+                                    File fileToDelete = new File(getApplicationContext().getCacheDir()+
+                                            File.separator + filesName.get(j));
+                                    Log.i("delete cache", filesName.get(j) + "cache file deleted : " + fileToDelete.delete());
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                thread.start();
+                Toast.makeText(ExportDBActivity.this, "Mail envoyé", Toast.LENGTH_SHORT).show();
             }
-
-            try {
-                //createCacheFile(ExportDBActivity.this, fileName, "this is a test");
-                //the activity's launch to send that file via gmail
-                startActivity(Intent.createChooser(getSendMailIntent(
-                        adress,
-                        // "blueside.project@gmail.com",
-                        subject,
-                        //"test",
-                        body,
-                        //"Export DB test",
-                        filesName), "Send mail..."));
-            }  catch (ActivityNotFoundException e) {
-                Toast.makeText(ExportDBActivity.this,
-                        "Gmail is not available on this devise",
-                        Toast.LENGTH_LONG).show();
-            }
-
-            Log.i("filename 2", "ExportDB, fileNames contains : "+filesName[0]
-                    +" ; "+filesName[1]+" ; "+filesName[2]);
-
-            if(filesName[0] != null){
-                File anonymFile = new File(getApplicationContext().getCacheDir()+
-                        File.separator + filesName[0]);
-                Log.i("delete cache", "anonym cache file deleted : " + anonymFile.delete());
-            }
-
-            if(filesName[1] != null){
-                File nonAnonymFile = new File(getApplicationContext().getCacheDir()+
-                        File.separator + filesName[1]);
-                Log.i("delete cache", "non anonym cache file deleted : "
-                        + nonAnonymFile.delete());
-            }
-
-            if(filesName[2] != null){
-                File allDataFile = new File(getApplicationContext().getCacheDir()+
-                        File.separator + filesName[2]);
-                Log.i("delete cache", "all cache file deleted : "
-                        + allDataFile.delete());
-            }
-
-        }
-    });
-}
-
-    public static Intent getSendMailIntent( String email, String subject,
-                                           String body, String[] filesName){
-        String[] fileName = filesName;
-        //final Intent mailIntent = new Intent(Intent.ACTION_SEND);
-        final Intent mailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-
-/*        //only use Gmail to send
-        mailIntent.setClassName("com.google.android.gm",
-                "com.google.android.gm.ComposeActivityGmail");*/
-
-        //send only email
-        mailIntent.setData(Uri.parse("mailto:"));
-
-        //mailIntent.setType("text/plain");
-        mailIntent.setType("text/csv");
-        mailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
-        mailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        mailIntent.putExtra(Intent.EXTRA_TEXT, body);
-
-        if(fileName != null){
-            ArrayList<Uri> uris = new ArrayList<Uri>();
-            for(int i=0; i < fileName.length; i++) {
-                if (fileName[i] != null) {
-                    Uri uri = Uri.parse("content://" + FileProvider.AUTHORITY + "/" + fileName[i]);
-                    uris.add(uri);
-                }
-            }
-            if(!uris.isEmpty()){
-                mailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-            }
-        } else {
-            Log.i("MAIL", "no attachment found");
-        }
-
-        return mailIntent;
-    }
-
-    //test method
-    public String getFileData(Context context){
-        String msg = "";
-        try{
-            InputStream inputStream = openFileInput(fileName);
-            if( inputStream != null){
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receivedString = "";
-                StringBuilder stringBuilder = new StringBuilder();
-                while ((receivedString = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(receivedString);
-                }
-                inputStream.close();
-                msg = stringBuilder.toString();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return msg;
+        });
     }
 
     public void createAnonymFile(Context context, String fileName) throws IOException {
@@ -235,7 +170,7 @@ public class ExportDBActivity extends AppCompatActivity {
                         String sex = users.get(i).getSexe();
                         String height = users.get(i).getHeight();
                         String weight = users.get(i).getWeight();
-                        String imc = users.get(i).getImc().toString(); //les chiffres après la virgule se déplacent ds la colonne de Hb.
+                        String imc = users.get(i).getImc().toString();
                         String hb = users.get(i).getHb();
                         String vgm = users.get(i).getVgm();
                         String tcmh = users.get(i).gettcmh();
@@ -315,7 +250,7 @@ public class ExportDBActivity extends AppCompatActivity {
                         String sex = users.get(i).getSexe();
                         String height = users.get(i).getHeight();
                         String weight = users.get(i).getWeight();
-                        String imc = users.get(i).getImc().toString(); //les chiffres après la virgule se déplacent ds la colonne de Hb.
+                        String imc = users.get(i).getImc().toString();
                         String hb = users.get(i).getHb();
                         String vgm = users.get(i).getVgm();
                         String tcmh = users.get(i).gettcmh();

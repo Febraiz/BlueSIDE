@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.isit_mp3c.projet.camera.CameraActivity;
+import com.example.isit_mp3c.projet.database.Acquisition;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
 import com.example.isit_mp3c.projet.exportdb.ExportDBActivity;
@@ -289,9 +290,23 @@ public class MainActivity extends AppCompatActivity {
         });
         thread.start();
     }
-
+//new
     public void upload(File src, ChannelSftp sftp, String dir) throws IOException, SftpException {
         if (src.isDirectory()) {
+            if(src.getName().contains("patient") && src.getName().contains("_acq")){
+                String string = src.getName();
+                String[] parts = string.split("_");
+                String id = parts[1];
+                String[] parts1 = string.split("_acq");
+                String acquisition_number = parts1[1];
+
+                User user = dbHelper.getPatientWithId(Integer.parseInt(id));
+                Acquisition  acq = dbHelper.getAcquisition(Integer.parseInt(id),Integer.parseInt(acquisition_number));
+
+                FileInputStream wil = createdataFile(this,user,acq);
+
+                sftp.put(wil,dir + "/" + src.getName() +"/" + "data.csv");
+            }
             SftpATTRS attrs = null;
             try {
                 attrs = sftp.stat(dir + "/" + src.getName());
@@ -413,6 +428,88 @@ public class MainActivity extends AppCompatActivity {
         }
         return openFileInput(fileName);
     }
+     //new
+    public FileInputStream createdataFile(Context context, User user, Acquisition acquisition) throws IOException {
+        users = dbHelper.getPatient();
+        String fileName = "data.csv";
+        File cacheFile = new File(context.getCacheDir() + File.separator + fileName);
+        cacheFile.createNewFile();
+
+        FileOutputStream fileOutputStream;
+        try {
+            fileOutputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, "UTF8");
+            PrintWriter printWriter = new PrintWriter(outputStreamWriter);
+            printWriter.println("sep=;");
+            printWriter.println("ID; NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; DATE; ACQ_IDX; SEX;" +
+                    " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
+                    " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
+                    " PSEUDO; DEFICIENCY");
+
+                try {
+                    int id = user.getUserID();
+                    String secured = user.getSecured();
+                    Log.i("secured", "ExportDB, secured : " + secured);
+                    String name = user.getName();
+                    String firstName = user.getFirstName();
+                    String birthDate = user.getDateBirth();
+                    String adress = user.getAddress();
+                    String mail = user.getMail();
+                    String phone = user.getPhone();
+                    String date = acquisition.getDate_acquisition();
+                    String acq_idx = Integer.toString(acquisition.getAcquisition_number());
+                    //Remplir string qui contient la date d'acquisition
+                    //Remplir string qui contient le numéro d'acquisition
+                    String sex = user.getSexe();
+                    String height = user.getHeight();
+                    String weight = user.getWeight();
+                    String imc = user.getImc().toString();
+                    Log.i("IMC", "ExportDB, the value of IMC is : " + imc);
+                    String hb = user.getHb();
+                    Log.i("HB", "ExportDB, the value of hb is " + hb);
+                    String vgm = user.getVgm();
+                    String tcmh = user.gettcmh();
+                    String idr_cv = user.getIdr_cv();
+                    String hypo = user.getHypo();
+                    String ret_he = user.getRet_he();
+                    String platelet = user.getPlatelet();
+                    String ferritin = user.getFerritin();
+                    String transferrin = user.getTransferrin();
+                    String serum_iron_value = user.getSerum_iron();
+                    String serum_iron_unit = user.getSerum_iron_unit();
+                    String serum_iron = "";
+                    if (!serum_iron_unit.equalsIgnoreCase("(unité)") && !serum_iron_unit.equalsIgnoreCase("(unit)")) {
+                        serum_iron = serum_iron_value + " " + serum_iron_unit;
+                    }
+                    String cst = user.getCst();
+                    String fibrinogen = user.getFibrinogen();
+                    String crp = user.getCrp();
+                    String notes = user.getOther();
+                    String pseudo = user.getPseudo();
+                    String carence = user.getDeficiency();
+
+                    String record = id + ";" + name + ";" + firstName + ";" + birthDate + ";" + adress
+                            + ";" + mail + ";" + phone + ";"+date+";"+acq_idx+";" + sex + ";" + height + ";"
+                            + weight + ";" + imc + ";" + hb + ";" + vgm + ";" + tcmh
+                            + ";" + idr_cv + ";" + hypo + ";" + ret_he + ";" + platelet
+                            + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
+                            + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
+                            + ";" + pseudo + ";" + carence;
+                    printWriter.println(record);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("ExportDB", "Error in for : " + e.getMessage());
+                }
+
+            dbHelper.close();
+            printWriter.flush();
+            printWriter.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return openFileInput(fileName);
+    }
+
 
     public String getDataDir(final Context context) throws Exception {
         return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).applicationInfo.dataDir;

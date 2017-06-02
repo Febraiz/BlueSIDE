@@ -509,4 +509,87 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         return number;
     }
 
+    public User getPatientWithId(int id){
+        User patient = new User();
+        try{
+            String query = "SELECT * FROM " + TABLE_USER + " WHERE " + USER_ID + "=" + id;
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+DB_NAME, null,
+                    SQLiteDatabase.OPEN_READWRITE);
+            Cursor cursor = db.rawQuery(query, null);
+
+            while (cursor.moveToNext()) {
+                int patientID = Integer.parseInt(cursor.getString(0));
+                String patientName = cursor.getString(1);
+                String patientFirstName = cursor.getString(3);
+                String patientBirth = cursor.getString(4);
+                String patientmail = cursor.getString(5);
+                String patientadress = cursor.getString(6);
+                String patientGender = cursor.getString(8);
+                String patientHeight =cursor.getString(9);
+                String patientWeight = cursor.getString(10);
+                String patientIMC = cursor.getString(11);
+                String patientHB = cursor.getString(12);
+                String patientVGM = cursor.getString(13);
+                String patientTCMH = cursor.getString(14);
+                String patientIDR_CV = cursor.getString(15);
+                String patientHypo = cursor.getString(16);
+                String patientRet_He =cursor.getString(17);
+                String patientPlatelet = cursor.getString(18);
+                String patientFerritin = cursor.getString(19);
+                String patientTransferrin = cursor.getString(20);
+                String patientSerum_iron = cursor.getString(21);
+                String patientCST = cursor.getString(22);
+                String patientFibrinogen = cursor.getString(23);
+                String patientCRP = cursor.getString(24);
+                String patientOthers = cursor.getString(25);
+                String patientPhone = cursor.getString(26);
+                String Serum_iron_unit = cursor.getString(27);
+                String secured = cursor.getString(28);
+                String pseudo = cursor.getString(29);
+                String carence = cursor.getString(30);
+
+                // float patientCRP = Float.parseFloat(cursor.getString(24));
+
+                patient = new User(patientID, patientName, patientFirstName,
+                        patientBirth, patientmail, patientadress, patientPhone,
+                        patientGender, patientHeight, patientWeight, patientIMC,
+                        patientHB, patientVGM, patientTCMH, patientIDR_CV, patientHypo,
+                        patientRet_He, patientPlatelet, patientFerritin,
+                        patientTransferrin, patientSerum_iron, Serum_iron_unit, patientCST,
+                        patientFibrinogen, patientCRP, patientOthers, secured, pseudo, carence);
+            }
+            cursor.close();
+        }catch (Exception e){
+            Log.d("database ", e.getMessage());
+        }
+
+        db.close();
+        return patient;
+    }
+
+    public Acquisition getAcquisition(int UserId,int numAcquisition){
+        Acquisition acquisition = new Acquisition();
+        try{
+            String query = "SELECT * FROM " + TABLE_ACQUISITION + " WHERE " + ACQUISITION_ID_PATIENT + "=" + UserId + " AND " + ACQUISITION_NUMBER + "=" + numAcquisition;
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+DB_NAME, null,
+                    SQLiteDatabase.OPEN_READWRITE);
+            Cursor cursor = db.rawQuery(query, null);
+
+            while (cursor.moveToNext()) {
+                int acquisitionID = Integer.parseInt(cursor.getString(0));
+                int patientID = Integer.parseInt(cursor.getString(1));
+                int acquisition_number = Integer.parseInt(cursor.getString(2));
+                String date_acquisition = cursor.getString(3);
+
+                acquisition = new Acquisition(acquisitionID,patientID,acquisition_number,date_acquisition);
+            }
+            cursor.close();
+        }catch (Exception e){
+            Log.d("database ", e.getMessage());
+        }
+
+        db.close();
+        return acquisition;
+    }
+
 }

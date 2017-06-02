@@ -64,5 +64,9 @@ dependencies {
     compile project(':openCVLibrary300')
     compile files('libs/jsch-0.1.54.jar')
     compile files('libs/commons-io-2.5.jar')
+
+    compile files('libs/mail.jar')
+    compile files('libs/activation.jar')
+    compile files('libs/additionnal.jar')
 }
 </code></pre>

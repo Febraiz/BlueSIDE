@@ -6,22 +6,9 @@
 
     git clone https://github.com/Febraiz/BlueSIDE.git
     
-** Don't forget to download jar file here (put in /app/libs): 
+** Don't forget to download jar files here (put in /app/libs): 
 
-For SFTP :
-
-[jsch-0.1.54.jar](https://sourceforge.net/projects/jsch/files/jsch.jar/0.1.54/jsch-0.1.54.jar/download)
-
-[commons-io-2.5.jar](http://mirrors.ircam.fr/pub/apache//commons/io/binaries/commons-io-2.5-bin.zip)
-
-
-For email :
-
-[mail.jar](www.java2s.com/Code/JarDownload/mail/mail.jar.zip)
-
-[activation.jar](www.java2s.com/Code/JarDownload/activation/activation.jar.zip)
-
-[additionnal.jar]()
+[Jar Files - Sources](https://drive.google.com/open?id=0B2sYsdlhPpABZVVwWDBNQXhtaVE)
 
 ## Team members
 - Jeremy **MEZHOUD**

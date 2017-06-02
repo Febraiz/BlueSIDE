@@ -512,7 +512,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
     public User getPatientWithId(int id){
         User patient = new User();
         try{
-            String query = "SELECT * FROM " + TABLE_USER + "WHERE " + USER_ID + "=" + id;
+            String query = "SELECT * FROM " + TABLE_USER + " WHERE " + USER_ID + "=" + id;
             SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+DB_NAME, null,
                     SQLiteDatabase.OPEN_READWRITE);
             Cursor cursor = db.rawQuery(query, null);
@@ -570,7 +570,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
     public Acquisition getAcquisition(int UserId,int numAcquisition){
         Acquisition acquisition = new Acquisition();
         try{
-            String query = "SELECT * FROM " + TABLE_ACQUISITION + "WHERE " + ACQUISITION_ID_PATIENT + "=" + UserId + " AND " + ACQUISITION_NUMBER + "=" + numAcquisition;
+            String query = "SELECT * FROM " + TABLE_ACQUISITION + " WHERE " + ACQUISITION_ID_PATIENT + "=" + UserId + " AND " + ACQUISITION_NUMBER + "=" + numAcquisition;
             SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+DB_NAME, null,
                     SQLiteDatabase.OPEN_READWRITE);
             Cursor cursor = db.rawQuery(query, null);

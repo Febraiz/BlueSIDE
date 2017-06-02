@@ -43,7 +43,6 @@ public class EditPatient extends AppCompatActivity
             transferrin, serum_iron, cst, fibrinogen, crp, other;
     private RadioButton rbCertain, rbAbsence, rbIncertain;
     private Spinner genderSpinner, ironSpinner;
-    private TextView idPatient;
     private List<User> users;
     private int id;
 
@@ -133,7 +132,7 @@ public class EditPatient extends AppCompatActivity
         users = getPatient();
         getProfil();
 
-//email check
+        //email check
         mail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -213,21 +212,8 @@ public class EditPatient extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 updatePatient();
-/*                Snackbar.make(v, R.string.update, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.home, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent homeIntent = new Intent(EditPatient.this, MainActivity.class);
-                                startActivity(homeIntent);
-                            }
-                        })
-                        .show();*/
                 Toast.makeText(EditPatient.this, R.string.update, Toast.LENGTH_SHORT).show();
-                Intent profilIntent = new Intent(EditPatient.this,ProfilPatient.class);
-                profilIntent.putExtra("last_ID",id);
-                startActivity(profilIntent);
-
-
+                finish();
             }
         });
 
@@ -235,8 +221,7 @@ public class EditPatient extends AppCompatActivity
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnToMainIntent = new Intent(EditPatient.this, MainActivity.class);
-                startActivity(returnToMainIntent);
+                onBackPressed();
             }
         });
     }
@@ -325,12 +310,6 @@ public class EditPatient extends AppCompatActivity
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
-        /*try {
-            dbHelper.createDatabase();
-        } catch (IOException e) {
-            dbHelper.close();
-            throw new Error("unable to create database");
-        }*/
         if(dbHelper.openDatabase()){
             // users = db.getPatient();
             users = dbHelper.getPatient();
@@ -367,7 +346,6 @@ public class EditPatient extends AppCompatActivity
             fibrinogen.setText(users.get(id - 1).getFibrinogen());
             crp.setText(users.get(id - 1).getCrp());
             other.setText(users.get(id - 1).getOther());
-            // sex.setText(users.get(id - 1).getSexe());
 
             String sex = users.get(id - 1).getSexe();
             if(!sex.equals(null)){
@@ -483,19 +461,15 @@ public class EditPatient extends AppCompatActivity
                 if(isInputValid()) {
                     updatePatient();
                     Toast.makeText(EditPatient.this, R.string.update, Toast.LENGTH_SHORT).show();
-                    Intent profilIntent = new Intent(EditPatient.this,ProfilPatient.class);
-                    profilIntent.putExtra("last_ID", id);
-                    startActivity(profilIntent);
+                    finish();
+                    return true;
                 } else {
                     Toast.makeText(EditPatient.this, "Error",
                             Toast.LENGTH_LONG);
                 }
                 break;
             case android.R.id.home:
-                //NavUtils.navigateUpTo(this, new Intent(EditPatient.this, MainActivity.class));
-                Intent returnIntent = new Intent(EditPatient.this, ProfilPatient.class);
-                returnIntent.putExtra("last_ID", id);
-                startActivity(returnIntent);
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);

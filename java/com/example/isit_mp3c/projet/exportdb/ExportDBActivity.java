@@ -166,8 +166,6 @@ public class ExportDBActivity extends AppCompatActivity {
             for(int i=0; i < fileName.length; i++) {
                 if (fileName[i] != null) {
                     Uri uri = Uri.parse("content://" + FileProvider.AUTHORITY + "/" + fileName[i]);
-                   /* File file = new File(fileName[i]);
-                    Uri uri = Uri.fromFile(file);*/
                     uris.add(uri);
                 }
             }
@@ -447,12 +445,6 @@ public class ExportDBActivity extends AppCompatActivity {
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
-        /*try {
-            dbHelper.createDatabase();
-        } catch (IOException e) {
-            dbHelper.close();
-            throw new Error("unable to create database");
-        }*/
         if(dbHelper.openDatabase()){
             users = dbHelper.getPatient();
         }
@@ -494,7 +486,7 @@ public class ExportDBActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case android.R.id.home:
-                NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+                onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

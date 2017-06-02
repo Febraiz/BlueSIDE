@@ -1,6 +1,7 @@
 package com.example.isit_mp3c.projet.patient;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
@@ -33,7 +35,7 @@ import java.util.List;
 public class ListProfile extends AppCompatActivity {
 
     //adapter to display the list's data
-    SimpleCursorAdapter mAdapter;
+    ArrayAdapter<String> mAdapter;
 
     //Patient rows that will be retrieved
     private ArrayList<String> values = new ArrayList<String>();
@@ -55,24 +57,9 @@ public class ListProfile extends AppCompatActivity {
 
         listProfile = (ListView) findViewById(R.id.list);
 
-        //progress bar
-        ProgressBar progressBar = new ProgressBar(this);
-        progressBar.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
-        progressBar.setIndeterminate(true);
-        listProfile.setEmptyView(progressBar);
-        //add the progress bar to the layout's root
-        ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
-        root.addView(progressBar);
-
-        //add item to the list
-        values = addValues();
         //Create an empty adapter that will be used to display the loaded data
-        //pass null for the cursor, then update it in onLoadFinished()
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, values);
-        listProfile.setAdapter(mAdapter);
+
+        //The adapter is created in the "onResume", to load new data when adding one to the database
 
         listProfile.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -92,7 +79,6 @@ public class ListProfile extends AppCompatActivity {
                     secured = "null";
                 }
                 try {
-                    users = getPatient();
 
                     switch (secured) {
                         case "FALSE":
@@ -117,6 +103,7 @@ public class ListProfile extends AppCompatActivity {
                             startActivity(defaultIntent);
                             break;
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("switch type", "erreur lors de la lecture du type de profil");
@@ -126,26 +113,20 @@ public class ListProfile extends AppCompatActivity {
     }
 
     private ArrayList<String> addValues() {
-        ArrayList<String> value = new ArrayList<String>();
+        ArrayList<String> values = new ArrayList<String>();
         users = getPatient();
         for (int i = 1; i <= users.size(); i++) {
             if(users.get(i-1).getName() !=  null)
-                value.add("Patient n°" + i + " : " + users.get(i-1).getName() + " " + users.get(i-1).getFirstName());
+                values.add("Patient n°" + i + " : " + users.get(i-1).getName() + " " + users.get(i-1).getFirstName());
             else
-                value.add("Patient n°" + i + " : " + users.get(i-1).getPseudo() + " (anonyme)");
+                values.add("Patient n°" + i + " : " + users.get(i-1).getPseudo() + " (anonyme)");
         }
-        return value;
+        return values;
     }
 
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
-        /*try {
-            dbH.createDatabase();
-        } catch (IOException e) {
-            dbH.close();
-            throw new Error("unable to create database");
-        }*/
         if (dbH.openDatabase()) {
             users = dbH.getPatient();
         }
@@ -153,16 +134,27 @@ public class ListProfile extends AppCompatActivity {
         return users;
     }
 
-    public void onListItemClick(ListView l, View v , int position, long id) {
-        Intent profilIntent = new Intent(ListProfile.this, ProfilPatient.class);
-        profilIntent.putExtra("last_ID", position + 1);
-        startActivity(profilIntent);
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //add item to the list
+        values = addValues();
+
+        mAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, values);
+
+        listProfile.setAdapter(mAdapter);
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
+
+        //Liaison de l'activité avec le menu
         inflater.inflate(R.menu.menu_list_patient, menu);
+
         menu.getItem(0).setEnabled(true);
         menu.getItem(1).setEnabled(true);
         return true;
@@ -172,7 +164,7 @@ public class ListProfile extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+                onBackPressed();
                 return true;
             case R.id.newPatient:
                 chooseDialog(new View(getBaseContext()));
@@ -216,13 +208,14 @@ public class ListProfile extends AppCompatActivity {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startActivity(intent[0]);
+                        if(intent[0] != null)
+                            startActivity(intent[0]);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startActivity(getIntent());
+                        // Do nothing
                     }
                 });
         alertDialog = builder.create();

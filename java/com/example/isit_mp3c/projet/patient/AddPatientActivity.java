@@ -176,19 +176,19 @@ public class AddPatientActivity extends AppCompatActivity
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent cancelIntent = new Intent(AddPatientActivity.this, MainActivity.class);
-                startActivity(cancelIntent);
+                onBackPressed();
             }
         });
 
         // Récupère la liste des patients en base de données
         patientsList = getPatient();
 
-        final long lastID2;
+        final long lastID;
+
         if(patientsList.size() != -1) {
-            lastID2 = patientsList.size()+1;
+            lastID = patientsList.size()+1;
         } else {
-            lastID2 = 0;
+            lastID = 0;
         }
 
         Button save = (Button)findViewById(R.id.save_button);
@@ -198,12 +198,9 @@ public class AddPatientActivity extends AppCompatActivity
             public void onClick(View v) {
                 Log.i("input value", "is input value valid? " + isInputValid());
                 if(isInputValid()) {
-                    //lastID = addNewPatient();
-                    //Log.i("last Id ",
-                    // "AddPatientActivity_java, Laaaaaaaaaaaaaast Id issss === " + lastID2);
 
                     addNewPatient();
-                    saveDialog(new View(getBaseContext()), lastID2);
+                    saveDialog(new View(getBaseContext()), lastID);
                 } else {
                     Toast.makeText(AddPatientActivity.this, "Error",
                             Toast.LENGTH_LONG);
@@ -397,13 +394,6 @@ public class AddPatientActivity extends AppCompatActivity
         // not really possible, because even country which speak the same language
         // have different date format.
 
-/*        Locale locale = null;
-        String lang = locale.getDefault().getLanguage();
-        if(lang == "en") {
-            String myFormat = "MM/dd/yy";
-            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
-            date_Birth.setText(sdf.format(myCalendar.getTime()));
-        } else {*/
         String myFormat = "yyyy-MM-dd"; //ISO8601
         //SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.getDefault());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(myFormat);
@@ -414,14 +404,7 @@ public class AddPatientActivity extends AppCompatActivity
 
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
 
-/*        switch (parent.getId()){
-            case R.id.sexe_patient:
-                gender = parent.getItemAtPosition(position).toString();
-                break;
-            case R.id.iron_unit:
-                serum_iron_unit = parent.getItemAtPosition(position).toString();
-                break;
-        }*/
+
     }
 
     @Override
@@ -445,14 +428,14 @@ public class AddPatientActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         Intent profil = new Intent(AddPatientActivity.this,ProfilPatient.class);
                         profil.putExtra("last_ID", Integer.parseInt(String.valueOf(lastID)));
+                        finish();
                         startActivity(profil);
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //dialog.dismiss();
-                        startActivity(getIntent());
+                        onBackPressed();
                     }
                 });
 
@@ -486,7 +469,7 @@ public class AddPatientActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+                onBackPressed();
                 return true;
             case R.id.save:
                 if(isInputValid()) {

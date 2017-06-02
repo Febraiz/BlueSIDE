@@ -45,7 +45,6 @@ public class ProfilPatient extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
         Bundle extras = getIntent().getExtras();
         id = extras.getInt("last_ID");
 
@@ -54,15 +53,14 @@ public class ProfilPatient extends AppCompatActivity {
         //set toolbar title
         getSupportActionBar().setTitle("Patient "+id);
 
-        users = getPatient();
-        getProfil(id);
+        //Get all patient + Get the right patient in the "onResume" Method
 
         Button okBtn = (Button)findViewById(R.id.ok_button);
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent okIntent = new Intent(ProfilPatient.this,MainActivity.class);
-                startActivity(okIntent);
+                // Go back to patient list
+                onBackPressed();
             }
         });
 
@@ -81,12 +79,6 @@ public class ProfilPatient extends AppCompatActivity {
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
-        /*try {
-            dbHelper.createDatabase();
-        } catch (IOException e) {
-            dbHelper.close();
-            throw new Error("unable to create database");
-        }*/
         if(dbHelper.openDatabase()){
             users = dbHelper.getPatient();
         }
@@ -189,11 +181,18 @@ public class ProfilPatient extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        users = getPatient();
+        getProfil(id);
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_profil_patient, menu);
-/*        menu.getItem(0).setEnabled(true);
-        menu.getItem(1).setEnabled(true);*/
         return true;
     }
 
@@ -201,7 +200,7 @@ public class ProfilPatient extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpTo(this, new Intent(this, ListProfile.class));
+                onBackPressed();
                 return true;
             case R.id.delete_patient:
                 deleteDialog(new View(getBaseContext()));
@@ -232,17 +231,13 @@ public class ProfilPatient extends AppCompatActivity {
                             Toast.makeText(ProfilPatient.this, R.string.patient_not_deleted,
                                     Toast.LENGTH_LONG).show();
                         }
-                        Intent profilToList = new Intent(ProfilPatient.this, ListProfile.class);
-                        /*profilToList.putExtra("deletedID", id);
-                        Log.i("deletedID", "ProfilPatient, the patient id to delete is :" + id);*/
-                        startActivity(profilToList);
+                        finish();
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //dialog.dismiss();
-                        startActivity(getIntent());
+                        //Do nothing
                     }
                 });
 
@@ -256,12 +251,6 @@ public class ProfilPatient extends AppCompatActivity {
         final int ID;
         ID = users.get(id-1).getUserID();
         Log.i("deletePatient", "the ID is : " + ID);
-        /*try {
-            dbHelper.createDatabase();
-        } catch (IOException e) {
-            dbHelper.close();
-            throw new Error("unable to create database");
-        }*/
         if(dbHelper.openDatabase()){
             dbHelper.deletePatient(ID);
             isDeleted = true;

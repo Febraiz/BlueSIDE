@@ -134,12 +134,9 @@ public class ExportDBActivity extends AppCompatActivity {
                 });
                 thread.start();
                 Toast.makeText(ExportDBActivity.this, "Mail envoyé", Toast.LENGTH_SHORT).show();
-
-
-                }
+            }
         });
     }
-
 
     public void createAnonymFile(Context context, String fileName) throws IOException {
         File cacheFile = new File(context.getCacheDir() + File.separator + fileName);
@@ -424,7 +421,7 @@ public class ExportDBActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case android.R.id.home:
-                NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+                onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

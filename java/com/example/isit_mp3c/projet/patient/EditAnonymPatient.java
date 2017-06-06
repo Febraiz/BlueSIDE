@@ -106,10 +106,7 @@ public class EditAnonymPatient extends AppCompatActivity
             public void onClick(View v) {
                 updatePatient();
                 Toast.makeText(EditAnonymPatient.this, R.string.update, Toast.LENGTH_SHORT).show();
-                Intent profilIntent = new Intent(EditAnonymPatient.this, ProfilAnonymPatient.class);
-                profilIntent.putExtra("last_ID", id);
-                startActivity(profilIntent);
-
+                finish();
             }
         });
 
@@ -117,8 +114,7 @@ public class EditAnonymPatient extends AppCompatActivity
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnToMainIntent = new Intent(EditAnonymPatient.this, MainActivity.class);
-                startActivity(returnToMainIntent);
+                onBackPressed();
             }
         });
 
@@ -128,17 +124,11 @@ public class EditAnonymPatient extends AppCompatActivity
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
-        /*try {
-            dbH.createDatabase();
-        } catch (IOException e) {
-            dbH.close();
-            throw new Error("unable to create database");
-        }*/
         if(dbH.openDatabase()){
-            // users = db.getPatient();
             users = dbH.getPatient();
         }
         dbH.close();
+
         return users;
     }
 
@@ -259,20 +249,14 @@ public class EditAnonymPatient extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case android.R.id.home:
-                Intent returnIntent = new Intent(EditAnonymPatient.this,
-                        ProfilAnonymPatient.class);
-                returnIntent.putExtra("last_ID", id);
-                startActivity(returnIntent);
+                onBackPressed();
                 return true;
             case R.id.save:
                 if(!idPatient.getText().toString().isEmpty()) {
                     updatePatient();
                     Toast.makeText(EditAnonymPatient.this,
                             R.string.update, Toast.LENGTH_SHORT).show();
-                    Intent profilIntent = new Intent(EditAnonymPatient.this
-                            , ProfilAnonymPatient.class);
-                    profilIntent.putExtra("last_ID", id);
-                    startActivity(profilIntent);
+                    finish();
                 } else {
                     idPatient.setError(getString(R.string.condition_pseudo));
                     Toast.makeText(EditAnonymPatient.this, "Error",

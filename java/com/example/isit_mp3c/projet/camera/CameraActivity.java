@@ -41,7 +41,6 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -61,7 +60,6 @@ import org.opencv.core.Mat;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -193,9 +191,7 @@ public class CameraActivity extends AppCompatActivity
 
     }
 
-
-    public void enterDirectoryName() {
-
+    public void setDirectoryName(){
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         idPatient = Integer.parseInt(directoryPatient.split("-")[0]);
@@ -205,63 +201,19 @@ public class CameraActivity extends AppCompatActivity
             directoryFiles = directoryPatient + "/";
             directoryFiles += nameDirectory;
         }
-
-        /*AlertDialog.Builder builder =  new AlertDialog.Builder(CameraActivity.this);
-        LayoutInflater inflater = CameraActivity.this.getLayoutInflater();
-        View dialog_view = inflater.inflate(R.layout.directory_dialog, null);
-        final EditText nameDirectory = (EditText) dialog_view.findViewById(R.id.textView);
-
-        builder.setView(dialog_view)
-                .setTitle(R.string.enter_directory)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int button) {
-                        dialog.dismiss();
-                    }
-                })
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int button) {
-
-                        if (directoryPatient != getResources().getString(R.string.none)) {
-
-                            directoryFiles = directoryPatient + "/";
-                            directoryFiles += nameDirectory.getText().toString();
-                            if (nameDirectory.getText().toString().isEmpty())
-                                directoryFiles += "Images";
-
-                        } else {
-                            directoryFiles = nameDirectory.getText().toString();
-                            if (nameDirectory.getText().toString().isEmpty())
-                                directoryFiles = "Images";
-                        }
-
-                        dialog.dismiss();
-                    }
-                })
-                .create();
-
-        builder.show();*/
     }
 
     public void getNameFileDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(CameraActivity.this);
 
-/*        LayoutInflater inflater = CameraActivity.this.getLayoutInflater();
-        View dialog_view = inflater.inflate(R.layout.list_dialog, null);
-        final Spinner listSpinner = (Spinner) dialog_view.findViewById(R.id.dialog_spinner);
-        final Button okBtn = (Button) dialog_view.findViewById(R.id.ok_dialog_button);
-        final Button cancelBtn = (Button) dialog_view.findViewById(R.id.cancel_dialog_button);*/
+        builder.setCancelable(false);
 
         users = getPatient();
         String[] listPatient = new String[users.size() + 1];
         listPatient[0] = getString(R.string.none);
         try {
             for (int i = 0; i < users.size(); i++) {
-
-                //id or name depending on the protocol
-
-                //if(users.get(i).getName()== null)
-                listPatient[i + 1] = users.get(i).getUserID() + "-" + users.get(i).getPseudo();
-                //else listPatient[i+1] = users.get(i).getName() + "_" + users.get(i).getFirstName() + "_" + users.get(i).getUserID();
+                listPatient[i+1] = users.get(i).getUserID() + "-" + users.get(i).getPseudo();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -270,8 +222,7 @@ public class CameraActivity extends AppCompatActivity
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CameraActivity.this,
                 android.R.layout.simple_spinner_item, listPatient);
         final Spinner spinner = new Spinner(CameraActivity.this);
-/*        spinner.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));*/
+
         spinner.setAdapter(arrayAdapter);
         spinner.setOnItemSelectedListener(CameraActivity.this);
 
@@ -279,7 +230,8 @@ public class CameraActivity extends AppCompatActivity
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                        //dialog.dismiss();
+                        onBackPressed();
                     }
                 })
                 .setView(spinner)
@@ -288,7 +240,7 @@ public class CameraActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         directoryPatient = String.valueOf(spinner.getSelectedItem());
                         dialog.dismiss();
-                        enterDirectoryName();
+                        setDirectoryName();
                     }
                 });
         builder.create().show();
@@ -297,19 +249,13 @@ public class CameraActivity extends AppCompatActivity
     //get all patients
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
-        /*try {
-            dbHelper.createDatabase();
-        } catch (IOException e) {
-            dbHelper.close();
-            throw new Error("unable to create database");
-        }*/
-        if (dbHelper.openDatabase()) {
+
+        if(dbHelper.openDatabase()){
             users = dbHelper.getPatient();
         }
         dbHelper.close();
         return users;
     }
-
 
     @Override
     protected void onPause() {
@@ -324,7 +270,6 @@ public class CameraActivity extends AppCompatActivity
 
         super.onPause();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -375,28 +320,8 @@ public class CameraActivity extends AppCompatActivity
             //nativeAnalysisLDR();
             return true;
         }
-
-        /*
-        if(id == R.id.flash){
-            flashOn = !flashOn;
-            try{
-                if(flashOn) {
-                    viewRequestBuilder.set(CaptureRequest.FLASH_MODE,CaptureRequest.FLASH_MODE_TORCH);
-                    captureSession.setRepeatingRequest(viewRequestBuilder.build(), camViewCallback, null);
-                }
-                else {
-                    viewRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
-                    captureSession.setRepeatingRequest(viewRequestBuilder.build(), camViewCallback, null);
-                }
-            } catch (Exception e) {
-                    e.printStackTrace();
-            }
-
-            return true;
-        }*/
-
-        if (id == android.R.id.home) {
-            NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+        if(id == android.R.id.home){
+            onBackPressed();
             return true;
         }
 
@@ -615,7 +540,6 @@ public class CameraActivity extends AppCompatActivity
                     camManager.openCamera(camId, camDeviceCallback, null);
                 }
 
-
             } catch (CameraAccessException e) {
                 e.printStackTrace();
 
@@ -628,13 +552,14 @@ public class CameraActivity extends AppCompatActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_CAMERA_RESULT:
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        switch (requestCode){
+            case  REQUEST_CAMERA_RESULT:
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "Camera service permission have not been granted", Toast.LENGTH_SHORT).show();
-                    return;
+                    finish();
                 }
                 else {
+                    // If the camera is authorized
                     try {
                         camManager.openCamera(camId, camDeviceCallback, null);
                     } catch (CameraAccessException e) {

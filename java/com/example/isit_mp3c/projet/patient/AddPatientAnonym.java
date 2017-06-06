@@ -80,28 +80,26 @@ public class AddPatientAnonym extends AppCompatActivity
         });
 
         users = getPatient();
-        final long lastID2;
+
+        final long lastID;
+
         if(users.size() != -1) {
-            lastID2 = users.size()+1;
+            lastID = users.size()+1;
         } else {
-            lastID2 = 0;
+            lastID = 0;
         }
 
         Button save = (Button)findViewById(R.id.save_button);
         save.setOnClickListener(new View.OnClickListener(){
-            long lastID;
+
             @Override
             public void onClick(View v) {
-                // if(!name.getText().toString().isEmpty()) {
-                //lastID = addNewPatient();
+
                 addNewPatient();
                 Log.i("last Id ",
-                        "AddPatientActivity_java, Laaaaaaaaaaaaaast Id issss === " + lastID2);
-                saveDialog(new View(getBaseContext()), lastID2);
-                //  } else {
-                //     Toast.makeText(AddPatientActivity.this,
-                // R.string.empty_fields, Toast.LENGTH_LONG).show();
-                // }
+                        "AddPatientActivity_java, Laaaaaaaaaaaaaast Id issss === " + lastID);
+                saveDialog(new View(getBaseContext()), lastID);
+
             }
         });
     }
@@ -110,17 +108,11 @@ public class AddPatientAnonym extends AppCompatActivity
     public List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
-        /*try {
-            dbH.createDatabase();
-        } catch (IOException e) {
-            dbH.close();
-            throw new Error("unable to create database");
-        }*/
         if(dbH.openDatabase()){
-            // users = db.getPatient();
             users = dbH.getPatient();
         }
         dbH.close();
+
         return users;
     }
 
@@ -198,28 +190,20 @@ public class AddPatientAnonym extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         Intent profil = new Intent(AddPatientAnonym.this,ProfilAnonymPatient.class);
                         profil.putExtra("last_ID", Integer.parseInt(String.valueOf(lastID)));
+                        finish();
                         startActivity(profil);
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //dialog.dismiss();
-                        startActivity(getIntent());
+                        onBackPressed();
                     }
                 });
-/*                .setNeutralButton(R.string.add_patient,
-                        new DialogInterface.OnClickListener() {  //Another button on the dialog for adding new patient. It is not necessary. It takes a lot of space.
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startActivity(getIntent());
-                    }
-                });*/
 
         AlertDialog dialog = builder.create();
 
         dialog.show();
-        //return builder.create();
     }
 
     @Override
@@ -233,7 +217,7 @@ public class AddPatientAnonym extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case android.R.id.home:
-                NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+                onBackPressed();
                 return true;
             case R.id.save:
                 if(!pseudo.getText().toString().isEmpty()) {

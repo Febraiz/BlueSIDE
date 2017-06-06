@@ -218,7 +218,6 @@ public class MainActivity extends AppCompatActivity {
                 //.setMessage(R.string.choose_protocol_message)
                 .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
-
                         switch (item) {
                             case 0:
                                 intent[0] = new Intent(MainActivity.this,

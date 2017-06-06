@@ -6,10 +6,9 @@
 
     git clone https://github.com/Febraiz/BlueSIDE.git
     
-** Don't forget to download jsch file here (put in /app/libs): 
+** Don't forget to download jar files here (put in /app/libs): 
 
-<a href="https://sourceforge.net/projects/jsch/files/jsch.jar/0.1.54/jsch-0.1.54.jar/download" target="_blank">jsch-0.1.54.jar</a> <br>
-<a href="http://mirrors.ircam.fr/pub/apache//commons/io/binaries/commons-io-2.5-bin.zip" target="_blank">commons-io-2.5.jar</a>
+[Jar Files - Sources](https://drive.google.com/open?id=0B2sYsdlhPpABZVVwWDBNQXhtaVE)
 
 ## Team members
 - Jeremy **MEZHOUD**
@@ -65,5 +64,9 @@ dependencies {
     compile project(':openCVLibrary300')
     compile files('libs/jsch-0.1.54.jar')
     compile files('libs/commons-io-2.5.jar')
+
+    compile files('libs/mail.jar')
+    compile files('libs/activation.jar')
+    compile files('libs/additionnal.jar')
 }
 </code></pre>

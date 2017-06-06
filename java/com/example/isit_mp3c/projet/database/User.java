@@ -130,17 +130,19 @@ public class User {
     public String getImc(){
         String IMC = "";
         try {
-            Float float_height = Float.parseFloat(height);
-            Float float_weight = Float.parseFloat(weight);
-            //Calculate IMC
-            Float float_imc = float_weight / (float_height * float_height);
+            if(!height.isEmpty() && !weight.isEmpty()) {
+                Float float_height = Float.parseFloat(height);
+                Float float_weight = Float.parseFloat(weight);
+                //Calculate IMC
+                Float float_imc = float_weight / (float_height * float_height);
 
-            //Convert float to 2 number after the dot
-            // must use the English locale format to get a number with "dot" not "comma"
-            // so we could export the DB correctly
-            NumberFormat numberFormat = NumberFormat.getInstance(Locale.ENGLISH);
-            numberFormat.setMaximumFractionDigits(2);
-            IMC = numberFormat.format(float_imc);
+                //Convert float to 2 number after the dot
+                // must use the English locale format to get a number with "dot" not "comma"
+                // so we could export the DB correctly
+                NumberFormat numberFormat = NumberFormat.getInstance(Locale.ENGLISH);
+                numberFormat.setMaximumFractionDigits(2);
+                IMC = numberFormat.format(float_imc);
+            }
 
         }catch (Exception e){
             Log.e("Convert Float", "Cannot convert the value of HEIGHT and WEIGHT, User_java");

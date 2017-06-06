@@ -52,7 +52,7 @@ import org.apache.commons.io.IOUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button addPatientBtn, searchBtn, photoBtn, exportBtn;
+    private Button addPatientBtn, searchBtn, photoBtn, exportBtn, exportFtpBtn;
     private String android_id;
     List<User> users = new ArrayList<>();
     ExportDBActivity exportDBActivity;
@@ -122,6 +122,41 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CameraActivity.class);
                 startActivity(intent);
+            }
+        });
+
+
+        exportFtpBtn = (Button) findViewById(R.id.export_ftp_button);
+        exportFtpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isOnline()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setMessage(R.string.senddata)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    sendData();
+                                }
+                            })
+                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // User cancelled the dialog
+                                }
+                            });
+                    builder.create();
+                    builder.show();
+                }
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setMessage(getString(R.string.no_connection))
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
+                    builder.create();
+                    builder.show();
+                }
+
             }
         });
 

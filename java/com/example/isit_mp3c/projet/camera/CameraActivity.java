@@ -1,5 +1,6 @@
 package com.example.isit_mp3c.projet.camera;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -25,6 +26,7 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -103,7 +105,7 @@ public class CameraActivity extends AppCompatActivity
     private ProgressDialog progressDialog;
     private Image imgRaw;
     private ImageReader rawImageReader;
-    private int cap=0;
+    private int cap = 0;
     private List<String> seqImages;
     private List<Float> expTimes;
     private List<Mat> seqMats;
@@ -126,7 +128,7 @@ public class CameraActivity extends AppCompatActivity
     private BaseLoaderCallback openCVLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
-            switch(status) {
+            switch (status) {
                 case LoaderCallbackInterface.SUCCESS: {
                     Log.i(TAG, "LOADING SUCCESS");
 
@@ -144,7 +146,7 @@ public class CameraActivity extends AppCompatActivity
     };
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, openCVLoaderCallback);
     }
@@ -192,7 +194,7 @@ public class CameraActivity extends AppCompatActivity
     }
 
 
-    public void enterDirectoryName(){
+    public void enterDirectoryName() {
 
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -240,7 +242,7 @@ public class CameraActivity extends AppCompatActivity
         builder.show();*/
     }
 
-    public void getNameFileDialog(){
+    public void getNameFileDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(CameraActivity.this);
 
 /*        LayoutInflater inflater = CameraActivity.this.getLayoutInflater();
@@ -250,7 +252,7 @@ public class CameraActivity extends AppCompatActivity
         final Button cancelBtn = (Button) dialog_view.findViewById(R.id.cancel_dialog_button);*/
 
         users = getPatient();
-        String[] listPatient = new String[users.size()+1];
+        String[] listPatient = new String[users.size() + 1];
         listPatient[0] = getString(R.string.none);
         try {
             for (int i = 0; i < users.size(); i++) {
@@ -258,10 +260,10 @@ public class CameraActivity extends AppCompatActivity
                 //id or name depending on the protocol
 
                 //if(users.get(i).getName()== null)
-                    listPatient[i+1] = users.get(i).getUserID() + "-" + users.get(i).getPseudo();
+                listPatient[i + 1] = users.get(i).getUserID() + "-" + users.get(i).getPseudo();
                 //else listPatient[i+1] = users.get(i).getName() + "_" + users.get(i).getFirstName() + "_" + users.get(i).getUserID();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -301,7 +303,7 @@ public class CameraActivity extends AppCompatActivity
             dbHelper.close();
             throw new Error("unable to create database");
         }*/
-        if(dbHelper.openDatabase()){
+        if (dbHelper.openDatabase()) {
             users = dbHelper.getPatient();
         }
         dbHelper.close();
@@ -310,13 +312,13 @@ public class CameraActivity extends AppCompatActivity
 
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
 
         Log.i(TAG, "onPause");
-        try{
+        try {
             closeCam();
 
-        }catch(IllegalStateException e){
+        } catch (IllegalStateException e) {
             e.printStackTrace();
         }
 
@@ -337,7 +339,7 @@ public class CameraActivity extends AppCompatActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if(enableMenu) {
+        if (enableMenu) {
             menu.getItem(0).setEnabled(true);
             menu.getItem(1).setEnabled(true);
             menu.getItem(2).setEnabled(true);
@@ -359,17 +361,17 @@ public class CameraActivity extends AppCompatActivity
             return true;
         }
 
-        if (id == R.id.detect){
+        if (id == R.id.detect) {
             selectPoint();
             return true;
         }
 
-        if(id == R.id.confirm){
+        if (id == R.id.confirm) {
             showImage();
             return true;
         }
 
-        if(id == R.id.analysisLDR){
+        if (id == R.id.analysisLDR) {
             //nativeAnalysisLDR();
             return true;
         }
@@ -393,7 +395,7 @@ public class CameraActivity extends AppCompatActivity
             return true;
         }*/
 
-        if(id == android.R.id.home){
+        if (id == android.R.id.home) {
             NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
             return true;
         }
@@ -401,70 +403,70 @@ public class CameraActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void onSurfaceTextureAvailable(SurfaceTexture texture, int w, int h){
+    public void onSurfaceTextureAvailable(SurfaceTexture texture, int w, int h) {
 
-        try{
-            Log.i(TAG,"onSurfaceTextureAvailable");
+        try {
+            Log.i(TAG, "onSurfaceTextureAvailable");
             openCam();
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void onSurfaceTextureSizeChanged(SurfaceTexture texture, int w, int h){
-        Log.i(TAG,"onSurfaceTextureSizeChanged");
+    public void onSurfaceTextureSizeChanged(SurfaceTexture texture, int w, int h) {
+        Log.i(TAG, "onSurfaceTextureSizeChanged");
     }
 
-    public boolean  onSurfaceTextureDestroyed(SurfaceTexture texture){
-        Log.i(TAG,"onSurfaceTextureDestroyed");
+    public boolean onSurfaceTextureDestroyed(SurfaceTexture texture) {
+        Log.i(TAG, "onSurfaceTextureDestroyed");
         return true;
     }
 
-    public void onSurfaceTextureUpdated(SurfaceTexture texture){
+    public void onSurfaceTextureUpdated(SurfaceTexture texture) {
         //Log.i(TAG, "onSurfaceTextureUpdated");
     }
 
-    public void onAttachedToWindow(){
-        Log.i(TAG,"onAttachedToWindow");
+    public void onAttachedToWindow() {
+        Log.i(TAG, "onAttachedToWindow");
     }
 
-    private final CameraDevice.StateCallback camDeviceCallback = new CameraDevice.StateCallback(){
+    private final CameraDevice.StateCallback camDeviceCallback = new CameraDevice.StateCallback() {
 
         @Override
-        public void onClosed(CameraDevice device){
+        public void onClosed(CameraDevice device) {
 
-            if(camDevice!=null) {
-                Log.i(TAG,"camDeviceCallback onClosed");
+            if (camDevice != null) {
+                Log.i(TAG, "camDeviceCallback onClosed");
                 camDevice.close();
                 camDevice = null;
             }
         }
 
         @Override
-        public void onDisconnected(CameraDevice device){
+        public void onDisconnected(CameraDevice device) {
 
-            if(camDevice!=null) {
-                Log.i(TAG,"camDeviceCallback onDisconnected");
+            if (camDevice != null) {
+                Log.i(TAG, "camDeviceCallback onDisconnected");
                 camDevice.close();
                 camDevice = null;
             }
         }
 
         @Override
-        public void onError(CameraDevice device, int error){
+        public void onError(CameraDevice device, int error) {
 
-            if(camDevice!=null) {
-                Log.i(TAG,"camDeviceCallback onError");
+            if (camDevice != null) {
+                Log.i(TAG, "camDeviceCallback onError");
                 camDevice.close();
                 camDevice = null;
             }
         }
 
         @Override
-        public void onOpened (CameraDevice device){
+        public void onOpened(CameraDevice device) {
 
-            Log.i(TAG,"camDeviceCallback onOpened");
+            Log.i(TAG, "camDeviceCallback onOpened");
             camDevice = device;
 
             initCameraView();
@@ -472,41 +474,41 @@ public class CameraActivity extends AppCompatActivity
 
     };
 
-    private final CameraCaptureSession.StateCallback camSessionCallback = new CameraCaptureSession.StateCallback(){
+    private final CameraCaptureSession.StateCallback camSessionCallback = new CameraCaptureSession.StateCallback() {
 
         @Override
-        public void onActive(CameraCaptureSession session){
+        public void onActive(CameraCaptureSession session) {
             Log.i(TAG, "camSessionCallback onActive");
         }
 
         @Override
-        public void onClosed(CameraCaptureSession session){
-            Log.i(TAG,"camSessionCallback onClosed");
+        public void onClosed(CameraCaptureSession session) {
+            Log.i(TAG, "camSessionCallback onClosed");
 
         }
 
         @Override
-        public void onConfigured(CameraCaptureSession session){
-            Log.i(TAG,"camSessionCallback onConfigured");
-            captureSession=session;
+        public void onConfigured(CameraCaptureSession session) {
+            Log.i(TAG, "camSessionCallback onConfigured");
+            captureSession = session;
             requestCameraView();
 
         }
 
         @Override
-        public void onConfigureFailed(CameraCaptureSession session){
+        public void onConfigureFailed(CameraCaptureSession session) {
             Log.i(TAG, "camSessionCallback onConfiguredFailed");
         }
 
     };
 
-    private final CameraCaptureSession.CaptureCallback camViewCallback = new CameraCaptureSession.CaptureCallback(){
+    private final CameraCaptureSession.CaptureCallback camViewCallback = new CameraCaptureSession.CaptureCallback() {
 
         @Override
-        public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result){
+        public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
             //Log.i(TAG, "camViewCallback onCaptureCompleted");
 
-            if(result.get(CaptureResult.SENSOR_EXPOSURE_TIME)!=null) {
+            if (result.get(CaptureResult.SENSOR_EXPOSURE_TIME) != null) {
                 exposureTimeAuto = result.get(CaptureResult.SENSOR_EXPOSURE_TIME);
                 //Log.i(TAG, "EXPOSURE TIME AUTO: " + String.valueOf(exposureTimeAuto));
             }
@@ -514,8 +516,8 @@ public class CameraActivity extends AppCompatActivity
         }
 
         @Override
-        public void onCaptureProgressed(CameraCaptureSession session, CaptureRequest request, CaptureResult result){
-            Log.i(TAG,"camViewCallback onCaptureProgressed");
+        public void onCaptureProgressed(CameraCaptureSession session, CaptureRequest request, CaptureResult result) {
+            Log.i(TAG, "camViewCallback onCaptureProgressed");
 
 
         }
@@ -523,10 +525,10 @@ public class CameraActivity extends AppCompatActivity
 
     };
 
-    private final CameraCaptureSession.CaptureCallback camCaptureCallback = new CameraCaptureSession.CaptureCallback(){
+    private final CameraCaptureSession.CaptureCallback camCaptureCallback = new CameraCaptureSession.CaptureCallback() {
 
         @Override
-        public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result){
+        public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
             //Log.i(TAG, "camCaptureCallback onCaptureCompleted");
 
             imgResult = result;
@@ -534,19 +536,19 @@ public class CameraActivity extends AppCompatActivity
             //set visible during capture to save the image
             textureCapture.setVisibility(View.VISIBLE);
 
-            if(cap!=1) expTimes.add((float)result.get(CaptureResult.SENSOR_EXPOSURE_TIME)/1000000000);
+            if (cap != 1)
+                expTimes.add((float) result.get(CaptureResult.SENSOR_EXPOSURE_TIME) / 1000000000);
             //Log.i(TAG, "exposure time captured: " + String.valueOf(result.get(CaptureResult.SENSOR_EXPOSURE_TIME)));
-            Log.i(TAG, "exposure time captured (seconds): " + String.valueOf((float)result.get(CaptureResult.SENSOR_EXPOSURE_TIME)/1000000000));
+            Log.i(TAG, "exposure time captured (seconds): " + String.valueOf((float) result.get(CaptureResult.SENSOR_EXPOSURE_TIME) / 1000000000));
 
-            Bitmap bitmap = Bitmap.createBitmap(480,640, Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(480, 640, Bitmap.Config.ARGB_8888);
             bmplist.add(textureCapture.getBitmap(bitmap));
 
             //only one capture
-            if(cap==1) {
+            if (cap == 1) {
                 progressDialog = ProgressDialog.show(CameraActivity.this, getResources().getString(R.string.saving_images), "", true);
                 saveImage();
-            }
-            else {
+            } else {
                 //save image on the phone when all captures are made
                 if (bmplist.size() == list.size()) {
                     progressDialog = ProgressDialog.show(CameraActivity.this, getResources().getString(R.string.saving_images), "", true);
@@ -557,15 +559,16 @@ public class CameraActivity extends AppCompatActivity
 
                     //save exposure times to a file .txt
                     File exp_times;
-                    exp_times = new File(getExternalFilesDir(directoryFiles),"times.txt");
+                    exp_times = new File(getExternalFilesDir(directoryFiles), "times.txt");
 
                     try {
                         FileWriter writer = new FileWriter(exp_times);
-                        for(int i=0;i<expTimes.size();i++) writer.append(expTimes.get(i).toString()+"\n");
+                        for (int i = 0; i < expTimes.size(); i++)
+                            writer.append(expTimes.get(i).toString() + "\n");
                         writer.flush();
                         writer.close();
 
-                    }catch(Exception e){
+                    } catch (Exception e) {
 
                     }
 
@@ -579,61 +582,64 @@ public class CameraActivity extends AppCompatActivity
         }
 
         @Override
-        public void onCaptureProgressed(CameraCaptureSession session, CaptureRequest request, CaptureResult result){
-            Log.i(TAG,"camCaptureCallback onCaptureProgressed");
+        public void onCaptureProgressed(CameraCaptureSession session, CaptureRequest request, CaptureResult result) {
+            Log.i(TAG, "camCaptureCallback onCaptureProgressed");
         }
 
     };
 
-    private void openCam(){
+    private void openCam() {
 
-        Log.i(TAG,"openCam");
+        Log.i(TAG, "openCam");
 
         camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
 
         cameraConfig(camManager);
 
-        Log.i("camId",camId);
+        Log.i("camId", camId);
 
-        if(camManager!=null) {
+        if (camManager != null) {
             try {
-                Log.i(TAG,"CameraManager.openCamera");
-                //camManager.openCamera(camId, camDeviceCallback, null);
+                Log.i(TAG, "CameraManager.openCamera");
 
-                //to allow camera on emulator
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
-                        camManager.openCamera(camId, camDeviceCallback,null);
-                    }
-                    else {
-                        if (shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                        camManager.openCamera(camId, camDeviceCallback, null);
+                    } else {
+                        if (shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
                             Toast.makeText(this, "No Permission to use the Camera", Toast.LENGTH_SHORT).show();
                         }
-                        requestPermissions(new String[] {android.Manifest.permission.CAMERA},REQUEST_CAMERA_RESULT);
+                        requestPermissions(new String[]{android.Manifest.permission.CAMERA}, REQUEST_CAMERA_RESULT);
                     }
-                }
-                else {
-                    camManager.openCamera(camId,camDeviceCallback, null);
+                } else {
+                    camManager.openCamera(camId, camDeviceCallback, null);
                 }
 
 
             } catch (CameraAccessException e) {
                 e.printStackTrace();
 
-            }catch(SecurityException e){
+            } catch (SecurityException e) {
                 e.printStackTrace();
             }
         }
 
     }
 
-    //to allow camera on emulator
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode){
-            case  REQUEST_CAMERA_RESULT:
-                if (grantResults[0] != PackageManager.PERMISSION_GRANTED){
+        switch (requestCode) {
+            case REQUEST_CAMERA_RESULT:
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "Camera service permission have not been granted", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else {
+                    try {
+                        camManager.openCamera(camId, camDeviceCallback, null);
+                    } catch (CameraAccessException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             default:

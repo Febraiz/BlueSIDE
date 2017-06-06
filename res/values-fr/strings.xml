@@ -40,7 +40,7 @@
     <string name="others">Autres </string>
     <string name="deficiency">Carence en fer</string>
     <string name="deficiencyClear">Carence certaine</string>
-    <string name="noDeficiency">Abscence de carence</string>
+    <string name="noDeficiency">Absence de carence</string>
     <string name="deficiencyUnclear">Carence incertaine</string>
     <string name="male">Masculin</string>
     <string name="female">Féminin</string>
@@ -83,7 +83,8 @@
     <string name="patient_deleted">Patient supprimé</string>
     <string name="empty_fields">Champs vides</string>
 
-    <string name="export_db">Exporter la base de données</string>
+    <string name="export_db">Exporter les données par mail</string>
+    <string name="export_database_on_ftp">Exporter les données sur le serveur</string>
 
     <string name="patient_table">TABLE PATIENT</string>
 
@@ -122,4 +123,5 @@
 
     <string name="senddata">Voulez-vous envoyer les données ?</string>
     <string name="sending_data">Envoi des données...</string>
+    <string name="no_connection">Vous n\'êtes pas connecté</string>
 </resources>

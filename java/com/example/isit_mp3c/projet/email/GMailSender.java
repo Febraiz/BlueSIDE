@@ -164,13 +164,6 @@ public class GMailSender extends javax.mail.Authenticator {
             Multipart mp = new MimeMultipart();
             mp.addBodyPart(mbp1);
 
-            /*for(int i = 0; i<attachment.length; i++) {
-                MimeBodyPart mbp2 = new MimeBodyPart();
-                FileDataSource fds = new FileDataSource(attachment[i]);
-                mbp2.setDataHandler(new DataHandler(fds));
-                mbp2.setFileName(fds.getName());
-                mp.addBodyPart(mbp2);
-            }*/
             for(int i = 0; i < attachment.size() ; i++) {
                 MimeBodyPart mbp2 = new MimeBodyPart();
                 FileDataSource fds = new FileDataSource(attachment.get(i));
@@ -190,30 +183,6 @@ public class GMailSender extends javax.mail.Authenticator {
 
         }
     }
-
-    /*public synchronized void sendMailWithAttachment(String subject, String body, String sender, String recipients, String fileName) throws Exception {
-        MimeMessage message = new MimeMessage(session);
-        DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), "text/plain"));
-        message.setSender(new InternetAddress(sender));
-        message.setSubject(subject);
-        message.setDataHandler(handler);
-        if (recipients.indexOf(',') > 0)
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipients));
-        else
-            message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipients));
-
-
-        BodyPart messageBodyPart = new MimeBodyPart();
-        DataSource source = new FileDataSource(fileName);
-        messageBodyPart.setDataHandler(new DataHandler(source));
-        messageBodyPart.setFileName("download image");
-
-        _multipart.addBodyPart(messageBodyPart);
-
-        Transport.send(message);
-
-    }*/
-
 
     public class ByteArrayDataSource implements DataSource {
         private byte[] data;

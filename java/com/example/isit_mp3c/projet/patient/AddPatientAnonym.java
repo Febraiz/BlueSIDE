@@ -166,6 +166,10 @@ public class AddPatientAnonym extends AppCompatActivity
         // Récupération de la carence
         String DEFICIENCY = getDeficiencyType();
 
+        if(Float.parseFloat(HEIGHT) > 100) {
+            HEIGHT = HEIGHT.substring(0,1) + "." + HEIGHT.substring(1);
+        }
+
         if(dbH.openDatabase()) {
             lastID = dbH.addPatient(new User( GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
                     VGM, TCMH, IDR_CV, HYPO, RET_HE, PLATELET, FERRITIN,

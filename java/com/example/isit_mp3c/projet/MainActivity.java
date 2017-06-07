@@ -341,9 +341,6 @@ public class MainActivity extends AppCompatActivity {
                     sftp.put(fis, "blueSIDE.csv");
 
                     sftp.cd(directory);
-                    //String localPath = "/data/data/" + getApplicationContext().getPackageName() + "/files";
-                    //String localPath = getExternalFilesDir("").getAbsolutePath();
-                    //File localSrc = new File(localPath);
                     File localSrc = getExternalFilesDir("");
                     upload(localSrc,sftp,directory);
 
@@ -382,9 +379,9 @@ public class MainActivity extends AppCompatActivity {
                 User user = dbHelper.getPatientWithId(Integer.parseInt(id));
                 Acquisition  acq = dbHelper.getAcquisition(Integer.parseInt(id),Integer.parseInt(acquisition_number));
 
-                FileInputStream wil = createdataFile(this,user,acq);
+                FileInputStream dataFile = createdataFile(this,user,acq);
 
-                sftp.put(wil,dir + "/" + src.getName() +"/" + "data.csv");
+                sftp.put(dataFile,dir + "/" + src.getName() +"/" + "data.csv");
             }
             SftpATTRS attrs = null;
             try {

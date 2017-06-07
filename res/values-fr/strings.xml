@@ -23,7 +23,7 @@
     <string name="address">Adresse </string>
     <string name="height">Taille (m) </string>
     <string name="weight">Poids (kg) </string>
-    <string name="imc">Index de Masse Corporel IMC (kg/m²)</string>
+    <string name="imc">Indice de Masse Corporel IMC (kg/m²)</string>
     <string name="hb">Hémoglobine Hb (g/dL) </string>
     <string name="vgm">Volume Globulaire Moyen VGM (fL) </string>
     <string name="tcmh">Teneur corpusculaire moyenne en Hb TCMH (pg) </string>

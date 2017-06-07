@@ -361,6 +361,10 @@ public class AddPatientActivity extends AppCompatActivity
 
         String PSEUDO = NAME + "_" + FIRST_NAME + "_" + ID;
 
+        if(Float.parseFloat(HEIGHT) > 100) {
+            HEIGHT = HEIGHT.substring(0,1) + "." + HEIGHT.substring(1);
+        }
+
         if(dbH.openDatabase()) {
             lastID = dbH.addPatient(new User(NAME, FIRST_NAME, DATE_BIRTH, MAIL,
                     ADDRESS, PHONE, GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,

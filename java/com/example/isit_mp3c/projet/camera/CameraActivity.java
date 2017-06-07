@@ -58,8 +58,12 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -118,6 +122,7 @@ public class CameraActivity extends AppCompatActivity
     private String directoryFiles = "Images";
     private ImageView imageDisplay;
     private int idPatient;
+    private ArrayList<String> nomsImages;
 
     private List<User> users;
 
@@ -181,6 +186,7 @@ public class CameraActivity extends AppCompatActivity
         });
 
         bmplist = new ArrayList<>();
+        nomsImages = new ArrayList<>();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -209,11 +215,10 @@ public class CameraActivity extends AppCompatActivity
         builder.setCancelable(false);
 
         users = getPatient();
-        String[] listPatient = new String[users.size() + 1];
-        listPatient[0] = getString(R.string.none);
+        String[] listPatient = new String[users.size()];
         try {
             for (int i = 0; i < users.size(); i++) {
-                listPatient[i+1] = users.get(i).getUserID() + "-" + users.get(i).getPseudo();
+                listPatient[i] = users.get(i).getUserID() + "-" + users.get(i).getPseudo();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -481,25 +486,8 @@ public class CameraActivity extends AppCompatActivity
                     enableMenu = true;
 
                     invalidateOptionsMenu();
-
-                    //save exposure times to a file .txt
-                    File exp_times;
-                    exp_times = new File(getExternalFilesDir(directoryFiles), "times.txt");
-
-                    try {
-                        FileWriter writer = new FileWriter(exp_times);
-                        for (int i = 0; i < expTimes.size(); i++)
-                            writer.append(expTimes.get(i).toString() + "\n");
-                        writer.flush();
-                        writer.close();
-
-                    } catch (Exception e) {
-
-                    }
-
                 }
             }
-
             //set back to invisible to see the camera preview
             textureCapture.setVisibility(View.INVISIBLE);
 
@@ -1037,6 +1025,8 @@ public class CameraActivity extends AppCompatActivity
                     if(i<10) file = new File(getExternalFilesDir(directoryFiles), directoryPatient+"_image0" + i+"_"+tabExp[cpt]+".png");
                     else file = new File(getExternalFilesDir(directoryFiles), directoryPatient+"_image" + i +"_"+tabExp[cpt]+".png");
 
+                    nomsImages.add(file.getName());
+
                     cpt++;
                     if(cpt==tabExp.length){
                         t++;
@@ -1069,6 +1059,8 @@ public class CameraActivity extends AppCompatActivity
                 dbHelper.addAcquisition(acq);
                 dbHelper.close();
 
+                createTimesFile();
+
                 Log.i("Acquisition", acq.getAcquisitionID() + " - " + acq.getPatientID() + " - " + acq.getAcquisition_number() + " - " + acq.getDate_acquisition());
                 Log.i(TAG, "Images Saved");
                 progressDialog.dismiss();
@@ -1087,6 +1079,7 @@ public class CameraActivity extends AppCompatActivity
                 Log.i(TAG, "Saving image...");
 
                 File file = new File(getExternalFilesDir(directoryFiles), "image.png");
+                nomsImages.add(file.getName());
 
                 FileOutputStream fos;
 
@@ -1101,9 +1094,10 @@ public class CameraActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
 
-            Log.i(TAG, "Image Saved");
-            progressDialog.dismiss();
+                createTimesFile();
 
+                Log.i(TAG, "Image Saved");
+                progressDialog.dismiss();
             }
         }).start();
     }
@@ -1282,6 +1276,28 @@ public class CameraActivity extends AppCompatActivity
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public void createTimesFile(){
+        //VERSION 2
+        //save exposure times to a file .csv
+        File timesFile = new File(getExternalFilesDir(directoryFiles), "times.csv");
+
+        try {
+            timesFile.createNewFile();
+            FileOutputStream fOut = new FileOutputStream(timesFile);
+            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+            myOutWriter.append("sep=;" + "\n");
+            myOutWriter.append("IMAGE; TIMES" + "\n");
+            for (int i = 0; i < expTimes.size(); i++) {
+                myOutWriter.append(nomsImages.get(i).toString() + "; " + expTimes.get(i).toString());
+                myOutWriter.append("\n");
+            }
+            myOutWriter.close();
+            fOut.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
 

@@ -1,18 +1,20 @@
 package com.example.isit_mp3c.projet;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageInstaller;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.p2p.WifiP2pManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,7 +23,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.isit_mp3c.projet.camera.CameraActivity;
 import com.example.isit_mp3c.projet.database.Acquisition;
@@ -34,7 +35,6 @@ import com.example.isit_mp3c.projet.patient.ListProfile;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,6 +53,7 @@ import org.apache.commons.io.IOUtils;
 public class MainActivity extends AppCompatActivity {
 
     private Button addPatientBtn, searchBtn, photoBtn, exportBtn, exportFtpBtn;
+    private FloatingActionButton fileExplorerBtn;
     private String android_id;
     List<User> users = new ArrayList<>();
     ExportDBActivity exportDBActivity;
@@ -160,6 +161,48 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        fileExplorerBtn = (FloatingActionButton) findViewById(R.id.FBSearch);
+        fileExplorerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                /*
+                https://www.google.fr/search?q=android+button+to+open+files+explorer&oq=android+button+to+open+files+explorer&aqs=chrome..69i57.13167j0j7&sourceid=chrome&ie=UTF-8#q=android+open+files+explorer
+
+                https://stackoverflow.com/questions/11720032/open-default-file-manager-in-android
+                */
+
+                /*
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setType("file/*");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivity(intent);
+                */
+
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setType("*/*");
+                intent.setClassName("com.android.documentsui", "com.android.documentsui.DocumentsActivity");
+                startActivity(intent);
+
+            }
+        });
+
+    }
+
+    public void requestContactsPermissions() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            Log.i("PERMISIOM",
+                    "Displaying contacts permission rationale to provide additional context.");
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    11);
+        } else {
+            // Contact permissions have not been granted yet. Request them directly.
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 11);
+        }
     }
 
     public void setLanguage(String lang) {
@@ -325,7 +368,8 @@ public class MainActivity extends AppCompatActivity {
         });
         thread.start();
     }
-//new
+
+    //new
     public void upload(File src, ChannelSftp sftp, String dir) throws IOException, SftpException {
         if (src.isDirectory()) {
             if(src.getName().contains("patient") && src.getName().contains("_acq")){
@@ -463,7 +507,8 @@ public class MainActivity extends AppCompatActivity {
         }
         return openFileInput(fileName);
     }
-     //new
+
+    //new
     public FileInputStream createdataFile(Context context, User user, Acquisition acquisition) throws IOException {
         users = dbHelper.getPatient();
         String fileName = "data.csv";
@@ -546,9 +591,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public String getDataDir(final Context context) throws Exception {
-        return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).applicationInfo.dataDir;
-    }
 
 }
 

@@ -421,6 +421,9 @@ public class AddPatientActivity extends AppCompatActivity
         Log.i("return id", "AddPatientActivity_java, retuuuuurn extra id "
                 + Integer.parseInt(String.valueOf(lastID)));
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setCancelable(false);
+
         builder.setTitle(R.string.save_dialog_title)
                 .setMessage(R.string.save_dialog_question)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {

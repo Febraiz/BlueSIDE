@@ -68,4 +68,21 @@
         android:layout_below="@+id/export_button"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/FBSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:clickable="true"
+
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="10dp"
+
+        android:tint="@android:color/white"
+        app:backgroundTint="@android:color/holo_blue_light"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/ic_search_category_default" />
+
 </RelativeLayout>

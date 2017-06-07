@@ -361,8 +361,10 @@ public class AddPatientActivity extends AppCompatActivity
 
         String PSEUDO = NAME + "_" + FIRST_NAME + "_" + ID;
 
-        if(Float.parseFloat(HEIGHT) > 100) {
-            HEIGHT = HEIGHT.substring(0,1) + "." + HEIGHT.substring(1);
+        if(!HEIGHT.isEmpty()) {
+            if (Float.parseFloat(HEIGHT) > 100) {
+                HEIGHT = HEIGHT.substring(0, 1) + "." + HEIGHT.substring(1);
+            }
         }
 
         if(dbH.openDatabase()) {

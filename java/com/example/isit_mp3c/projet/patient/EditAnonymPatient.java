@@ -216,8 +216,10 @@ public class EditAnonymPatient extends AppCompatActivity
 
             String DEFICIENCY = getDeficiencyType();
 
-            if(Float.parseFloat(HEIGHT) > 100) {
-                HEIGHT = HEIGHT.substring(0,1) + "." + HEIGHT.substring(1);
+            if(!HEIGHT.isEmpty()) {
+                if (Float.parseFloat(HEIGHT) > 100) {
+                    HEIGHT = HEIGHT.substring(0, 1) + "." + HEIGHT.substring(1);
+                }
             }
 
             int ID = users.get(id - 1).getUserID();

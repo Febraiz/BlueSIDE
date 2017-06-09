@@ -50,6 +50,7 @@
     <string name="save">Enregistrer</string>
     <string name="cancel">Annuler</string>
     <string name="edit">Editer</string>
+    <string name="exit">Quitter</string>
 
     <string-array name="setGender">
         <item>(none)</item>

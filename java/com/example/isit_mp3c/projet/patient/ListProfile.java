@@ -156,7 +156,7 @@ public class ListProfile extends AppCompatActivity {
         inflater.inflate(R.menu.menu_list_patient, menu);
 
         menu.getItem(0).setEnabled(true);
-        menu.getItem(1).setEnabled(true);
+
         return true;
     }
 
@@ -168,10 +168,6 @@ public class ListProfile extends AppCompatActivity {
                 return true;
             case R.id.newPatient:
                 chooseDialog(new View(getBaseContext()));
-                return true;
-            case R.id.refresh:
-                finish();
-                startActivity(getIntent());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

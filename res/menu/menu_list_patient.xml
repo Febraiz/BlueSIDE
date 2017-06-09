@@ -8,11 +8,4 @@
         app:showAsAction="always"
         android:title="@string/new_patient"/>
 
-    <item
-        android:id="@+id/refresh"
-        android:orderInCategory="1"
-        app:showAsAction="always"
-        android:title="refresh"
-        android:visible="false"/>
-
 </menu>

@@ -291,6 +291,29 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         return patients;
     }
 
+    public int getCountPatient()
+    {
+
+        int cmpt = 0;
+
+        try{
+            String query = "SELECT COUNT(*) FROM " + TABLE_USER;
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+            Cursor cursor = db.rawQuery(query, null);
+
+            while (cursor.moveToNext()) {
+                cmpt = Integer.parseInt(cursor.getString(0));
+            }
+            cursor.close();
+        }catch (Exception e){
+            Log.d("database ", e.getMessage());
+        }
+
+        db.close();
+        return cmpt;
+
+    }
+
     //Get all the tag
     public List<Tag> getTag(){
         List<Tag> tags = new ArrayList<>();
@@ -595,6 +618,28 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
 
         db.close();
         return acquisition;
+    }
+
+    public int getCountAcquisition(){
+
+        int cmpt = 0;
+
+        try{
+            String query = "SELECT COUNT(*) FROM " + TABLE_ACQUISITION;
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+            Cursor cursor = db.rawQuery(query, null);
+
+            while (cursor.moveToNext()) {
+                cmpt = Integer.parseInt(cursor.getString(0));
+            }
+            cursor.close();
+        }catch (Exception e){
+            Log.d("database ", e.getMessage());
+        }
+
+        db.close();
+        return cmpt;
+
     }
 
 }

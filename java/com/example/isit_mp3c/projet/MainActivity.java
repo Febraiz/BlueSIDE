@@ -8,13 +8,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -48,6 +45,7 @@ import java.util.Locale;
 import com.jcraft.jsch.*;
 
 import android.provider.Settings.Secure;
+import android.widget.Toast;
 
 import org.apache.commons.io.IOUtils;
 
@@ -55,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button addPatientBtn, searchBtn, photoBtn, exportBtn, exportFtpBtn;
     private FloatingActionButton fileExplorerBtn;
+    private static final int REQUEST_READ_STORAGE_RESULT = 1;
     private String android_id;
     List<User> users = new ArrayList<>();
     ExportDBActivity exportDBActivity;
@@ -122,8 +121,16 @@ public class MainActivity extends AppCompatActivity {
         photoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CameraActivity.class);
-                startActivity(intent);
+
+                if(SQLiteDBHelper.getInstance(MainActivity.this).getCountPatient() == 0)
+                {
+                    Toast.makeText(MainActivity.this, "Aucun patient enregistré", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -173,16 +180,31 @@ public class MainActivity extends AppCompatActivity {
                 http://forum.codecall.net/topic/79689-creating-a-file-browser-in-android/
                 */
 
-                //Check permissions
-                if (Build.VERSION.SDK_INT < 23) {
-                    openFileEx();
-                } else {
-                    if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        requestContactsPermissions();
-                    } else {
+                //Check if any acquisitions as been done
+                if(SQLiteDBHelper.getInstance(MainActivity.this).getCountAcquisition() == 0)
+                {
+                    Toast.makeText(MainActivity.this, "Aucune acquisition disponible", Toast.LENGTH_SHORT).show();
+                }
+                else {
+
+                    //Check permissions
+                    if (Build.VERSION.SDK_INT < 23) {
                         openFileEx();
+                    } else {
+                        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+
+                            openFileEx();
+
+                        } else {
+
+                            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                                Toast.makeText(MainActivity.this, "No Permission to read the external storage", Toast.LENGTH_SHORT).show();
+                            }
+                            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_STORAGE_RESULT);
+
+                        }
                     }
+
                 }
 
             }
@@ -196,17 +218,25 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void requestContactsPermissions() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            Log.i("PERMISIOM",
-                    "Displaying contacts permission rationale to provide additional context.");
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    11);
-        } else {
-            // Contact permissions have not been granted yet. Request them directly.
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 11);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode){
+            case REQUEST_READ_STORAGE_RESULT:
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Read external storage permission have not been granted", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    // If authorized
+                    try {
+                        openFileEx();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                break;
         }
     }
 

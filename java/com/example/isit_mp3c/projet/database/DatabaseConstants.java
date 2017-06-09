@@ -26,6 +26,7 @@ public interface DatabaseConstants {
     String USER_PASSWORD = "password";
     String USER_FIRST_NAME = "first_name";
     String USER_DATE_OF_BIRTH = "date_of_birth";
+    String USER_AGE = "age";
     String USER_MAIL = "mail";
     String USER_ADDRESS = "address";
     String USER_USERNAME = "username";

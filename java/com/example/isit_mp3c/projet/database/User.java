@@ -2,7 +2,9 @@ package com.example.isit_mp3c.projet.database;
 
 import android.util.Log;
 
+import java.sql.Date;
 import java.text.NumberFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 /**
@@ -14,6 +16,7 @@ public class User {
     private String firstName;
     private String password;
     private String dateBirth;
+    private String age;
     private String mail;
     private String address;
     private String username;
@@ -40,6 +43,8 @@ public class User {
     private String secured;
     private String pseudo;
     private String deficiency;
+
+
 
 
     public int getUserID(){
@@ -73,6 +78,28 @@ public class User {
     }
     public void setDateBirth(String dateBirth){
         this.dateBirth = dateBirth;
+        this.age = calculAge();
+    }
+
+    public String calculAge() {
+        String age3 = "";
+        if(!this.dateBirth.isEmpty()) {
+            Calendar dob = Calendar.getInstance();
+            Calendar today = Calendar.getInstance();
+            String birthday[] = dateBirth.split("-");
+            dob.set(Integer.valueOf(birthday[0]), Integer.valueOf(birthday[1]), Integer.valueOf(birthday[2]));
+
+            int age2 = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+            if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+                age2--;
+            }
+
+            Integer ageInt = new Integer(age2);
+            age3 = ageInt.toString();
+            Log.i("age",age3);
+        }
+        return age3;
     }
 
     public String getMail(){
@@ -242,9 +269,16 @@ public class User {
         this.deficiency = deficiency;
     }
 
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
 
     //Constructor used to list all patient in DB
-    public User(int userID, String name, String firstName, String dateBirth,
+    public User(int userID, String name, String firstName, String dateBirth, String age,
                 String mail, String address, String phone, String sexe,
                 String height, String weight, String imc, String hb,
                 String vgm, String tcmh, String idr_cv, String hypo,
@@ -255,6 +289,7 @@ public class User {
         this.name = name;
         this.firstName = firstName;
         this.dateBirth = dateBirth;
+        this.age = age;
         this.mail = mail;
         this.address = address;
         this.phone = phone;
@@ -293,7 +328,7 @@ public class User {
                  String secured, String pseudo, String deficiency){
         this.name = name;
         this.firstName = firstName;
-        this.dateBirth = dateBirth;
+        setDateBirth(dateBirth);
         this.mail = mail;
         this.address = adress;
         this.phone = phone;
@@ -329,7 +364,7 @@ public class User {
                  String ret_he, String platelet, String ferritin,
                  String transferrin, String serum_iron, String serum_iron_unit,
                  String cst, String fibrinogen, String crp, String other,
-                 String secured, String pseudo, String deficiency){
+                 String secured, String pseudo, String deficiency, String age){
 
         this.sexe = sexe;
         this.height = height;
@@ -352,6 +387,7 @@ public class User {
         this.secured = secured;
         this.pseudo = pseudo;
         this.deficiency = deficiency;
+        this.age = age;
     }
 
     //NOT USED

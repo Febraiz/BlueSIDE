@@ -1,15 +1,14 @@
 package com.example.isit_mp3c.projet.camera;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -26,8 +25,6 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -44,9 +41,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
 import com.example.isit_mp3c.projet.database.Acquisition;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
@@ -58,12 +55,8 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -201,7 +194,7 @@ public class CameraActivity extends AppCompatActivity
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         idPatient = Integer.parseInt(directoryPatient.split("-")[0]);
-        int nb_acq = dbHelper.getNextAcquisitionNumer(idPatient);
+        int nb_acq = dbHelper.getNextAcquisitionNumber(idPatient);
         String nameDirectory = "patient_" + idPatient + "_" + sdf.format(date) + "_acq" + nb_acq;
         if (directoryPatient != getResources().getString(R.string.none)) {
             directoryFiles = directoryPatient + "/";
@@ -225,8 +218,9 @@ public class CameraActivity extends AppCompatActivity
         }
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CameraActivity.this,
-                android.R.layout.simple_spinner_item, listPatient);
+                R.layout.custom_spinner, listPatient);
         final Spinner spinner = new Spinner(CameraActivity.this);
+
 
         spinner.setAdapter(arrayAdapter);
         spinner.setOnItemSelectedListener(CameraActivity.this);
@@ -1055,7 +1049,7 @@ public class CameraActivity extends AppCompatActivity
                 idPatient = Integer.parseInt(directoryPatient.split("-")[0]);
                 Date date = Calendar.getInstance().getTime();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Acquisition acq = new Acquisition(idPatient,dbHelper.getNextAcquisitionNumer(idPatient), sdf.format(date));
+                Acquisition acq = new Acquisition(idPatient,dbHelper.getNextAcquisitionNumber(idPatient), sdf.format(date));
                 dbHelper.addAcquisition(acq);
                 dbHelper.close();
 
@@ -1287,7 +1281,7 @@ public class CameraActivity extends AppCompatActivity
             timesFile.createNewFile();
             FileOutputStream fOut = new FileOutputStream(timesFile);
             OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-            myOutWriter.append("sep=;" + "\n");
+            //myOutWriter.append("sep=;" + "\n");
             myOutWriter.append("IMAGE; TIMES" + "\n");
             for (int i = 0; i < expTimes.size(); i++) {
                 myOutWriter.append(nomsImages.get(i).toString() + "; " + expTimes.get(i).toString());

@@ -97,6 +97,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
                         + USER_PASSWORD + " TEXT,"
                         + USER_FIRST_NAME + " TEXT,"
                         + USER_DATE_OF_BIRTH + " NUMERIC,"
+                        + USER_AGE + " NUMERIC,"
                         + USER_MAIL + " TEXT,"
                         + USER_ADDRESS + " TEXT,"
                         + USER_USERNAME + " TEXT,"
@@ -242,36 +243,37 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
                 String patientName = cursor.getString(1);
                 String patientFirstName = cursor.getString(3);
                 String patientBirth = cursor.getString(4);
-                String patientmail = cursor.getString(5);
-                String patientadress = cursor.getString(6);
-                String patientGender = cursor.getString(8);
-                String patientHeight =cursor.getString(9);
-                String patientWeight = cursor.getString(10);
-                String patientIMC = cursor.getString(11);
-                String patientHB = cursor.getString(12);
-                String patientVGM = cursor.getString(13);
-                String patientTCMH = cursor.getString(14);
-                String patientIDR_CV = cursor.getString(15);
-                String patientHypo = cursor.getString(16);
-                String patientRet_He =cursor.getString(17);
-                String patientPlatelet = cursor.getString(18);
-                String patientFerritin = cursor.getString(19);
-                String patientTransferrin = cursor.getString(20);
-                String patientSerum_iron = cursor.getString(21);
-                String patientCST = cursor.getString(22);
-                String patientFibrinogen = cursor.getString(23);
-                String patientCRP = cursor.getString(24);
-                String patientOthers = cursor.getString(25);
-                String patientPhone = cursor.getString(26);
-                String Serum_iron_unit = cursor.getString(27);
-                String secured = cursor.getString(28);
-                String pseudo = cursor.getString(29);
-                String carence = cursor.getString(30);
+                String patientAge = cursor.getString(5);
+                String patientmail = cursor.getString(6);
+                String patientadress = cursor.getString(7);
+                String patientGender = cursor.getString(9);
+                String patientHeight =cursor.getString(10);
+                String patientWeight = cursor.getString(11);
+                String patientIMC = cursor.getString(12);
+                String patientHB = cursor.getString(13);
+                String patientVGM = cursor.getString(14);
+                String patientTCMH = cursor.getString(15);
+                String patientIDR_CV = cursor.getString(16);
+                String patientHypo = cursor.getString(17);
+                String patientRet_He =cursor.getString(18);
+                String patientPlatelet = cursor.getString(19);
+                String patientFerritin = cursor.getString(20);
+                String patientTransferrin = cursor.getString(21);
+                String patientSerum_iron = cursor.getString(22);
+                String patientCST = cursor.getString(23);
+                String patientFibrinogen = cursor.getString(24);
+                String patientCRP = cursor.getString(25);
+                String patientOthers = cursor.getString(26);
+                String patientPhone = cursor.getString(27);
+                String Serum_iron_unit = cursor.getString(28);
+                String secured = cursor.getString(29);
+                String pseudo = cursor.getString(30);
+                String carence = cursor.getString(31);
 
                 // float patientCRP = Float.parseFloat(cursor.getString(24));
 
                 User patient = new User(patientID, patientName, patientFirstName,
-                        patientBirth, patientmail, patientadress, patientPhone,
+                        patientBirth, patientAge, patientmail, patientadress, patientPhone,
                         patientGender, patientHeight, patientWeight, patientIMC,
                         patientHB, patientVGM, patientTCMH, patientIDR_CV, patientHypo,
                         patientRet_He, patientPlatelet, patientFerritin,
@@ -353,6 +355,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         values.put(USER_NAME, patient.getName());
         values.put(USER_FIRST_NAME, patient.getFirstName());
         values.put(USER_DATE_OF_BIRTH, patient.getDateBirth());
+        values.put(USER_AGE, patient.getAge());
         values.put(USER_MAIL,patient.getMail());
         values.put(USER_ADDRESS,patient.getAddress());
         values.put(USER_SEXE,patient.getSexe());
@@ -394,6 +397,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         values.put(USER_NAME, patient.getName());
         values.put(USER_FIRST_NAME, patient.getFirstName());
         values.put(USER_DATE_OF_BIRTH, patient.getDateBirth());
+        values.put(USER_AGE, patient.getAge());
         values.put(USER_MAIL,patient.getMail());
         values.put(USER_ADDRESS,patient.getAddress());
         values.put(USER_SEXE,patient.getSexe());
@@ -491,7 +495,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         return lastID;
     }
 
-    public int getNextAcquisitionNumer(int patientID){
+    public int getNextAcquisitionNumber(int patientID){
         int  number = 0;
         try {
             SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath + DB_NAME, null,
@@ -522,36 +526,37 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
                 String patientName = cursor.getString(1);
                 String patientFirstName = cursor.getString(3);
                 String patientBirth = cursor.getString(4);
-                String patientmail = cursor.getString(5);
-                String patientadress = cursor.getString(6);
-                String patientGender = cursor.getString(8);
-                String patientHeight =cursor.getString(9);
-                String patientWeight = cursor.getString(10);
-                String patientIMC = cursor.getString(11);
-                String patientHB = cursor.getString(12);
-                String patientVGM = cursor.getString(13);
-                String patientTCMH = cursor.getString(14);
-                String patientIDR_CV = cursor.getString(15);
-                String patientHypo = cursor.getString(16);
-                String patientRet_He =cursor.getString(17);
-                String patientPlatelet = cursor.getString(18);
-                String patientFerritin = cursor.getString(19);
-                String patientTransferrin = cursor.getString(20);
-                String patientSerum_iron = cursor.getString(21);
-                String patientCST = cursor.getString(22);
-                String patientFibrinogen = cursor.getString(23);
-                String patientCRP = cursor.getString(24);
-                String patientOthers = cursor.getString(25);
-                String patientPhone = cursor.getString(26);
-                String Serum_iron_unit = cursor.getString(27);
-                String secured = cursor.getString(28);
-                String pseudo = cursor.getString(29);
-                String carence = cursor.getString(30);
+                String patientAge = cursor.getString(5);
+                String patientmail = cursor.getString(6);
+                String patientadress = cursor.getString(7);
+                String patientGender = cursor.getString(9);
+                String patientHeight =cursor.getString(10);
+                String patientWeight = cursor.getString(11);
+                String patientIMC = cursor.getString(12);
+                String patientHB = cursor.getString(13);
+                String patientVGM = cursor.getString(14);
+                String patientTCMH = cursor.getString(15);
+                String patientIDR_CV = cursor.getString(16);
+                String patientHypo = cursor.getString(17);
+                String patientRet_He =cursor.getString(18);
+                String patientPlatelet = cursor.getString(19);
+                String patientFerritin = cursor.getString(20);
+                String patientTransferrin = cursor.getString(21);
+                String patientSerum_iron = cursor.getString(22);
+                String patientCST = cursor.getString(23);
+                String patientFibrinogen = cursor.getString(24);
+                String patientCRP = cursor.getString(25);
+                String patientOthers = cursor.getString(26);
+                String patientPhone = cursor.getString(27);
+                String Serum_iron_unit = cursor.getString(28);
+                String secured = cursor.getString(29);
+                String pseudo = cursor.getString(30);
+                String carence = cursor.getString(31);
 
                 // float patientCRP = Float.parseFloat(cursor.getString(24));
 
                 patient = new User(patientID, patientName, patientFirstName,
-                        patientBirth, patientmail, patientadress, patientPhone,
+                        patientBirth, patientAge, patientmail, patientadress, patientPhone,
                         patientGender, patientHeight, patientWeight, patientIMC,
                         patientHB, patientVGM, patientTCMH, patientIDR_CV, patientHypo,
                         patientRet_He, patientPlatelet, patientFerritin,

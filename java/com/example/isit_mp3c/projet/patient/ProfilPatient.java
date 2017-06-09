@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,16 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
+import com.example.isit_mp3c.projet.camera.CameraActivity;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class ProfilPatient extends AppCompatActivity {
     private TextView idPatient, name, first_Name, date_Birth, sex,
             address, mail, phone, height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin,
-            transferrin, serum_iron, cst, fibrinogen, crp, other, imc, deficiency;
+            transferrin, serum_iron, cst, fibrinogen, crp, other, imc, deficiency,nbAcquisition, age;
     private List<User> users;
     private int id ;
     private SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
@@ -113,6 +111,8 @@ public class ProfilPatient extends AppCompatActivity {
         other = (TextView)findViewById(R.id.other);
         sex = (TextView)findViewById(R.id.sexe_patient);
         deficiency = (TextView)findViewById(R.id.textViewDeficiency);
+        nbAcquisition = (TextView)findViewById(R.id.nbAcquisitionTV2);
+        age = (TextView)findViewById(R.id.age_patient);
 
         String nameValue, firsNameValue, birthValue , addressValue, mailValue, phoneValue, sexValue;
 
@@ -127,6 +127,7 @@ public class ProfilPatient extends AppCompatActivity {
             name.setText(users.get(id-1).getName());
             first_Name.setText(users.get(id-1).getFirstName());
             date_Birth.setText(users.get(id-1).getDateBirth());
+            age.setText(users.get(id-1).getAge());
             address.setText(users.get(id-1).getAddress());
             mail.setText(users.get(id-1).getMail());
             phone.setText( users.get(id-1).getPhone());
@@ -173,6 +174,8 @@ public class ProfilPatient extends AppCompatActivity {
                     break;
             }
 
+            nbAcquisition.setText(String.valueOf(dbHelper.getNextAcquisitionNumber(users.get(id-1).getUserID())-1));
+
             Log.i("get ID", "ProfilPatient, getProfil, id-1 donne : " + (id-1));
 
         } catch (Exception e) {
@@ -210,6 +213,11 @@ public class ProfilPatient extends AppCompatActivity {
                 editIntent.putExtra("ID",id);
                 startActivity(editIntent);
                break;
+
+            case R.id.takePicture :
+                Intent intent = new Intent(ProfilPatient.this, CameraActivity.class);
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

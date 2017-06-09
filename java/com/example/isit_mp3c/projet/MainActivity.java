@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
                     if (attrs != null) {
                         Log.i("a","Directory exists IsDir="+attrs.isDir());
                     } else {
-                        Log.i("a","Creating dir "+dir);
+                        Log.i("a","Creating dir "+directory+"/"+ dir);
                         sftp.mkdir(directory+"/"+dir);
                     }
 
@@ -325,20 +325,6 @@ public class MainActivity extends AppCompatActivity {
 //new
     public void upload(File src, ChannelSftp sftp, String dir) throws IOException, SftpException {
         if (src.isDirectory()) {
-            if(src.getName().contains("patient") && src.getName().contains("_acq")){
-                String string = src.getName();
-                String[] parts = string.split("_");
-                String id = parts[1];
-                String[] parts1 = string.split("_acq");
-                String acquisition_number = parts1[1];
-
-                User user = dbHelper.getPatientWithId(Integer.parseInt(id));
-                Acquisition  acq = dbHelper.getAcquisition(Integer.parseInt(id),Integer.parseInt(acquisition_number));
-
-                FileInputStream dataFile = createdataFile(this,user,acq);
-
-                sftp.put(dataFile,dir + "/" + src.getName() +"/" + "data.csv");
-            }
             SftpATTRS attrs = null;
             try {
                 attrs = sftp.stat(dir + "/" + src.getName());
@@ -351,6 +337,34 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Log.i("a","Creating dir "+dir);
                 sftp.mkdir(dir + "/" + src.getName());
+            }
+
+            if(src.getName().contains("patient") && src.getName().contains("_acq")){
+                String string = src.getName();
+                String[] parts = string.split("_");
+                String id = parts[1];
+                String[] parts1 = string.split("_acq");
+                String acquisition_number = parts1[1];
+
+                User user = dbHelper.getPatientWithId(Integer.parseInt(id));
+                Acquisition  acq = dbHelper.getAcquisition(Integer.parseInt(id),Integer.parseInt(acquisition_number));
+
+                //suppression fichier data.csv if exist
+                try {
+                    sftp.rm(dir + "/" + src.getName() + "/" + "data.csv");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                FileInputStream dataFile = createdataFile(getApplicationContext(),user,acq);
+
+                sftp.put(dataFile,dir + "/" + src.getName() + "/" + "data.csv");
+
+
+                File fileToDelete = new File(getApplicationContext().getCacheDir()+
+                        File.separator + "data.csv");
+                Log.i("delete cache", "data.csv cache file deleted : " + fileToDelete.delete());
+
             }
 
             sftp.cd(dir + "/" + src.getName());
@@ -394,11 +408,11 @@ public class MainActivity extends AppCompatActivity {
             fileOutputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, "UTF8");
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
-            printWriter.println("sep=;");
-            printWriter.println("ID; NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; SEX;" +
+            printWriter.append("sep=;" + "\n");
+            printWriter.append("ID; NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
-                    " PSEUDO; DEFICIENCY");
+                    " PSEUDO; DEFICIENCY" + "\n");
 
             for (int i = 0; i < users.size(); i++) {
                 try {
@@ -408,13 +422,14 @@ public class MainActivity extends AppCompatActivity {
                     String name = users.get(i).getName();
                     String firstName = users.get(i).getFirstName();
                     String birthDate = users.get(i).getDateBirth();
+                    String age = users.get(i).getAge();
                     String adress = users.get(i).getAddress();
                     String mail = users.get(i).getMail();
                     String phone = users.get(i).getPhone();
                     String sex = users.get(i).getSexe();
                     String height = users.get(i).getHeight();
                     String weight = users.get(i).getWeight();
-                    String imc = users.get(i).getImc().toString();
+                    String imc = users.get(i).getImc();
                     Log.i("IMC", "ExportDB, the value of IMC is : " + imc);
                     String hb = users.get(i).getHb();
                     Log.i("HB", "ExportDB, the value of hb is " + hb);
@@ -439,14 +454,14 @@ public class MainActivity extends AppCompatActivity {
                     String pseudo = users.get(i).getPseudo();
                     String carence = users.get(i).getDeficiency();
 
-                    String record = id + ";" + name + ";" + firstName + ";" + birthDate + ";" + adress
+                    String record = id + ";" + name + ";" + firstName + ";" + birthDate + ";" + age + ";" + adress
                             + ";" + mail + ";" + phone + ";" + sex + ";" + height + ";"
                             + weight + ";" + imc + ";" + hb + ";" + vgm + ";" + tcmh
                             + ";" + idr_cv + ";" + hypo + ";" + ret_he + ";" + platelet
                             + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
                             + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
                             + ";" + pseudo + ";" + carence;
-                    printWriter.println(record);
+                    printWriter.append(record + "\n");
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("ExportDB", "Error in for : " + e.getMessage());
@@ -472,11 +487,11 @@ public class MainActivity extends AppCompatActivity {
             fileOutputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, "UTF8");
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
-            printWriter.println("sep=;");
-            printWriter.println("ID; NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; DATE; ACQ_IDX; SEX;" +
-                    " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
-                    " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
-                    " PSEUDO; DEFICIENCY");
+            printWriter.append("sep=;" + "/n");
+            printWriter.append("ID;NAME;FIRST_NAME;BIRTH_DATE;AGE;ADDRESS;MAIL;PHONE;DATE;ACQ_IDX;SEX;" +
+                    "HEIGHT;WEIGHT;IMC;HB;VGM;TCMH;IDR_CV;HYPO;RET_HE;PLATELET;" +
+                    "FERRITINE;TRANSFERRIN;SERUM_IRON;CST;FIBRINOGEN;CRP;NOTES;SECURED;" +
+                    "PSEUDO;DEFICIENCY" + "/n");
 
                 try {
                     int id = user.getUserID();
@@ -485,17 +500,16 @@ public class MainActivity extends AppCompatActivity {
                     String name = user.getName();
                     String firstName = user.getFirstName();
                     String birthDate = user.getDateBirth();
+                    String age = user.getAge();
                     String adress = user.getAddress();
                     String mail = user.getMail();
                     String phone = user.getPhone();
                     String date = acquisition.getDate_acquisition();
                     String acq_idx = Integer.toString(acquisition.getAcquisition_number());
-                    //Remplir string qui contient la date d'acquisition
-                    //Remplir string qui contient le numéro d'acquisition
                     String sex = user.getSexe();
                     String height = user.getHeight();
                     String weight = user.getWeight();
-                    String imc = user.getImc().toString();
+                    String imc = user.getImc();
                     Log.i("IMC", "ExportDB, the value of IMC is : " + imc);
                     String hb = user.getHb();
                     Log.i("HB", "ExportDB, the value of hb is " + hb);
@@ -520,14 +534,14 @@ public class MainActivity extends AppCompatActivity {
                     String pseudo = user.getPseudo();
                     String carence = user.getDeficiency();
 
-                    String record = id + ";" + name + ";" + firstName + ";" + birthDate + ";" + adress
+                    String record = id + ";" + name + ";" + firstName + ";" + birthDate + ";" + age + ";" + adress
                             + ";" + mail + ";" + phone + ";"+date+";"+acq_idx+";" + sex + ";" + height + ";"
                             + weight + ";" + imc + ";" + hb + ";" + vgm + ";" + tcmh
                             + ";" + idr_cv + ";" + hypo + ";" + ret_he + ";" + platelet
                             + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
                             + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
                             + ";" + pseudo + ";" + carence;
-                    printWriter.println(record);
+                    printWriter.append(record + "/n");
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("ExportDB", "Error in for : " + e.getMessage());

@@ -28,7 +28,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
 
     private TextView idPatient,sex, height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin,
-            transferrin, serum_iron, cst, fibrinogen, crp, other, imc, deficiency;
+            transferrin, serum_iron, cst, fibrinogen, crp, other, imc, deficiency, nbAcquisition, age;
     private List<User> users;
     private int id ;
     SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
@@ -105,6 +105,8 @@ public class ProfilAnonymPatient extends AppCompatActivity {
         other = (TextView)findViewById(R.id.other);
         sex = (TextView)findViewById(R.id.sexe_patient);
         deficiency = (TextView)findViewById(R.id.textViewDeficiency);
+        nbAcquisition = (TextView)findViewById(R.id.nbAcquisitionTV2);
+        age = (TextView)findViewById(R.id.age_patient);
 
         //String idText = String.valueOf(id);
 
@@ -112,6 +114,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
 
             //idPatient.setText(idText);
             idPatient.setText(users.get(id-1).getPseudo());
+            age.setText(users.get(id-1).getAge());
             height.setText(users.get(id-1).getHeight().toString());
             weight.setText(users.get(id-1).getWeight().toString());
             imc.setText(users.get(id-1).getImc());
@@ -156,6 +159,9 @@ public class ProfilAnonymPatient extends AppCompatActivity {
                     deficiency.setText("-");
                     break;
             }
+
+
+            nbAcquisition.setText(String.valueOf(dbHelper.getNextAcquisitionNumber(users.get(id-1).getUserID())-1));
 
         } catch (Exception e) {
             Log.e("DB error", "ProfilPatient_java, It did not read the ID value");

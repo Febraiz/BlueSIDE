@@ -23,6 +23,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.isit_mp3c.projet.MainActivity;
@@ -41,6 +42,7 @@ public class AddPatientActivity extends AppCompatActivity
     private EditText name, first_Name, date_Birth, address, mail, phone, height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin, transferrin, serum_iron, cst,
             fibrinogen, crp, other;
+    private TextView age_patient;
     private Spinner genderSpinner, ironSpinner;
     private RadioButton rbCertain, rbAbsence, rbIncertain;
     private List<User> patientsList;
@@ -48,6 +50,7 @@ public class AddPatientActivity extends AppCompatActivity
     private boolean isDateValid = true;
     private boolean isPhoneValid = true;
     SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
+    User newUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class AddPatientActivity extends AppCompatActivity
         mail = (EditText)findViewById(R.id.mail_patient);
         date_Birth = (EditText)findViewById(R.id.patient_birth);
         phone = (EditText)findViewById(R.id.phone_patient);
+        age_patient = (TextView)findViewById(R.id.age_patient);
 
         genderSpinner = (Spinner) findViewById(R.id.sexe_patient);
         ironSpinner =(Spinner)findViewById(R.id.iron_unit);
@@ -99,6 +103,24 @@ public class AddPatientActivity extends AppCompatActivity
             }
         });
 
+        date_Birth.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                newUser.setDateBirth(date_Birth.getText().toString());
+                age_patient.setText(newUser.calculAge());
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                newUser.setDateBirth(date_Birth.getText().toString());
+                age_patient.setText(newUser.calculAge());
+            }
+        });
         //email check
         mail.addTextChangedListener(new TextWatcher() {
             @Override

@@ -32,7 +32,7 @@ public class AddPatientAnonym extends AppCompatActivity
 
     private EditText height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin, transferrin, serum_iron, cst,
-            fibrinogen, crp, other, pseudo;
+            fibrinogen, crp, other, pseudo, age;
     private RadioButton rbCertain, rbAbsence, rbIncertain;
     private Spinner genderSpinner, ironSpinner;
     private List<User> users;
@@ -135,6 +135,7 @@ public class AddPatientAnonym extends AppCompatActivity
         fibrinogen = (EditText)findViewById(R.id.fibrinogen);
         crp = (EditText)findViewById(R.id.crp);
         other = (EditText)findViewById(R.id.other);
+        age = (EditText)findViewById(R.id.age_patient);
 
         rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
         rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
@@ -162,6 +163,7 @@ public class AddPatientAnonym extends AppCompatActivity
 
         String GENDER = String.valueOf(genderSpinner.getSelectedItem());
         String UNIT = String.valueOf(ironSpinner.getSelectedItem());
+        String AGE = age.getText().toString();
 
         // Récupération de la carence
         String DEFICIENCY = getDeficiencyType();
@@ -175,7 +177,7 @@ public class AddPatientAnonym extends AppCompatActivity
         if(dbH.openDatabase()) {
             lastID = dbH.addPatient(new User( GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
                     VGM, TCMH, IDR_CV, HYPO, RET_HE, PLATELET, FERRITIN,
-                    TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER, "TRUE", PSEUDO, DEFICIENCY));
+                    TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER, "TRUE", PSEUDO, DEFICIENCY, AGE));
         }
 
         Log.i("last ID is ", "AddNonAnonymPatientActivity_java, Last ID set is =" + lastID);

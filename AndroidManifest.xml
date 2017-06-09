@@ -71,11 +71,18 @@
             android:label="@string/title_activity_profil_patient"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".fileBrowser.FileBrowser"
+            android:authorities="com.example.isit_mp3c.project.fileBrowser.FileBrowser"
+            android:enabled="true"
+            android:exported="true"></activity>
+
         <provider
             android:name=".exportdb.FileProvider"
             android:authorities="com.example.isit_mp3c.project.exportdb.provider"
             android:enabled="true"
             android:exported="true"></provider>
+
     </application>
 
 </manifest>

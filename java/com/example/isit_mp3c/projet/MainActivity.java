@@ -29,6 +29,7 @@ import com.example.isit_mp3c.projet.database.Acquisition;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
 import com.example.isit_mp3c.projet.exportdb.ExportDBActivity;
+import com.example.isit_mp3c.projet.fileBrowser.FileBrowser;
 import com.example.isit_mp3c.projet.patient.AddPatientActivity;
 import com.example.isit_mp3c.projet.patient.AddPatientAnonym;
 import com.example.isit_mp3c.projet.patient.ListProfile;
@@ -167,28 +168,32 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 /*
-                https://www.google.fr/search?q=android+button+to+open+files+explorer&oq=android+button+to+open+files+explorer&aqs=chrome..69i57.13167j0j7&sourceid=chrome&ie=UTF-8#q=android+open+files+explorer
+                https://www.google.fr/search?q=android+how+to+open+file+manager+app&oq=android+how+to+open+file+manager+app&aqs=chrome..69i57.5063j0j7&sourceid=chrome&ie=UTF-8#q=android+open+6.0+file+explorer+intent
 
-                https://stackoverflow.com/questions/11720032/open-default-file-manager-in-android
+                http://forum.codecall.net/topic/79689-creating-a-file-browser-in-android/
                 */
 
-                /*
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.setType("file/*");
-                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivity(intent);
-                */
-
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setType("*/*");
-                intent.setClassName("com.android.documentsui", "com.android.documentsui.DocumentsActivity");
-                startActivity(intent);
+                //Check permissions
+                if (Build.VERSION.SDK_INT < 23) {
+                    openFileEx();
+                } else {
+                    if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        requestContactsPermissions();
+                    } else {
+                        openFileEx();
+                    }
+                }
 
             }
         });
 
+    }
+
+    //Open the file explorer
+    public void openFileEx() {
+        Intent intent = new Intent(MainActivity.this, FileBrowser.class);
+        startActivity(intent);
     }
 
     public void requestContactsPermissions() {

@@ -43,10 +43,16 @@
             android:name=".patient.ListProfile"
             android:label="@string/title_activity_list_profile"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".patient.AutresOptions"
+            android:label="AutresOptions"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".exportdb.ExportDBActivity"
             android:label="@string/title_activity_export_db"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".patient.AddPatientAnonym"
             android:label="@string/title_activity_add_patient_anonym"

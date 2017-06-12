@@ -62,14 +62,17 @@ public class AddPatientActivity extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+
         name = (EditText)findViewById(R.id.name_patient);
         mail = (EditText)findViewById(R.id.mail_patient);
         date_Birth = (EditText)findViewById(R.id.patient_birth);
         phone = (EditText)findViewById(R.id.phone_patient);
         age_patient = (TextView)findViewById(R.id.age_patient);
 
+
         genderSpinner = (Spinner) findViewById(R.id.sexe_patient);
-        ironSpinner =(Spinner)findViewById(R.id.iron_unit);
+        ironSpinner = (Spinner) findViewById(R.id.iron_unit);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> genderSpinnerAdapter = ArrayAdapter.createFromResource(this,
@@ -132,10 +135,12 @@ public class AddPatientActivity extends AppCompatActivity
                     isMailValid = true;
                 }
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //nothing to do
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 if (!validEmail(s)) {
@@ -151,7 +156,7 @@ public class AddPatientActivity extends AppCompatActivity
         date_Birth.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if(!validDate(s)){
+                if (!validDate(s)) {
                     isDateValid = false;
                 } else {
                     isDateValid = true;
@@ -165,7 +170,7 @@ public class AddPatientActivity extends AppCompatActivity
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!validDate(s)){
+                if (!validDate(s)) {
                     isDateValid = false;
                 } else {
                     isDateValid = true;
@@ -186,7 +191,7 @@ public class AddPatientActivity extends AppCompatActivity
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!validPhone(s)){
+                if (!validPhone(s)) {
                     isPhoneValid = false;
                 } else {
                     isPhoneValid = true;
@@ -194,7 +199,7 @@ public class AddPatientActivity extends AppCompatActivity
             }
         });
 
-        Button cancel =(Button)findViewById(R.id.cancel_button);
+        Button cancel = (Button) findViewById(R.id.cancel_button);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,19 +212,19 @@ public class AddPatientActivity extends AppCompatActivity
 
         final long lastID;
 
-        if(patientsList.size() != -1) {
-            lastID = patientsList.size()+1;
+        if (patientsList.size() != -1) {
+            lastID = patientsList.size() + 1;
         } else {
             lastID = 0;
         }
 
-        Button save = (Button)findViewById(R.id.save_button);
-        save.setOnClickListener(new View.OnClickListener(){
+        Button save = (Button) findViewById(R.id.save_button);
+        save.setOnClickListener(new View.OnClickListener() {
             //long lastID;
             @Override
             public void onClick(View v) {
                 Log.i("input value", "is input value valid? " + isInputValid());
-                if(isInputValid()) {
+                if (isInputValid()) {
 
                     addNewPatient();
                     saveDialog(new View(getBaseContext()), lastID);
@@ -231,42 +236,42 @@ public class AddPatientActivity extends AppCompatActivity
         });
     }
 
-    public boolean validEmail(CharSequence mail){
+    public boolean validEmail(CharSequence mail) {
         //return !TextUtils.isEmpty(mail) && Patterns.EMAIL_ADDRESS.matcher(mail).matches();
-        if(!TextUtils.isEmpty(mail)){
+        if (!TextUtils.isEmpty(mail)) {
             return Patterns.EMAIL_ADDRESS.matcher(mail).matches();
-        }else{
+        } else {
             return true;
         }
     }
 
     //check for french mobile format
-    public boolean validPhone(CharSequence phone){
+    public boolean validPhone(CharSequence phone) {
         boolean isValid = true;
-        if(!TextUtils.isEmpty(phone)){
+        if (!TextUtils.isEmpty(phone)) {
             //Log.i("phone check", "phone number length : "+ phone.length());
-                if(phone.length() < 9 || phone.length() > 13 ){
+            if (phone.length() < 9 || phone.length() > 13) {
                 isValid = false;
                 //Log.i("validate phone", "Phone Format is not valid");
-            }else{
+            } else {
                 isValid = Patterns.PHONE.matcher(phone).matches();
-               // Log.i("validate phone", "Phone number is getting checked");
+                // Log.i("validate phone", "Phone number is getting checked");
             }
-        }else if(TextUtils.isEmpty(phone)){
+        } else if (TextUtils.isEmpty(phone)) {
             isValid = true;
-           // Log.i("validate phone", "Phone number empty");
+            // Log.i("validate phone", "Phone number empty");
         }
 
         return isValid ? true : false;
     }
 
-    public boolean validDate(CharSequence date){
+    public boolean validDate(CharSequence date) {
         boolean isValid;
-        String input =  String.valueOf(date);
+        String input = String.valueOf(date);
         //hard coding
-        if(input.matches("([0-9]{4})-([0-9]{2})-([0-9]{2})")){
+        if (input.matches("([0-9]{4})-([0-9]{2})-([0-9]{2})")) {
             isValid = true;
-        }else{
+        } else {
             isValid = false;
         }
 
@@ -275,40 +280,40 @@ public class AddPatientActivity extends AppCompatActivity
 
 
     //condition for the input
-    public boolean isInputValid(){
+    public boolean isInputValid() {
         boolean[] test = new boolean[4];
         boolean isValid = true;
-        if(!name.getText().toString().isEmpty()){
+        if (!name.getText().toString().isEmpty()) {
             test[0] = true;
-        }else{
+        } else {
             test[0] = false;
             name.setError(getString(R.string.condition_name));
         }
 
-        if(isMailValid){
+        if (isMailValid) {
             test[1] = true;
-        }else {
+        } else {
             test[1] = false;
             mail.setError(getString(R.string.condition_mail));
         }
 
-        if(isDateValid){
+        if (isDateValid) {
             test[2] = true;
-        } else{
+        } else {
             test[2] = false;
             date_Birth.setError(getString(R.string.condition_date));
         }
 
-        if(isPhoneValid){
+        if (isPhoneValid) {
             test[3] = true;
-        } else{
+        } else {
             test[3] = false;
             phone.setError(getString(R.string.condition_phone));
         }
 
-        int i =0;
-        while(i < test.length){
-            if(!test[i]) isValid = false;
+        int i = 0;
+        while (i < test.length) {
+            if (!test[i]) isValid = false;
             i++;
         }
 
@@ -316,32 +321,32 @@ public class AddPatientActivity extends AppCompatActivity
     }
 
     //Add a new Patient
-    public long addNewPatient(){
-        long lastID =0;
+    public long addNewPatient() {
+        long lastID = 0;
         int ID;
 
-        name = (EditText)findViewById(R.id.name_patient);
-        first_Name = (EditText)findViewById(R.id.first_name_patient);
+        name = (EditText) findViewById(R.id.name_patient);
+        first_Name = (EditText) findViewById(R.id.first_name_patient);
         //date_Birth = (EditText)findViewById(R.id.patient_birth);
-        address = (EditText)findViewById(R.id.adress_patient);
+        address = (EditText) findViewById(R.id.adress_patient);
         //mail = (EditText)findViewById(R.id.mail_patient);
         //phone = (EditText)findViewById(R.id.phone_patient);
-        height = (EditText)findViewById(R.id.height_patient);
-        weight = (EditText)findViewById(R.id.weight_patient);
-        hemoglobin = (EditText)findViewById(R.id.hb);
-        vgm = (EditText)findViewById(R.id.vgm);
-        tcmh = (EditText)findViewById(R.id.tcmh);
-        idr_cv = (EditText)findViewById(R.id.idr_cv);
-        hypo = (EditText)findViewById(R.id.hypo);
-        ret_he = (EditText)findViewById(R.id.ret_he);
-        platelet = (EditText)findViewById(R.id.platelet);
-        ferritin = (EditText)findViewById(R.id.ferritin);
-        transferrin = (EditText)findViewById(R.id.transferrin);
-        serum_iron = (EditText)findViewById(R.id.srum_iron);
-        cst = (EditText)findViewById(R.id.cst);
-        fibrinogen = (EditText)findViewById(R.id.fibrinogen);
-        crp = (EditText)findViewById(R.id.crp);
-        other = (EditText)findViewById(R.id.other);
+        height = (EditText) findViewById(R.id.height_patient);
+        weight = (EditText) findViewById(R.id.weight_patient);
+        hemoglobin = (EditText) findViewById(R.id.hb);
+        vgm = (EditText) findViewById(R.id.vgm);
+        tcmh = (EditText) findViewById(R.id.tcmh);
+        idr_cv = (EditText) findViewById(R.id.idr_cv);
+        hypo = (EditText) findViewById(R.id.hypo);
+        ret_he = (EditText) findViewById(R.id.ret_he);
+        platelet = (EditText) findViewById(R.id.platelet);
+        ferritin = (EditText) findViewById(R.id.ferritin);
+        transferrin = (EditText) findViewById(R.id.transferrin);
+        serum_iron = (EditText) findViewById(R.id.srum_iron);
+        cst = (EditText) findViewById(R.id.cst);
+        fibrinogen = (EditText) findViewById(R.id.fibrinogen);
+        crp = (EditText) findViewById(R.id.crp);
+        other = (EditText) findViewById(R.id.other);
 
         rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
         rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
@@ -352,7 +357,7 @@ public class AddPatientActivity extends AppCompatActivity
         String DATE_BIRTH = date_Birth.getText().toString();
         String ADDRESS = address.getText().toString();
         String MAIL = mail.getText().toString();
-        String PHONE =  phone.getText().toString();
+        String PHONE = phone.getText().toString();
         String HEIGHT = height.getText().toString();
         String WEIGHT = weight.getText().toString();
         String HEMOGLOBIN = hemoglobin.getText().toString();
@@ -373,23 +378,24 @@ public class AddPatientActivity extends AppCompatActivity
         String GENDER = String.valueOf(genderSpinner.getSelectedItem());
         String UNIT = String.valueOf(ironSpinner.getSelectedItem());
 
+
         // Récupération de la carence
         String DEFICIENCY = getDeficiencyType();
 
         if (patientsList.size() == 0)
             ID = 1;
         else
-            ID = patientsList.get(patientsList.size()-1).getUserID()+1;
+            ID = patientsList.get(patientsList.size() - 1).getUserID() + 1;
 
         String PSEUDO = NAME + "_" + FIRST_NAME + "_" + ID;
 
-        if(!HEIGHT.isEmpty()) {
+        if (!HEIGHT.isEmpty()) {
             if (Float.parseFloat(HEIGHT) > 100) {
                 HEIGHT = HEIGHT.substring(0, 1) + "." + HEIGHT.substring(1);
             }
         }
 
-        if(dbH.openDatabase()) {
+        if (dbH.openDatabase()) {
             lastID = dbH.addPatient(new User(NAME, FIRST_NAME, DATE_BIRTH, MAIL,
                     ADDRESS, PHONE, GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
                     VGM, TCMH, IDR_CV, HYPO, RET_HE, PLATELET, FERRITIN,
@@ -403,7 +409,7 @@ public class AddPatientActivity extends AppCompatActivity
 
     Calendar myCalendar = Calendar.getInstance();
 
-    DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener(){
+    DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener() {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -428,7 +434,7 @@ public class AddPatientActivity extends AppCompatActivity
 
     }
 
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
 
     }
@@ -438,7 +444,7 @@ public class AddPatientActivity extends AppCompatActivity
 
     }
 
-    public void saveDialog(View view, final long lastID){
+    public void saveDialog(View view, final long lastID) {
         final long id = lastID; // Not necessary. Could be deleted.
         final int ID; // Not necessary. could be deleted.
 
@@ -455,7 +461,7 @@ public class AddPatientActivity extends AppCompatActivity
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent profil = new Intent(AddPatientActivity.this,ProfilPatient.class);
+                        Intent profil = new Intent(AddPatientActivity.this, ProfilPatient.class);
                         profil.putExtra("last_ID", Integer.parseInt(String.valueOf(lastID)));
                         finish();
                         startActivity(profil);
@@ -478,7 +484,7 @@ public class AddPatientActivity extends AppCompatActivity
 
         List<User> users = new ArrayList<>();
 
-        if(dbH.openDatabase()){
+        if (dbH.openDatabase()) {
             users = dbH.getPatient();
         }
 
@@ -501,11 +507,11 @@ public class AddPatientActivity extends AppCompatActivity
                 onBackPressed();
                 return true;
             case R.id.save:
-                if(isInputValid()) {
+                if (isInputValid()) {
                     patientsList = getPatient();
                     final long lastID2;
-                    if(patientsList.size() != -1) {
-                        lastID2 = patientsList.size()+1;
+                    if (patientsList.size() != -1) {
+                        lastID2 = patientsList.size() + 1;
                     } else {
                         lastID2 = 0;
                     }
@@ -527,7 +533,7 @@ public class AddPatientActivity extends AppCompatActivity
         boolean checked = ((RadioButton) view).isChecked();
 
         // Check which radio button was clicked
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.radioDeficiencyClear:
                 if (checked)
                     // Pirates are the best
@@ -543,13 +549,12 @@ public class AddPatientActivity extends AppCompatActivity
         }
     }
 
-    public String getDeficiencyType()
-    {
+    public String getDeficiencyType() {
         if (rbCertain.isChecked())
             return "Carence certaine";
-        else if(rbAbsence.isChecked())
+        else if (rbAbsence.isChecked())
             return "Absence de carence";
-        else if(rbIncertain.isChecked())
+        else if (rbIncertain.isChecked())
             return "Carence incertaine";
         else
             return "";

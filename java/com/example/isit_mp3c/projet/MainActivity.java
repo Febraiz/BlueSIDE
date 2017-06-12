@@ -5,10 +5,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -42,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.example.isit_mp3c.projet.patient.AutresOptions;
 import com.jcraft.jsch.*;
 
 import android.provider.Settings.Secure;
@@ -52,9 +57,10 @@ import org.apache.commons.io.IOUtils;
 public class MainActivity extends AppCompatActivity {
 
     private Toast mToast = null;
-    private Button addPatientBtn, searchBtn, photoBtn, exportBtn, exportFtpBtn;
+    private Button addPatientBtn, searchBtn, exportFtpBtn, autresBtn;
     private FloatingActionButton fileExplorerBtn;
     private static final int REQUEST_READ_STORAGE_RESULT = 1;
+
     private String android_id;
     List<User> users = new ArrayList<>();
     ExportDBActivity exportDBActivity;
@@ -109,34 +115,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        exportBtn = (Button) findViewById(R.id.export_button);
-        exportBtn.setOnClickListener(new View.OnClickListener() {
+        autresBtn = (Button) findViewById(R.id.option_button);
+        autresBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent exportIntent = new Intent(MainActivity.this, ExportDBActivity.class);
-                startActivity(exportIntent);
+                Intent intent = new Intent(MainActivity.this, AutresOptions.class);
+                startActivity(intent);
             }
         });
-
-        photoBtn = (Button) findViewById(R.id.picture_button);
-        photoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(SQLiteDBHelper.getInstance(MainActivity.this).getCountPatient() == 0)
-                {
-                    if (mToast != null) mToast.cancel();
-                    mToast = Toast.makeText(MainActivity.this, "Aucun patient enregistré", Toast.LENGTH_SHORT);
-                    mToast.show();
-                }
-                else{
-                    Intent intent = new Intent(MainActivity.this, CameraActivity.class);
-                    startActivity(intent);
-                }
-
-            }
-        });
-
 
         exportFtpBtn = (Button) findViewById(R.id.export_ftp_button);
         exportFtpBtn.setOnClickListener(new View.OnClickListener() {

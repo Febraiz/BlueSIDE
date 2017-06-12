@@ -2,16 +2,10 @@ package com.example.isit_mp3c.projet;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageInstaller;
-import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.isit_mp3c.projet.camera.CameraActivity;
 import com.example.isit_mp3c.projet.database.Acquisition;
@@ -34,7 +27,6 @@ import com.example.isit_mp3c.projet.patient.ListProfile;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.example.isit_mp3c.projet.patient.AutresOptions;
 import com.jcraft.jsch.*;
 
 import android.provider.Settings.Secure;
@@ -52,7 +45,7 @@ import org.apache.commons.io.IOUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button addPatientBtn, searchBtn, photoBtn, exportBtn, exportFtpBtn;
+    private Button addPatientBtn, searchBtn, photoBtn, exportBtn, exportFtpBtn, autresBtn;
     private String android_id;
     List<User> users = new ArrayList<>();
     ExportDBActivity exportDBActivity;
@@ -125,7 +118,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        autresBtn = (Button) findViewById(R.id.option_button);
+        autresBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AutresOptions.class);
+                startActivity(intent);
+            }
+        });
         exportFtpBtn = (Button) findViewById(R.id.export_ftp_button);
         exportFtpBtn.setOnClickListener(new View.OnClickListener() {
             @Override

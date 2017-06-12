@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
+import com.example.isit_mp3c.projet.camera.CameraActivity;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
 
@@ -32,6 +33,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
     private List<User> users;
     private int id ;
     SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,8 @@ public class ProfilAnonymPatient extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         id = extras.getInt("last_ID");
+        users = getPatient();
+        user = users.get(id-1);
         Log.i("Profil Last ID", "AnonymProfilPatient_java, Get the last ID pleaaase = " + id);
 
         //set toolbar title
@@ -113,34 +117,34 @@ public class ProfilAnonymPatient extends AppCompatActivity {
         try {
 
             //idPatient.setText(idText);
-            idPatient.setText(users.get(id-1).getPseudo());
-            age.setText(users.get(id-1).getAge());
-            height.setText(users.get(id-1).getHeight().toString());
-            weight.setText(users.get(id-1).getWeight().toString());
-            imc.setText(users.get(id-1).getImc());
-            hemoglobin.setText(users.get(id-1).getHb());
-            vgm.setText(users.get(id-1).getVgm());
-            tcmh.setText(users.get(id-1).gettcmh());
-            idr_cv.setText(users.get(id-1).getIdr_cv());
-            hypo.setText(users.get(id-1).getHypo());
-            ret_he.setText(users.get(id-1).getRet_he());
-            platelet.setText(users.get(id-1).getPlatelet());
-            ferritin.setText(users.get(id-1).getFerritin());
+            idPatient.setText(user.getPseudo());
+            age.setText(user.getAge());
+            height.setText(user.getHeight().toString());
+            weight.setText(user.getWeight().toString());
+            imc.setText(user.getImc());
+            hemoglobin.setText(user.getHb());
+            vgm.setText(user.getVgm());
+            tcmh.setText(user.gettcmh());
+            idr_cv.setText(user.getIdr_cv());
+            hypo.setText(user.getHypo());
+            ret_he.setText(user.getRet_he());
+            platelet.setText(user.getPlatelet());
+            ferritin.setText(user.getFerritin());
             transferrin.setText(users.get(id - 1).getTransferrin());
-            //String ironValue = users.get(id-1).getSerum_iron()+
-            // users.get(id-1).getSerum_iron_unit();
-            String ironValue = users.get(id-1).getSerum_iron();
-            String ironUnit = users.get(id-1).getSerum_iron_unit();
+            //String ironValue = user.getSerum_iron()+
+            // user.getSerum_iron_unit();
+            String ironValue = user.getSerum_iron();
+            String ironUnit = user.getSerum_iron_unit();
             Log.i("Serum iron value", "The serum iron value is : " + ironValue +
                     " ,The serum iron unit is : " + ironUnit);
             if(!ironValue.equals("")) {
                 serum_iron.append(ironValue + " " + ironUnit);
             }
-            cst.setText(users.get(id-1).getCst());
-            fibrinogen.setText(users.get(id-1).getFibrinogen());
-            crp.setText(users.get(id-1).getCrp());
-            other.setText(users.get(id-1).getOther());
-            sex.setText(users.get(id-1).getSexe());
+            cst.setText(user.getCst());
+            fibrinogen.setText(user.getFibrinogen());
+            crp.setText(user.getCrp());
+            other.setText(user.getOther());
+            sex.setText(user.getSexe());
 
             //Mise en place du bon radioButton
             String carence = users.get(id - 1).getDeficiency();
@@ -197,6 +201,13 @@ public class ProfilAnonymPatient extends AppCompatActivity {
                 Intent editIntent = new Intent(ProfilAnonymPatient.this, EditAnonymPatient.class);
                 editIntent.putExtra("ID",id);
                 startActivity(editIntent);
+                break;
+            case R.id.takePicture :
+                Intent intent = new Intent(ProfilAnonymPatient.this, CameraActivity.class);
+                Bundle b = new Bundle();
+                b.putString("pseudo", user.getUserID() + "-" + user.getPseudo());
+                intent.putExtras(b);
+                startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);

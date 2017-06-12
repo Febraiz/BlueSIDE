@@ -32,6 +32,7 @@ public class ProfilPatient extends AppCompatActivity {
     private List<User> users;
     private int id ;
     private SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,8 @@ public class ProfilPatient extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         id = extras.getInt("last_ID");
+        users = getPatient();
+        user = users.get(id-1);
 
         Log.i("Profil Last ID", "ProfilPatient_java, Get the last ID pleaaase = " + id);
 
@@ -212,10 +215,13 @@ public class ProfilPatient extends AppCompatActivity {
                 Intent editIntent = new Intent(ProfilPatient.this, EditPatient.class);
                 editIntent.putExtra("ID",id);
                 startActivity(editIntent);
-               break;
+                break;
 
             case R.id.takePicture :
                 Intent intent = new Intent(ProfilPatient.this, CameraActivity.class);
+                Bundle b = new Bundle();
+                b.putString("pseudo", user.getUserID() + "-" + user.getPseudo());
+                intent.putExtras(b);
                 startActivity(intent);
                 break;
         }

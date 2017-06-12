@@ -399,15 +399,22 @@ public class MainActivity extends AppCompatActivity {
                 Acquisition  acq = dbHelper.getAcquisition(Integer.parseInt(id),Integer.parseInt(acquisition_number));
 
                 //suppression fichier data.csv if exist
-                try {
-                    sftp.rm(dir + "/" + src.getName() + "/" + "data.csv");
+                /*try {
+                    //if le patient existe toujours
+                    if(dbHelper.getPatientWithId(Integer.parseInt(id)) != null) {
+                        Log.i("rm", "Delete data csv of " + id);
+                        sftp.rm(dir + "/" + src.getName() + "/" + "data.csv");
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                }*/
 
                 FileInputStream dataFile = createdataFile(getApplicationContext(),user,acq);
 
-                sftp.put(dataFile,dir + "/" + src.getName() + "/" + "data.csv");
+                //if(dbHelper.getPatientWithId(Integer.parseInt(id)) != null) {
+                //    Log.i("put", "Create data csv of " + id);
+                    sftp.put(dataFile, dir + "/" + src.getName() + "/" + "data.csv");
+                //}
 
 
                 File fileToDelete = new File(getApplicationContext().getCacheDir()+
@@ -457,11 +464,12 @@ public class MainActivity extends AppCompatActivity {
             fileOutputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, "UTF8");
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
-            printWriter.append("sep=;" + "\n");
-            printWriter.append("ID; NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; SEX;" +
+            printWriter.println("sep=;");
+            printWriter.println("ID; NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; DATE; ACQ_IDX; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
-                    " PSEUDO; DEFICIENCY" + "\n");
+                    " PSEUDO; DEFICIENCY");
+
 
             for (int i = 0; i < users.size(); i++) {
                 try {
@@ -510,7 +518,7 @@ public class MainActivity extends AppCompatActivity {
                             + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
                             + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
                             + ";" + pseudo + ";" + carence;
-                    printWriter.append(record + "\n");
+                    printWriter.println(record);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("ExportDB", "Error in for : " + e.getMessage());
@@ -537,12 +545,11 @@ public class MainActivity extends AppCompatActivity {
             fileOutputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, "UTF8");
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
-            printWriter.append("sep=;" + "/n");
-            printWriter.append("ID;NAME;FIRST_NAME;BIRTH_DATE;AGE;ADDRESS;MAIL;PHONE;DATE;ACQ_IDX;SEX;" +
-                    "HEIGHT;WEIGHT;IMC;HB;VGM;TCMH;IDR_CV;HYPO;RET_HE;PLATELET;" +
-                    "FERRITINE;TRANSFERRIN;SERUM_IRON;CST;FIBRINOGEN;CRP;NOTES;SECURED;" +
-                    "PSEUDO;DEFICIENCY" + "/n");
-
+            printWriter.println("sep=;");
+            printWriter.println("ID; NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; DATE; ACQ_IDX; SEX;" +
+                    " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
+                    " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
+                    " PSEUDO; DEFICIENCY");
                 try {
                     int id = user.getUserID();
                     String secured = user.getSecured();
@@ -591,7 +598,7 @@ public class MainActivity extends AppCompatActivity {
                             + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
                             + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
                             + ";" + pseudo + ";" + carence;
-                    printWriter.append(record + "/n");
+                    printWriter.println(record);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("ExportDB", "Error in for : " + e.getMessage());

@@ -401,8 +401,6 @@ public class AddPatientActivity extends AppCompatActivity
         return lastID;
     }
 
-
-
     Calendar myCalendar = Calendar.getInstance();
 
     DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener(){

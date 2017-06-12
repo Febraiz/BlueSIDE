@@ -51,6 +51,7 @@ import org.apache.commons.io.IOUtils;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Toast mToast = null;
     private Button addPatientBtn, searchBtn, photoBtn, exportBtn, exportFtpBtn;
     private FloatingActionButton fileExplorerBtn;
     private static final int REQUEST_READ_STORAGE_RESULT = 1;
@@ -124,7 +125,9 @@ public class MainActivity extends AppCompatActivity {
 
                 if(SQLiteDBHelper.getInstance(MainActivity.this).getCountPatient() == 0)
                 {
-                    Toast.makeText(MainActivity.this, "Aucun patient enregistré", Toast.LENGTH_SHORT).show();
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(MainActivity.this, "Aucun patient enregistré", Toast.LENGTH_SHORT);
+                    mToast.show();
                 }
                 else{
                     Intent intent = new Intent(MainActivity.this, CameraActivity.class);
@@ -183,7 +186,10 @@ public class MainActivity extends AppCompatActivity {
                 //Check if any acquisitions as been done
                 if(SQLiteDBHelper.getInstance(MainActivity.this).getCountAcquisition() == 0)
                 {
-                    Toast.makeText(MainActivity.this, "Aucune acquisition disponible", Toast.LENGTH_SHORT).show();
+
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(MainActivity.this, "Aucune acquisition disponible", Toast.LENGTH_SHORT);
+                    mToast.show();
                 }
                 else {
 
@@ -198,7 +204,9 @@ public class MainActivity extends AppCompatActivity {
                         } else {
 
                             if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                                Toast.makeText(MainActivity.this, "No Permission to read the external storage", Toast.LENGTH_SHORT).show();
+                                if (mToast != null) mToast.cancel();
+                                mToast = Toast.makeText(MainActivity.this, "No Permission to read the external storage", Toast.LENGTH_SHORT);
+                                mToast.show();
                             }
                             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_STORAGE_RESULT);
 
@@ -223,7 +231,9 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode){
             case REQUEST_READ_STORAGE_RESULT:
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Read external storage permission have not been granted", Toast.LENGTH_SHORT).show();
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(this, "Read external storage permission have not been granted", Toast.LENGTH_SHORT);
+                    mToast.show();
                 }
                 else {
                     // If authorized

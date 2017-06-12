@@ -41,7 +41,7 @@
         android:layout_marginTop="10dp"
         android:backgroundTint="@android:color/holo_blue_light"
         android:textColor="@android:color/white"
-        android:layout_below="@+id/export_button"
+        android:layout_below="@+id/search_button"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -72,6 +72,6 @@
         app:backgroundTint="@android:color/holo_blue_light"
         app:fabSize="normal"
         app:srcCompat="@android:drawable/ic_search_category_default" />
->>>>>>> b3a771645d6ece7c0f2fb54ee8bcde04f7233ba4
+
 
 </RelativeLayout>

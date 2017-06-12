@@ -114,32 +114,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        exportBtn = (Button) findViewById(R.id.export_button);
-        exportBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent exportIntent = new Intent(MainActivity.this, ExportDBActivity.class);
-                startActivity(exportIntent);
-            }
-        });
-
-        photoBtn = (Button) findViewById(R.id.picture_button);
-        photoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(SQLiteDBHelper.getInstance(MainActivity.this).getCountPatient() == 0)
-                {
-                    Toast.makeText(MainActivity.this, "Aucun patient enregistré", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Intent intent = new Intent(MainActivity.this, CameraActivity.class);
-                    startActivity(intent);
-                }
-
-            }
-        });
-
         autresBtn = (Button) findViewById(R.id.option_button);
         autresBtn.setOnClickListener(new View.OnClickListener() {
             @Override

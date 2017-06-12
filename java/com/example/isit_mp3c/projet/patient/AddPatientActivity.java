@@ -378,6 +378,7 @@ public class AddPatientActivity extends AppCompatActivity
         String GENDER = String.valueOf(genderSpinner.getSelectedItem());
         String UNIT = String.valueOf(ironSpinner.getSelectedItem());
 
+
         // Récupération de la carence
         String DEFICIENCY = getDeficiencyType();
 

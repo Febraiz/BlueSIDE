@@ -30,7 +30,7 @@ public class EditAnonymPatient extends AppCompatActivity
 
     private EditText height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin,
-            transferrin, serum_iron, cst, fibrinogen, crp, other;
+            transferrin, serum_iron, cst, fibrinogen, crp, other, age;
     private Spinner genderSpinner, ironSpinner;
     private RadioButton rbCertain, rbAbsence, rbIncertain;
     private TextView idPatient;
@@ -50,6 +50,7 @@ public class EditAnonymPatient extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         idPatient = (TextView) findViewById(R.id.id_patient);
+        age = (EditText) findViewById(R.id.age_patient);
         height = (EditText) findViewById(R.id.height_patient);
         weight = (EditText) findViewById(R.id.weight_patient);
         hemoglobin = (EditText) findViewById(R.id.hb);
@@ -155,6 +156,7 @@ public class EditAnonymPatient extends AppCompatActivity
             fibrinogen.setText(users.get(id - 1).getFibrinogen());
             crp.setText(users.get(id - 1).getCrp());
             other.setText(users.get(id - 1).getOther());
+            age.setText(users.get(id - 1).getAge());
             // sex.setText(users.get(id - 1).getSexe());
 
             String sex = users.get(id - 1).getSexe();
@@ -208,6 +210,7 @@ public class EditAnonymPatient extends AppCompatActivity
             String FIBRINOGEN = fibrinogen.getText().toString();
             String CRP = crp.getText().toString();
             String OTHER = other.getText().toString();
+            String AGE = age.getText().toString();
 
             String SECURED = users.get(id-1).getSecured();
 
@@ -227,7 +230,7 @@ public class EditAnonymPatient extends AppCompatActivity
             dbH.updatePatient(new User(GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
                     VGM, TCMH, IDR_CV, HYPO, RET_HE, PLATELET, FERRITIN,
                     TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER,
-                    SECURED, PSEUDO, DEFICIENCY), ID);
+                    SECURED, PSEUDO, DEFICIENCY, AGE), ID);
             dbH.close();
         }catch (Exception e){
             e.printStackTrace();

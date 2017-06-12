@@ -25,6 +25,7 @@
     <string name="name">Name </string>
     <string name="first_name">First name </string>
     <string name="birth">Date of birth </string>
+    <string name="age">Age</string>
     <string name="phone">Phone number </string>
     <string name="mail">E-mail adress </string>
     <string name="sex">Sex </string>
@@ -52,10 +53,12 @@
     <string name="deficiencyUnclear">Deficiency unclear</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="nombre_acquisition">Number of acquisition</string>
 
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="edit">Edit</string>
+    <string name="exit">Exit</string>
 
     <string-array name="setGender">
         <item>(none)</item>
@@ -130,7 +133,7 @@
     <string name="title_activity_fragment">FragmentActivity</string>
 
     <string name="title_activity_list_profile">ListProfile</string>
-    <string name="pseudo">Identification</string>
+    <string name="pseudo">Identification (File reference)</string>
     <string name="title_activity_list_profile2">ListProfile2</string>
 
     <string name="condition_name">Name is required</string>

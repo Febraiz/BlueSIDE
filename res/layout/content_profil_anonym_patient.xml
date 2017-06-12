@@ -64,12 +64,29 @@
 
 
         <TextView
+            android:id="@+id/textviewAge"
+            android:text="@string/age"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="2">
+        </TextView>
+        <TextView
+            android:id="@+id/age_patient"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_row="2"/>
+
+
+        <TextView
             android:id="@+id/textview8"
             android:text="@string/height"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="2">
+            android:layout_row="3">
         </TextView>
         <TextView
             android:id="@+id/height_patient"
@@ -78,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="2">
+            android:layout_row="3">
         </TextView>
 
 
@@ -89,7 +106,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="3">
+            android:layout_row="4">
         </TextView>
         <TextView
             android:id="@+id/weight_patient"
@@ -98,7 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="3">
+            android:layout_row="4">
         </TextView>
 
         <TextView
@@ -107,7 +124,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="4">
+            android:layout_row="5">
         </TextView>
 
         <TextView
@@ -117,7 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="4">
+            android:layout_row="5">
         </TextView>
 
         <TextView
@@ -126,7 +143,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="5">
+            android:layout_row="6">
         </TextView>
         <TextView
             android:id="@+id/imc"
@@ -135,7 +152,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="5">
+            android:layout_row="6">
         </TextView>
 
 
@@ -146,7 +163,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="6">
+            android:layout_row="7">
         </TextView>
         <TextView
             android:id="@+id/hb"
@@ -155,7 +172,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="6">
+            android:layout_row="7">
         </TextView>
 
 
@@ -166,7 +183,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="7">
+            android:layout_row="8">
         </TextView>
         <TextView
             android:id="@+id/vgm"
@@ -175,7 +192,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="7">
+            android:layout_row="8">
         </TextView>
 
 
@@ -186,7 +203,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="8">
+            android:layout_row="9">
         </TextView>
         <TextView
             android:id="@+id/tcmh"
@@ -195,7 +212,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="8">
+            android:layout_row="9">
         </TextView>
 
 
@@ -206,7 +223,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="9">
+            android:layout_row="10">
         </TextView>
         <TextView
             android:id="@+id/idr_cv"
@@ -215,7 +232,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="9">
+            android:layout_row="10">
         </TextView>
 
 
@@ -226,7 +243,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="10">
+            android:layout_row="11">
         </TextView>
         <TextView
             android:id="@+id/hypo"
@@ -235,7 +252,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="10">
+            android:layout_row="11">
         </TextView>
 
 
@@ -246,7 +263,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="11">
+            android:layout_row="12">
         </TextView>
         <TextView
             android:id="@+id/ret_he"
@@ -255,7 +272,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="11">
+            android:layout_row="12">
         </TextView>
 
 
@@ -266,7 +283,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="12">
+            android:layout_row="13">
         </TextView>
         <TextView
             android:id="@+id/platelet"
@@ -275,7 +292,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="12">
+            android:layout_row="13">
         </TextView>
 
 
@@ -286,7 +303,7 @@
             android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="13">
+            android:layout_row="14">
         </TextView>
         <TextView
             android:id="@+id/ferritin"
@@ -295,7 +312,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="13">
+            android:layout_row="14">
         </TextView>
 
 
@@ -306,7 +323,7 @@
             android:layout_width="109dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="14">
+            android:layout_row="15">
         </TextView>
         <TextView
             android:id="@+id/transferrin"
@@ -315,7 +332,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="14">
+            android:layout_row="15">
         </TextView>
 
 
@@ -326,7 +343,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="15">
+            android:layout_row="16">
         </TextView>
         <TextView
             android:id="@+id/srum_iron"
@@ -335,7 +352,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="15">
+            android:layout_row="16">
         </TextView>
 
 
@@ -347,7 +364,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="16">
+            android:layout_row="17">
         </TextView>
         <TextView
             android:id="@+id/cst"
@@ -356,7 +373,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="16">
+            android:layout_row="17">
         </TextView>
 
 
@@ -367,7 +384,7 @@
             android:layout_width="108dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="17">
+            android:layout_row="18">
         </TextView>
         <TextView
             android:id="@+id/fibrinogen"
@@ -376,7 +393,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="17">
+            android:layout_row="18">
         </TextView>
 
 
@@ -387,7 +404,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="18">
+            android:layout_row="19">
         </TextView>
         <TextView
             android:id="@+id/crp"
@@ -396,7 +413,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="18">
+            android:layout_row="19">
         </TextView>
 
 
@@ -407,7 +424,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="19">
+            android:layout_row="20">
         </TextView>
         <TextView
             android:id="@+id/other"
@@ -416,10 +433,24 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="19">
+            android:layout_row="20">
         </TextView>
 
+        <TextView
+            android:id="@+id/nbAcquisitionTV1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/nombre_acquisition"
+            android:layout_column="0"
+            android:layout_row="21"/>
 
+        <TextView
+            android:id="@+id/nbAcquisitionTV2"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_column="1"
+            android:layout_row="21"/>
 
         <Button
             android:id="@+id/edit_button"
@@ -431,7 +462,8 @@
             android:backgroundTint="@android:color/holo_blue_dark"
             android:textColor="@android:color/white"
             android:layout_column="0"
-            android:layout_row="20"/>
+            android:layout_row="22"/>
+
         <Button
             android:id="@+id/ok_button"
             android:layout_gravity="fill_horizontal"
@@ -442,7 +474,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="20"/>
+            android:layout_row="22"/>
 
     </GridLayout>
 

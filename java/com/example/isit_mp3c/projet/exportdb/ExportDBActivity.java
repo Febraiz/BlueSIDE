@@ -150,11 +150,13 @@ public class ExportDBActivity extends AppCompatActivity {
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
             SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
             users = getPatient();
-            printWriter.println("sep=;");
-            printWriter.println("NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; SEX;" +
+            printWriter.append("sep=;");
+            printWriter.append("\n");
+            printWriter.append("NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
                     " PSEUDO; DEFICIENCY ");
+            printWriter.append("\n");
 
             for(int i =0; i<users.size(); i++) {
                 try {
@@ -164,6 +166,7 @@ public class ExportDBActivity extends AppCompatActivity {
                         String name = users.get(i).getName();
                         String firstName = users.get(i).getFirstName();
                         String birthDate = users.get(i).getDateBirth();
+                        String age = users.get(i).getAge();
                         String adress = users.get(i).getAddress();
                         String mail = users.get(i).getMail();
                         String phone = users.get(i).getPhone();
@@ -193,14 +196,15 @@ public class ExportDBActivity extends AppCompatActivity {
                         String pseudo = users.get(i).getPseudo();
                         String carence = users.get(i).getDeficiency();
 
-                        String record = name + ";" + firstName + ";" + birthDate + ";" + adress
+                        String record = name + ";" + firstName + ";" + birthDate + ";" + age + ";" + adress
                                 + ";" + mail + ";" + phone + ";" + sex + ";" + height + ";"
                                 + weight + ";" + imc + ";" + hb + ";" + vgm + ";" + tcmh
                                 + ";" + idr_cv + ";" + hypo + ";" + ret_he + ";" + platelet
                                 + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
                                 + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
                                 + ";" + pseudo + ";" + carence;
-                        printWriter.println(record);
+                        printWriter.append(record);
+                        printWriter.append("\n");
                     }else {
                         Log.i("export db","row not secured");
                     }
@@ -230,11 +234,13 @@ public class ExportDBActivity extends AppCompatActivity {
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
             SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
             users = getPatient();
-            printWriter.println("sep=;");
-            printWriter.println("NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; SEX;" +
+            printWriter.append("sep=;");
+            printWriter.append("\n");
+            printWriter.append("NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
                     " PSEUDO; DEFICIENCY ");
+            printWriter.append("\n");
 
             for(int i =0; i<users.size(); i++) {
                 try {
@@ -244,6 +250,7 @@ public class ExportDBActivity extends AppCompatActivity {
                         String name = users.get(i).getName();
                         String firstName = users.get(i).getFirstName();
                         String birthDate = users.get(i).getDateBirth();
+                        String age = users.get(i).getAge();
                         String adress = users.get(i).getAddress();
                         String mail = users.get(i).getMail();
                         String phone = users.get(i).getPhone();
@@ -273,14 +280,15 @@ public class ExportDBActivity extends AppCompatActivity {
                         String pseudo = users.get(i).getPseudo();
                         String carence = users.get(i).getDeficiency();
 
-                        String record = name + ";" + firstName + ";" + birthDate + ";" + adress
+                        String record = name + ";" + firstName + ";" + birthDate + ";" + age + ";" + adress
                                 + ";" + mail + ";" + phone + ";" + sex + ";" + height + ";"
                                 + weight + ";" + imc + ";" + hb + ";" + vgm + ";" + tcmh
                                 + ";" + idr_cv + ";" + hypo + ";" + ret_he + ";" + platelet
                                 + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
                                 + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
                                 + ";" + pseudo + ";" + carence;
-                        printWriter.println(record);
+                        printWriter.append(record);
+                        printWriter.append("\n");
                     }else {
                         Log.i("export db","row not secured");
                     }
@@ -309,11 +317,13 @@ public class ExportDBActivity extends AppCompatActivity {
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
             SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
             users = getPatient();
-            printWriter.println("sep=;");
-            printWriter.println("ID; NAME; FIRST_NAME; BIRTH_DATE; ADDRESS; MAIL; PHONE; SEX;" +
+            printWriter.append("sep=;");
+            printWriter.append("\n");
+            printWriter.append("ID; NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
                     " PSEUDO; DEFICIENCY ");
+            printWriter.append("\n");
 
             for(int i =0; i<users.size(); i++) {
                 try {
@@ -323,6 +333,7 @@ public class ExportDBActivity extends AppCompatActivity {
                     String name = users.get(i).getName();
                     String firstName = users.get(i).getFirstName();
                     String birthDate = users.get(i).getDateBirth();
+                    String age = users.get(i).getAge();
                     String adress = users.get(i).getAddress();
                     String mail = users.get(i).getMail();
                     String phone = users.get(i).getPhone();
@@ -354,14 +365,15 @@ public class ExportDBActivity extends AppCompatActivity {
                     String pseudo = users.get(i).getPseudo();
                     String carence = users.get(i).getDeficiency();
 
-                    String record =id + ";" +  name + ";" + firstName + ";" + birthDate + ";" + adress
+                    String record =id + ";" +  name + ";" + firstName + ";" + birthDate + ";" + age + ";"  + adress
                             + ";" + mail + ";" + phone + ";" + sex + ";" + height + ";"
                             + weight + ";" + imc + ";" + hb + ";" + vgm + ";" + tcmh
                             + ";" + idr_cv + ";" + hypo + ";" + ret_he + ";" + platelet
                             + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
                             + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
                             + ";" + pseudo + ";" + carence;
-                    printWriter.println(record);
+                    printWriter.append(record);
+                    printWriter.append("\n");
                 }catch (Exception e) {
                     e.printStackTrace();
                     Log.e("ExportDB", "Error in for : " + e.getMessage());

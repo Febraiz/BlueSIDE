@@ -23,6 +23,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.isit_mp3c.projet.MainActivity;
@@ -41,6 +42,7 @@ public class AddPatientActivity extends AppCompatActivity
     private EditText name, first_Name, date_Birth, address, mail, phone, height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin, transferrin, serum_iron, cst,
             fibrinogen, crp, other;
+    private TextView age_patient;
     private Spinner genderSpinner, ironSpinner;
     private RadioButton rbCertain, rbAbsence, rbIncertain;
     private List<User> patientsList;
@@ -48,6 +50,7 @@ public class AddPatientActivity extends AppCompatActivity
     private boolean isDateValid = true;
     private boolean isPhoneValid = true;
     SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
+    User newUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +62,14 @@ public class AddPatientActivity extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        name = (EditText) findViewById(R.id.name_patient);
-        mail = (EditText) findViewById(R.id.mail_patient);
-        date_Birth = (EditText) findViewById(R.id.patient_birth);
-        phone = (EditText) findViewById(R.id.phone_patient);
+
+
+        name = (EditText)findViewById(R.id.name_patient);
+        mail = (EditText)findViewById(R.id.mail_patient);
+        date_Birth = (EditText)findViewById(R.id.patient_birth);
+        phone = (EditText)findViewById(R.id.phone_patient);
+        age_patient = (TextView)findViewById(R.id.age_patient);
+
 
         genderSpinner = (Spinner) findViewById(R.id.sexe_patient);
         ironSpinner = (Spinner) findViewById(R.id.iron_unit);
@@ -99,6 +106,24 @@ public class AddPatientActivity extends AppCompatActivity
             }
         });
 
+        date_Birth.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                newUser.setDateBirth(date_Birth.getText().toString());
+                age_patient.setText(newUser.calculAge());
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                newUser.setDateBirth(date_Birth.getText().toString());
+                age_patient.setText(newUser.calculAge());
+            }
+        });
         //email check
         mail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -379,37 +404,8 @@ public class AddPatientActivity extends AppCompatActivity
         Log.i("last ID is ", "AddPatientActivity_java, Last ID set is =" + lastID);
         dbH.close();
         return lastID;
+    }
 
-        EditText nbrecup1 = (EditText) findViewById(R.id.name_patient);
-        EditText nbrecup2 = (EditText) findViewById(R.id.first_name_patient);
-        EditText nbrecup3 = (EditText) findViewById(R.id.adress_patient);
-
-        EditText nbrecup4 = (EditText) findViewById(R.id.height_patient);
-        EditText nbrecup5 = (EditText) findViewById(R.id.weight_patient);
-        EditText nbrecup6 = (EditText) findViewById(R.id.hb);
-
-        EditText nbrecup7 = (EditText) findViewById(R.id.vgm);
-        EditText nbrecup8 = (EditText) findViewById(R.id.tcmh);
-        EditText nbrecup9 = (EditText) findViewById(R.id.idr_cv);
-
-        String recup1, recup2, recup3, recup4, recup5, recup6, recup7, recup8, recup9;
-
-        recup1 = nbrecup1.getText().toString();
-        recup2 = nbrecup2.getText().toString();
-        recup3 = nbrecup3.getText().toString();
-        recup4 = nbrecup4.getText().toString();
-        recup5 = nbrecup5.getText().toString();
-        recup6 = nbrecup6.getText().toString();
-        recup7 = nbrecup7.getText().toString();
-        recup8 = nbrecup8.getText().toString();
-        recup9 = nbrecup9.getText().toString();
-
-        if (recup1.matches("") || recup2.matches("") || recup3.matches("") || recup4.matches("")
-                || recup5.matches("") || recup6.matches("") || recup7.matches("") || recup8.matches("")
-                || recup9.matches("")) {
-            Toast.makeText(this, "Vous devez renseigner tous les champs !", Toast.LENGTH_SHORT).show();
-            //return;
-        }
 
 
         final Calendar myCalendar = Calendar.getInstance();
@@ -458,6 +454,9 @@ public class AddPatientActivity extends AppCompatActivity
         Log.i("return id", "AddPatientActivity_java, retuuuuurn extra id "
                 + Integer.parseInt(String.valueOf(lastID)));
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setCancelable(false);
+
         builder.setTitle(R.string.save_dialog_title)
                 .setMessage(R.string.save_dialog_question)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -561,5 +560,4 @@ public class AddPatientActivity extends AppCompatActivity
         else
             return "";
     }
-}
 }

@@ -66,7 +66,7 @@ public class AutresOptions extends AppCompatActivity {
                 //public void open(View v){
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AutresOptions.this);
                     alertDialogBuilder.setMessage(getString(R.string.mail_request));
-                    alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
                                 Intent myIntent = new Intent(AutresOptions.this, ExportDBActivity.class);
@@ -74,7 +74,7 @@ public class AutresOptions extends AppCompatActivity {
                             }
                     });
 
-                    alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                    alertDialogBuilder.setNegativeButton(R.string.no,new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             finish();

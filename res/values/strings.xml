@@ -141,6 +141,11 @@
     <string name="condition_date">Incorrect date format</string>
     <string name="condition_phone">Incorrect phone number</string>
     <string name="condition_pseudo">Identifier is required</string>
+    <string name="condition_height">Incorrect height</string>
+    <string name="condition_weight">Incorrect weight</string>
+    <string name="condition_idr_cv">Incorrect : IDR-CV>100%</string>
+    <string name="condition_hypo">Incorrect : Hypo>100%</string>
+    <string name="condition_transferrin">Incorrect : Transferrin>100%</string>
 
     <string name="patient_not_deleted">Error while deleting patient</string>
 

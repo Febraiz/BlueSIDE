@@ -43,6 +43,7 @@ public class AddPatientActivity extends AppCompatActivity
     private EditText name, first_Name, date_Birth, address, mail, phone, height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin, transferrin, serum_iron, cst,
             fibrinogen, crp, other;
+
     private TextView age_patient;
     private Spinner genderSpinner, ironSpinner;
     private RadioButton rbCertain, rbAbsence, rbIncertain;
@@ -72,6 +73,28 @@ public class AddPatientActivity extends AppCompatActivity
         date_Birth = (EditText)findViewById(R.id.patient_birth);
         phone = (EditText)findViewById(R.id.phone_patient);
         age_patient = (TextView)findViewById(R.id.age_patient);
+
+        address = (EditText) findViewById(R.id.adress_patient);
+        height = (EditText) findViewById(R.id.height_patient);
+        weight = (EditText) findViewById(R.id.weight_patient);
+        hemoglobin = (EditText) findViewById(R.id.hb);
+        vgm = (EditText) findViewById(R.id.vgm);
+        tcmh = (EditText) findViewById(R.id.tcmh);
+        idr_cv = (EditText) findViewById(R.id.idr_cv);
+        hypo = (EditText) findViewById(R.id.hypo);
+        ret_he = (EditText) findViewById(R.id.ret_he);
+        platelet = (EditText) findViewById(R.id.platelet);
+        ferritin = (EditText) findViewById(R.id.ferritin);
+        transferrin = (EditText) findViewById(R.id.transferrin);
+        serum_iron = (EditText) findViewById(R.id.srum_iron);
+        cst = (EditText) findViewById(R.id.cst);
+        fibrinogen = (EditText) findViewById(R.id.fibrinogen);
+        crp = (EditText) findViewById(R.id.crp);
+        other = (EditText) findViewById(R.id.other);
+
+        rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
+        rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
+        rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
 
 
         genderSpinner = (Spinner) findViewById(R.id.sexe_patient);
@@ -341,6 +364,7 @@ public class AddPatientActivity extends AppCompatActivity
     public boolean isInputValid() {
         boolean[] test = new boolean[4];
         boolean isValid = true;
+
         if (!name.getText().toString().isEmpty()) {
             test[0] = true;
         } else {
@@ -369,6 +393,44 @@ public class AddPatientActivity extends AppCompatActivity
             phone.setError(getString(R.string.condition_phone));
         }
 
+        /*String tmpHeight = height.getText().toString();
+        if (!tmpHeight.isEmpty()) {
+            if (Float.parseFloat(tmpHeight) > 100) {
+                tmpHeight = tmpHeight.substring(0, 1) + "." + tmpHeight.substring(1);
+            }
+            if(Float.parseFloat(tmpHeight) > 2.3) {
+                test[4] = false;
+                height.setError(getString(R.string.condition_height));
+            } else {
+                test[4] = true;
+            }
+        }
+
+        if (!weight.getText().toString().equalsIgnoreCase("") && (Integer.parseInt(weight.getText().toString()) > 400 || Integer.parseInt(weight.getText().toString()) < 20)) {
+            test[5] = false;
+            weight.setError(getString(R.string.condition_weight));
+        } else {
+            test[5] = true;
+        }
+        if (!idr_cv.getText().toString().isEmpty() && Integer.parseInt(idr_cv.getText().toString()) > 100) {
+            test[6] = false;
+            idr_cv.setError(getString(R.string.condition_idr_cv));
+        } else {
+            test[6] = true;
+        }
+        if (!hypo.getText().toString().isEmpty() && Integer.parseInt(hypo.getText().toString()) > 100) {
+            test[7] = false;
+            hypo.setError(getString(R.string.condition_hypo));
+        } else {
+            test[7] = true;
+        }*/
+        /*if (!transferrin.getText().toString().isEmpty() && Integer.parseInt(transferrin.getText().toString()) > 100) {
+            test[8] = false;
+            transferrin.setError(getString(R.string.condition_transferrin));
+        } else {
+            test[8] = true;
+        }*/
+
         int i = 0;
         while (i < test.length) {
             if (!test[i]) isValid = false;
@@ -382,33 +444,6 @@ public class AddPatientActivity extends AppCompatActivity
     public long addNewPatient() {
         long lastID = 0;
         int ID;
-
-        name = (EditText) findViewById(R.id.name_patient);
-        first_Name = (EditText) findViewById(R.id.first_name_patient);
-        //date_Birth = (EditText)findViewById(R.id.patient_birth);
-        address = (EditText) findViewById(R.id.adress_patient);
-        //mail = (EditText)findViewById(R.id.mail_patient);
-        //phone = (EditText)findViewById(R.id.phone_patient);
-        height = (EditText) findViewById(R.id.height_patient);
-        weight = (EditText) findViewById(R.id.weight_patient);
-        hemoglobin = (EditText) findViewById(R.id.hb);
-        vgm = (EditText) findViewById(R.id.vgm);
-        tcmh = (EditText) findViewById(R.id.tcmh);
-        idr_cv = (EditText) findViewById(R.id.idr_cv);
-        hypo = (EditText) findViewById(R.id.hypo);
-        ret_he = (EditText) findViewById(R.id.ret_he);
-        platelet = (EditText) findViewById(R.id.platelet);
-        ferritin = (EditText) findViewById(R.id.ferritin);
-        transferrin = (EditText) findViewById(R.id.transferrin);
-        serum_iron = (EditText) findViewById(R.id.srum_iron);
-        cst = (EditText) findViewById(R.id.cst);
-        fibrinogen = (EditText) findViewById(R.id.fibrinogen);
-        crp = (EditText) findViewById(R.id.crp);
-        other = (EditText) findViewById(R.id.other);
-
-        rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
-        rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
-        rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
 
         String NAME = name.getText().toString();
         String FIRST_NAME = first_Name.getText().toString();

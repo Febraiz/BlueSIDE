@@ -110,8 +110,13 @@
     <string name="condition_name">Ce champ est obligatoire</string>
     <string name="condition_mail">Adresse mail incorrecte</string>
     <string name="condition_date">Format de date de naissance incorrecte</string>
-    <string name="condition_phone">numéro de téléphone incorrect</string>
+    <string name="condition_phone">Numéro de téléphone incorrect</string>
     <string name="condition_pseudo">Ce champ est obligatoire</string>
+    <string name="condition_height">Taille incorrecte</string>
+    <string name="condition_weight">Poids incorrecte</string>
+    <string name="condition_idr_cv">Incorrect : IDR-CV>100%</string>
+    <string name="condition_hypo">Incorrect : Hypo>100%</string>
+    <string name="condition_transferrin">Incorrect : Transferrin>100%</string>
 
     <string name="patient_not_deleted">Erreur lors de la suppression du patient</string>
 

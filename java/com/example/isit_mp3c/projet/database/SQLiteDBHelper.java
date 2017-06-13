@@ -642,4 +642,27 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
 
     }
 
+    public boolean userExist(int id){
+        boolean exist = false;
+        try{
+            String query = "SELECT COUNT(*) FROM " + TABLE_USER + " WHERE " + USER_ID + "=" + id;
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+DB_NAME, null,
+                    SQLiteDatabase.OPEN_READWRITE);
+            Cursor cursor = db.rawQuery(query, null);
+
+            while (cursor.moveToNext()) {
+                if(Integer.parseInt(cursor.getString(0)) == 1){
+                    exist = true;
+                }
+            }
+            cursor.close();
+        }catch (Exception e){
+            Log.d("database ", e.getMessage());
+        }
+
+        db.close();
+        return exist;
+    }
+
+
 }

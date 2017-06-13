@@ -369,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
                     sftp.cd(directory+"/"+dir);
 
                     FileInputStream fis = createFile(getApplicationContext());
-                    sftp.put(fis, "blueSIDE.csv");
+                    sftp.put(fis, "blueSIDE.csv", ChannelSftp.OVERWRITE);
 
                     sftp.cd(directory);
                     File localSrc = getExternalFilesDir("");
@@ -421,26 +421,19 @@ public class MainActivity extends AppCompatActivity {
                 String[] parts1 = string.split("_acq");
                 String acquisition_number = parts1[1];
 
-                User user = dbHelper.getPatientWithId(Integer.parseInt(id));
-                Acquisition  acq = dbHelper.getAcquisition(Integer.parseInt(id),Integer.parseInt(acquisition_number));
 
-                //suppression fichier data.csv if exist
-                /*try {
-                    //if le patient existe toujours
-                    if(dbHelper.getPatientWithId(Integer.parseInt(id)) != null) {
-                        Log.i("rm", "Delete data csv of " + id);
-                        sftp.rm(dir + "/" + src.getName() + "/" + "data.csv");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
 
-                FileInputStream dataFile = createdataFile(getApplicationContext(),user,acq);
+                if(dbHelper.userExist(Integer.parseInt(id))) {
+                    User user = dbHelper.getPatientWithId(Integer.parseInt(id));
+                    Acquisition  acq = dbHelper.getAcquisition(Integer.parseInt(id),Integer.parseInt(acquisition_number));
 
-                //if(dbHelper.getPatientWithId(Integer.parseInt(id)) != null) {
-                //    Log.i("put", "Create data csv of " + id);
-                    sftp.put(dataFile, dir + "/" + src.getName() + "/" + "data.csv");
-                //}
+                    FileInputStream dataFile = createdataFile(getApplicationContext(),user,acq);
+
+                    sftp.put(dataFile, dir + "/" + src.getName() + "/" + "data.csv", ChannelSftp.OVERWRITE);
+                    Log.i("data.csv", "OVERWRITE! " + user.getPseudo());
+                }
+                else
+                    Log.i("data.csv", "NO overwrite! " + id);
 
 
                 File fileToDelete = new File(getApplicationContext().getCacheDir()+

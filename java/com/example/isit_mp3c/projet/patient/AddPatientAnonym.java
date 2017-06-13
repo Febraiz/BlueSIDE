@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.RadioButton;
 
@@ -34,7 +35,7 @@ import java.util.List;
 public class AddPatientAnonym extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener{
 
-    private EditText height, weight, hemoglobin,
+    private EditText name, first_Name, mail, date_Birth, phone, address, height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin, transferrin, serum_iron, cst,
             fibrinogen, crp, other, pseudo, age;
     private RadioButton rbCertain, rbAbsence, rbIncertain;
@@ -53,6 +54,35 @@ public class AddPatientAnonym extends AppCompatActivity
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        name = (EditText)findViewById(R.id.name_patient);
+        first_Name = (EditText)findViewById(R.id.first_name_patient);
+        mail = (EditText)findViewById(R.id.mail_patient);
+        date_Birth = (EditText)findViewById(R.id.patient_birth);
+        phone = (EditText)findViewById(R.id.phone_patient);
+        age = (EditText) findViewById(R.id.age_patient);
+
+        address = (EditText) findViewById(R.id.adress_patient);
+        height = (EditText) findViewById(R.id.height_patient);
+        weight = (EditText) findViewById(R.id.weight_patient);
+        hemoglobin = (EditText) findViewById(R.id.hb);
+        vgm = (EditText) findViewById(R.id.vgm);
+        tcmh = (EditText) findViewById(R.id.tcmh);
+        idr_cv = (EditText) findViewById(R.id.idr_cv);
+        hypo = (EditText) findViewById(R.id.hypo);
+        ret_he = (EditText) findViewById(R.id.ret_he);
+        platelet = (EditText) findViewById(R.id.platelet);
+        ferritin = (EditText) findViewById(R.id.ferritin);
+        transferrin = (EditText) findViewById(R.id.transferrin);
+        serum_iron = (EditText) findViewById(R.id.srum_iron);
+        cst = (EditText) findViewById(R.id.cst);
+        fibrinogen = (EditText) findViewById(R.id.fibrinogen);
+        crp = (EditText) findViewById(R.id.crp);
+        other = (EditText) findViewById(R.id.other);
+
+        rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
+        rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
+        rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
 
         pseudo = (EditText)findViewById(R.id.pseudo);
         genderSpinner = (Spinner) findViewById(R.id.sexe_patient);
@@ -148,11 +178,13 @@ public class AddPatientAnonym extends AppCompatActivity
 
             @Override
             public void onClick(View v) {
-
-                addNewPatient();
-                Log.i("last Id ",
-                        "AddPatientActivity_java, Laaaaaaaaaaaaaast Id issss === " + lastID);
-                saveDialog(new View(getBaseContext()), lastID);
+                //if (isInputValid()) {
+                    addNewPatient();
+                    saveDialog(new View(getBaseContext()), lastID);
+                /*} else {
+                    Toast.makeText(AddPatientAnonym.this, "Error",
+                            Toast.LENGTH_LONG);
+                }*/
 
             }
         });
@@ -313,8 +345,14 @@ public class AddPatientAnonym extends AppCompatActivity
                     } else {
                         lastID2 = 0;
                     }
-                    addNewPatient();
-                    saveDialog(new View(getBaseContext()), lastID2);
+
+                    //if (isInputValid()) {
+                        addNewPatient();
+                        saveDialog(new View(getBaseContext()), lastID2);
+                    /*} else {
+                        Toast.makeText(AddPatientAnonym.this, "Error",
+                                Toast.LENGTH_LONG);
+                    }*/
                 } else {
                     pseudo.setError(getString(R.string.condition_pseudo));
                     Toast.makeText(AddPatientAnonym.this, "Error",
@@ -381,6 +419,58 @@ public class AddPatientAnonym extends AppCompatActivity
                     break;
         }
     }
+
+    public boolean isInputValid() {
+        boolean[] test = new boolean[5];
+        boolean isValid = true;
+
+        String tmpHeight = height.getText().toString();
+        if (!tmpHeight.isEmpty()) {
+            if (Float.parseFloat(tmpHeight) > 100) {
+                tmpHeight = tmpHeight.substring(0, 1) + "." + tmpHeight.substring(1);
+            }
+            if(Float.parseFloat(tmpHeight) > 2.3) {
+                test[1] = false;
+                height.setError(getString(R.string.condition_height));
+            } else {
+                test[1] = true;
+            }
+        }
+
+        if (!weight.getText().toString().equalsIgnoreCase("") && (Integer.parseInt(weight.getText().toString()) > 400 || Integer.parseInt(weight.getText().toString()) < 20)) {
+            test[2] = false;
+            weight.setError(getString(R.string.condition_weight));
+        } else {
+            test[2] = true;
+        }
+        if (!idr_cv.getText().toString().isEmpty() && Integer.parseInt(idr_cv.getText().toString()) > 100) {
+            test[3] = false;
+            idr_cv.setError(getString(R.string.condition_idr_cv));
+        } else {
+            test[3] = true;
+        }
+        if (!hypo.getText().toString().isEmpty() && Integer.parseInt(hypo.getText().toString()) > 100) {
+            test[4] = false;
+            hypo.setError(getString(R.string.condition_hypo));
+        } else {
+            test[4] = true;
+        }
+        /*if (!transferrin.getText().toString().isEmpty() && Integer.parseInt(transferrin.getText().toString()) > 100) {
+            test[5] = false;
+            transferrin.setError(getString(R.string.condition_transferrin));
+        } else {
+            test[5] = true;
+        }*/
+
+        int i = 0;
+        while (i < test.length) {
+            if (!test[i]) isValid = false;
+            i++;
+        }
+
+        return isValid ? true : false;
+    }
+
 
     public String getDeficiencyType()
     {

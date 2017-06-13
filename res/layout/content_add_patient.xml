@@ -410,30 +410,10 @@
             android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="18">
-        </TextView>
-        <EditText
-            android:id="@+id/ferritin"
-            android:inputType="numberDecimal"
-            android:textSize="15sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="2"
-            android:layout_column="1"
-            android:layout_row="18"/>
-
-
-
-        <TextView
-            android:id="@+id/textview18"
-            android:text="@string/transferrin"
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
             android:layout_row="19">
         </TextView>
         <EditText
-            android:id="@+id/transferrin"
+            android:id="@+id/ferritin"
             android:inputType="numberDecimal"
             android:textSize="15sp"
             android:layout_width="wrap_content"
@@ -445,12 +425,32 @@
 
 
         <TextView
+            android:id="@+id/textview18"
+            android:text="@string/transferrin"
+            android:layout_width="109dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="20">
+        </TextView>
+        <EditText
+            android:id="@+id/transferrin"
+            android:inputType="numberDecimal"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_column="1"
+            android:layout_row="20"/>
+
+
+
+        <TextView
             android:id="@+id/textview19"
             android:text="@string/serum_iron"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="20">
+            android:layout_row="21">
         </TextView>
         <EditText
             android:id="@+id/srum_iron"
@@ -459,13 +459,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="20"/>
+            android:layout_row="21"/>
         <Spinner
             android:id="@+id/iron_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="2"
-            android:layout_row="20"/>
+            android:layout_row="21"/>
 
 
 
@@ -475,30 +475,10 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="21">
-        </TextView>
-        <EditText
-            android:id="@+id/cst"
-            android:inputType="numberDecimal"
-            android:textSize="15sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="2"
-            android:layout_column="1"
-            android:layout_row="21"/>
-
-
-
-        <TextView
-            android:id="@+id/textview21"
-            android:text="@string/fibrinogen"
-            android:layout_width="108dp"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
             android:layout_row="22">
         </TextView>
         <EditText
-            android:id="@+id/fibrinogen"
+            android:id="@+id/cst"
             android:inputType="numberDecimal"
             android:textSize="15sp"
             android:layout_width="wrap_content"
@@ -510,15 +490,15 @@
 
 
         <TextView
-            android:id="@+id/textview22"
-            android:text="@string/crp"
-            android:layout_width="100dp"
+            android:id="@+id/textview21"
+            android:text="@string/fibrinogen"
+            android:layout_width="108dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="23">
         </TextView>
         <EditText
-            android:id="@+id/crp"
+            android:id="@+id/fibrinogen"
             android:inputType="numberDecimal"
             android:textSize="15sp"
             android:layout_width="wrap_content"
@@ -530,12 +510,32 @@
 
 
         <TextView
+            android:id="@+id/textview22"
+            android:text="@string/crp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="24">
+        </TextView>
+        <EditText
+            android:id="@+id/crp"
+            android:inputType="numberDecimal"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_column="1"
+            android:layout_row="24"/>
+
+
+
+        <TextView
             android:id="@+id/textview23"
             android:text="@string/others"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="24">
+            android:layout_row="25">
         </TextView>
         <EditText
             android:id="@+id/other"
@@ -545,7 +545,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="24"/>
+            android:layout_row="25"/>
 
 
         <Button
@@ -558,7 +558,7 @@
             android:backgroundTint="@color/colorPrimary"
             android:textColor="@android:color/white"
             android:layout_column="0"
-            android:layout_row="25"/>
+            android:layout_row="26"/>
         <Button
             android:id="@+id/save_button"
             android:layout_gravity="fill_horizontal"
@@ -570,7 +570,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="25"/>
+            android:layout_row="26"/>
 
 
     </GridLayout>

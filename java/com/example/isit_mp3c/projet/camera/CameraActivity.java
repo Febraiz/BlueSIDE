@@ -157,6 +157,11 @@ public class CameraActivity extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Bundle b = getIntent().getExtras();
+        String name = ""; // or other values
+        if(b != null)
+            name = b.getString("pseudo");
+
         textureView = (TextureView) findViewById(R.id.textView);
         textureCapture = (TextureView) findViewById(R.id.textCapture);
 
@@ -184,7 +189,14 @@ public class CameraActivity extends AppCompatActivity
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //get patient ID for the directoryFiles
-        getNameFileDialog();
+        if(name.equalsIgnoreCase(""))
+            getNameFileDialog();
+        else {
+            directoryPatient = name;
+            setDirectoryName();
+        }
+
+        Log.i("directory", name);
 
         Log.i(TAG, "onCreate");
 

@@ -52,7 +52,7 @@ public class UiView extends ListFragment {
         presenter.listItemClicked(listView, view, position, id);
     }
 
-    /* Populate options menu and or action bar with menu from res/menu/menu_main.xml*/
+    /* Populate options menu and or action bar with menu from res/menu/menu_browser.xml*/
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);

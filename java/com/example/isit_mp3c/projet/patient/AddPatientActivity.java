@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
+import com.example.isit_mp3c.projet.camera.CameraActivity;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
 import com.example.isit_mp3c.projet.exportdb.ExportDBActivity;
@@ -52,6 +53,7 @@ public class AddPatientActivity extends AppCompatActivity
     private boolean isPhoneValid = true;
     SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
     User newUser = new User();
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class AddPatientActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         name = (EditText)findViewById(R.id.name_patient);
+        first_Name = (EditText)findViewById(R.id.first_name_patient);
         mail = (EditText)findViewById(R.id.mail_patient);
         date_Birth = (EditText)findViewById(R.id.patient_birth);
         phone = (EditText)findViewById(R.id.phone_patient);
@@ -112,6 +115,61 @@ public class AddPatientActivity extends AppCompatActivity
         // Apply the adapter to the spinner
         ironSpinner.setAdapter(ironSpinnerAdapter);
         ironSpinner.setOnItemSelectedListener(this);
+
+        name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(name.length() >= 3 && first_Name.length() >= 3) {
+                    menu.getItem(0).setVisible(true);
+                }
+                else {
+                    menu.getItem(0).setVisible(false);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(name.length() >= 3 && first_Name.length() >= 3) {
+                    menu.getItem(0).setVisible(true);
+                }
+                else {
+                    menu.getItem(0).setVisible(false);
+                }
+            }
+        });
+
+        first_Name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(name.length() >= 3 && first_Name.length() >= 3) {
+                    menu.getItem(0).setVisible(true);
+                }
+                else {
+                    menu.getItem(0).setVisible(false);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(name.length() >= 3 && first_Name.length() >= 3) {
+                    menu.getItem(0).setVisible(true);
+                }
+                else {
+                    menu.getItem(0).setVisible(false);
+                }
+            }
+        });
+
 
         //set the date of birth
         date_Birth.setOnClickListener(new View.OnClickListener() {
@@ -401,21 +459,17 @@ public class AddPatientActivity extends AppCompatActivity
         return lastID;
     }
 
+    Calendar myCalendar = Calendar.getInstance();
 
-
-         Calendar myCalendar = Calendar.getInstance();
-
-        DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel();
-            }
-
-        };
+    DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+    };
 
     private void updateLabel() {
         //set the date format according to the language :
@@ -490,6 +544,7 @@ public class AddPatientActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_patient, menu);
         menu.getItem(0).setEnabled(true);
@@ -563,6 +618,31 @@ public class AddPatientActivity extends AppCompatActivity
                     Toast.makeText(AddPatientActivity.this, "Error",
                             Toast.LENGTH_LONG);
                 }
+                break;
+            case R.id.takePicture:
+                long id = 0;
+                User user = new User();
+                if(isInputValid()) {
+                    patientsList = getPatient();
+                    final long lastID2;
+                    if(patientsList.size() != -1) {
+                        lastID2 = patientsList.size()+1;
+                    } else {
+                        lastID2 = 0;
+                    }
+                    Log.i("last id", "AddPatient, onItemSemected, last id is :" + lastID2);
+                    id = addNewPatient();
+                    user = dbH.getPatientWithId(Integer.parseInt((Long.toString(id))));
+                    saveDialog(new View(getBaseContext()), lastID2);
+                } else {
+                    Toast.makeText(AddPatientActivity.this, "Error",
+                            Toast.LENGTH_LONG);
+                }
+                Intent intent = new Intent(AddPatientActivity.this, CameraActivity.class);
+                Bundle b = new Bundle();
+                b.putString("pseudo", id + "-" + user.getPseudo());
+                intent.putExtras(b);
+                startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);

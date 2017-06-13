@@ -25,18 +25,19 @@ import com.example.isit_mp3c.projet.exportdb.ExportDBActivity;
 
 public class AutresOptions extends AppCompatActivity {
 
+    Toast mToast = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_autres_options);
-        Button myButton = (Button) findViewById(R.id.picture_button);
+        Button pictureBtn = (Button) findViewById(R.id.picture_button);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        myButton.setOnClickListener(new View.OnClickListener() {
+        pictureBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -44,7 +45,9 @@ public class AutresOptions extends AppCompatActivity {
 
                 if(SQLiteDBHelper.getInstance(AutresOptions.this).getCountPatient() == 0)
                 {
-                    Toast.makeText(AutresOptions.this, "Aucun patient enregistré", Toast.LENGTH_SHORT).show();
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(AutresOptions.this, "Aucun patient enregistré", Toast.LENGTH_SHORT);
+                    mToast.show();
                 }
                 else{
                     Intent intent = new Intent(AutresOptions.this, CameraActivity.class);
@@ -68,7 +71,6 @@ public class AutresOptions extends AppCompatActivity {
                             alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface arg0, int arg1) {
-                                            Toast.makeText(AutresOptions.this,"You clicked yes button",Toast.LENGTH_LONG).show();
                                             Intent myIntent = new Intent(AutresOptions.this, ExportDBActivity.class);
                                             startActivity(myIntent);
                                         }

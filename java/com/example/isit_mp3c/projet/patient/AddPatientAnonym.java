@@ -7,8 +7,11 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +24,7 @@ import android.widget.RadioButton;
 
 import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
+import com.example.isit_mp3c.projet.camera.CameraActivity;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
 
@@ -37,6 +41,8 @@ public class AddPatientAnonym extends AppCompatActivity
     private Spinner genderSpinner, ironSpinner;
     private List<User> users;
     SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
+    private boolean mode2 = false;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,33 @@ public class AddPatientAnonym extends AppCompatActivity
         rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
         rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
         rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
+
+        pseudo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(pseudo.length() >= 2) {
+                    menu.getItem(0).setVisible(true);
+                }
+                else {
+                    menu.getItem(0).setVisible(false);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(pseudo.length() >= 2) {
+                    menu.getItem(0).setVisible(true);
+                }
+                else {
+                    menu.getItem(0).setVisible(false);
+                }
+            }
+        });
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> genderSpinnerAdapter = ArrayAdapter.createFromResource(this,
@@ -137,7 +170,7 @@ public class AddPatientAnonym extends AppCompatActivity
         return users;
     }
 
-    private void addNewPatient() {
+    private long addNewPatient() {
         long lastID =0;
 
         String HEIGHT = height.getText().toString();
@@ -179,6 +212,7 @@ public class AddPatientAnonym extends AppCompatActivity
 
         Log.i("last ID is ", "AddNonAnonymPatientActivity_java, Last ID set is =" + lastID);
         dbH.close();
+        return lastID;
     }
 
     public void saveDialog(View view, final long lastID){
@@ -216,8 +250,13 @@ public class AddPatientAnonym extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_patient, menu);
-        menu.getItem(0).setEnabled(true);
+        this.menu = menu;
+        //if(mode2)
+        //    getMenuInflater().inflate(R.menu.menu_patient2, menu);
+        //else {
+            getMenuInflater().inflate(R.menu.menu_patient, menu);
+            menu.getItem(0).setEnabled(true);
+        //}
         return true;
     }
 
@@ -281,6 +320,31 @@ public class AddPatientAnonym extends AppCompatActivity
                     Toast.makeText(AddPatientAnonym.this, "Error",
                             Toast.LENGTH_LONG);
                 }
+                break;
+            case R.id.takePicture:
+                long id = 0;
+                User user = new User();
+                if(!pseudo.getText().toString().isEmpty()) {
+                    users = getPatient();
+                    final long lastID2;
+                    if(users.size() != -1) {
+                        lastID2 = users.size()+1;
+                    } else {
+                        lastID2 = 0;
+                    }
+                    id = addNewPatient();
+                    user = dbH.getPatientWithId(Integer.parseInt((Long.toString(id))));
+                    saveDialog(new View(getBaseContext()), lastID2);
+                } else {
+                    pseudo.setError(getString(R.string.condition_pseudo));
+                    Toast.makeText(AddPatientAnonym.this, "Error",
+                            Toast.LENGTH_LONG);
+                }
+                Intent intent = new Intent(AddPatientAnonym.this, CameraActivity.class);
+                Bundle b = new Bundle();
+                b.putString("pseudo", id + "-" + user.getPseudo());
+                intent.putExtras(b);
+                startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);

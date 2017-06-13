@@ -47,6 +47,8 @@
     <string name="female">Féminin</string>
     <string name="nombre_acquisition">Nombre d\'acquisition(s)</string>
 
+    <string name="mail_request">Êtes-vous sûr de vouloir envoyer ces données par mail ? La connexion n\'est pas sécurisée</string>
+
     <string name="save">Enregistrer</string>
     <string name="cancel">Annuler</string>
     <string name="edit">Editer</string>

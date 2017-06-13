@@ -76,6 +76,7 @@
         <EditText
             android:id="@+id/patient_birth"
             android:hint="1789-07-14"
+            android:focusableInTouchMode="false"
             android:inputType="date|textNoSuggestions"
             android:textSize="15sp"
             android:layout_width="wrap_content"

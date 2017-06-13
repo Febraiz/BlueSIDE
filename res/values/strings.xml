@@ -55,6 +55,8 @@
     <string name="female">Female</string>
     <string name="nombre_acquisition">Number of acquisition</string>
 
+    <string name="mail_request">Are you sure you want to send data by mail ? This connection is not secured</string>
+
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="edit">Edit</string>

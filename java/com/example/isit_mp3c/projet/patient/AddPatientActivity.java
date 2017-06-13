@@ -15,6 +15,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -54,6 +55,20 @@ public class AddPatientActivity extends AppCompatActivity
     User newUser = new User();
     private Menu menu;
 
+    Calendar myCalendar = Calendar.getInstance();
+
+    DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +78,6 @@ public class AddPatientActivity extends AppCompatActivity
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
 
         name = (EditText)findViewById(R.id.name_patient);
         first_Name = (EditText)findViewById(R.id.first_name_patient);
@@ -149,7 +162,6 @@ public class AddPatientActivity extends AppCompatActivity
             }
         });
 
-
         //set the date of birth
         date_Birth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,7 +171,6 @@ public class AddPatientActivity extends AppCompatActivity
                         myCalendar.get(Calendar.YEAR),
                         myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH));
-                //datePicker.getDatePicker().setMaxDate(new Date().getTime());
                 datePicker.show();
             }
         });
@@ -182,6 +193,7 @@ public class AddPatientActivity extends AppCompatActivity
                 age_patient.setText(newUser.calculAge());
             }
         });
+
         //email check
         mail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -464,20 +476,6 @@ public class AddPatientActivity extends AppCompatActivity
         dbH.close();
         return lastID;
     }
-
-    Calendar myCalendar = Calendar.getInstance();
-
-    DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener() {
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel();
-        }
-
-    };
 
     private void updateLabel() {
         //set the date format according to the language :

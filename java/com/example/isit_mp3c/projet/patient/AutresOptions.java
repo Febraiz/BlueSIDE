@@ -41,7 +41,6 @@ public class AutresOptions extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-               Log.i("OC_RSS","caaa maaarche!");
 
                 if(SQLiteDBHelper.getInstance(AutresOptions.this).getCountPatient() == 0)
                 {
@@ -63,18 +62,17 @@ public class AutresOptions extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Log.i("OC_RSS","caaa maaarche!");
 
                 //public void open(View v){
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AutresOptions.this);
-                    alertDialogBuilder.setMessage("Are you sure, You wanted to send data by mail ");
-                            alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface arg0, int arg1) {
-                                            Intent myIntent = new Intent(AutresOptions.this, ExportDBActivity.class);
-                                            startActivity(myIntent);
-                                        }
-                                    });
+                    alertDialogBuilder.setMessage(getString(R.string.mail_request));
+                    alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                Intent myIntent = new Intent(AutresOptions.this, ExportDBActivity.class);
+                                startActivity(myIntent);
+                            }
+                    });
 
                     alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
                         @Override

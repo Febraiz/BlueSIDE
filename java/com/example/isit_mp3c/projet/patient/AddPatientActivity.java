@@ -472,7 +472,7 @@ public class AddPatientActivity extends AppCompatActivity
         dbH.close();
         return lastID;
     }
-    
+
     private void updateLabel() {
         //set the date format according to the language :
         // not really possible, because even country which speak the same language
@@ -522,7 +522,7 @@ public class AddPatientActivity extends AppCompatActivity
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        onBackPressed();
+                        finish();
                     }
                 });
 
@@ -585,7 +585,7 @@ public class AddPatientActivity extends AppCompatActivity
                     alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
-                            onBackPressed();
+                            finish();
                         }
                     });
 
@@ -600,7 +600,7 @@ public class AddPatientActivity extends AppCompatActivity
                     alertDialog.show();
 
                 }else {
-                    onBackPressed();
+                    finish();
                 }
                 break;
 
@@ -683,4 +683,53 @@ public class AddPatientActivity extends AppCompatActivity
             return "";
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if ( !name.getText().toString().equals("") ||
+                !first_Name.getText().toString().equals("")||
+                !address.getText().toString().equals("")||
+                !mail.getText().toString().equals("") ||
+                !date_Birth.getText().toString().equals("") ||
+                !phone.getText().toString().equals("") ||
+                !height.getText().toString().equals("") ||
+                !weight.getText().toString().equals("") ||
+                !hemoglobin.getText().toString().equals("") ||
+                !vgm.getText().toString().equals("") ||
+                !tcmh.getText().toString().equals("") ||
+                !idr_cv.getText().toString().equals("") ||
+                !hypo.getText().toString().equals("") ||
+                !ret_he.getText().toString().equals("") ||
+                !platelet.getText().toString().equals("") ||
+                !ferritin.getText().toString().equals("") ||
+                !transferrin.getText().toString().equals("") ||
+                !serum_iron.getText().toString().equals("") ||
+                !cst.getText().toString().equals("") ||
+                !fibrinogen.getText().toString().equals("") ||
+                !crp.getText().toString().equals("") ||
+                !other.getText().toString().equals("") ) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddPatientActivity.this);
+            alertDialogBuilder.setMessage(" Voulez vous vraiment annuler votre saisie ?  ");
+            alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    finish();
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        }else {
+            finish();
+        }
+
+    }
 }

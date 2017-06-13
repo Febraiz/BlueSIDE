@@ -30,6 +30,7 @@ import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
+import com.example.isit_mp3c.projet.exportdb.ExportDBActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,13 +63,33 @@ public class AddPatientActivity extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-
         name = (EditText)findViewById(R.id.name_patient);
         mail = (EditText)findViewById(R.id.mail_patient);
         date_Birth = (EditText)findViewById(R.id.patient_birth);
         phone = (EditText)findViewById(R.id.phone_patient);
         age_patient = (TextView)findViewById(R.id.age_patient);
+        first_Name = (EditText) findViewById(R.id.first_name_patient);
+        address = (EditText) findViewById(R.id.adress_patient);
+        height = (EditText) findViewById(R.id.height_patient);
+        weight = (EditText) findViewById(R.id.weight_patient);
+        hemoglobin = (EditText) findViewById(R.id.hb);
+        vgm = (EditText) findViewById(R.id.vgm);
+        tcmh = (EditText) findViewById(R.id.tcmh);
+        idr_cv = (EditText) findViewById(R.id.idr_cv);
+        hypo = (EditText) findViewById(R.id.hypo);
+        ret_he = (EditText) findViewById(R.id.ret_he);
+        platelet = (EditText) findViewById(R.id.platelet);
+        ferritin = (EditText) findViewById(R.id.ferritin);
+        transferrin = (EditText) findViewById(R.id.transferrin);
+        serum_iron = (EditText) findViewById(R.id.srum_iron);
+        cst = (EditText) findViewById(R.id.cst);
+        fibrinogen = (EditText) findViewById(R.id.fibrinogen);
+        crp = (EditText) findViewById(R.id.crp);
+        other = (EditText) findViewById(R.id.other);
+
+        rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
+        rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
+        rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
 
 
         genderSpinner = (Spinner) findViewById(R.id.sexe_patient);
@@ -325,33 +346,6 @@ public class AddPatientActivity extends AppCompatActivity
         long lastID = 0;
         int ID;
 
-        name = (EditText) findViewById(R.id.name_patient);
-        first_Name = (EditText) findViewById(R.id.first_name_patient);
-        //date_Birth = (EditText)findViewById(R.id.patient_birth);
-        address = (EditText) findViewById(R.id.adress_patient);
-        //mail = (EditText)findViewById(R.id.mail_patient);
-        //phone = (EditText)findViewById(R.id.phone_patient);
-        height = (EditText) findViewById(R.id.height_patient);
-        weight = (EditText) findViewById(R.id.weight_patient);
-        hemoglobin = (EditText) findViewById(R.id.hb);
-        vgm = (EditText) findViewById(R.id.vgm);
-        tcmh = (EditText) findViewById(R.id.tcmh);
-        idr_cv = (EditText) findViewById(R.id.idr_cv);
-        hypo = (EditText) findViewById(R.id.hypo);
-        ret_he = (EditText) findViewById(R.id.ret_he);
-        platelet = (EditText) findViewById(R.id.platelet);
-        ferritin = (EditText) findViewById(R.id.ferritin);
-        transferrin = (EditText) findViewById(R.id.transferrin);
-        serum_iron = (EditText) findViewById(R.id.srum_iron);
-        cst = (EditText) findViewById(R.id.cst);
-        fibrinogen = (EditText) findViewById(R.id.fibrinogen);
-        crp = (EditText) findViewById(R.id.crp);
-        other = (EditText) findViewById(R.id.other);
-
-        rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
-        rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
-        rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
-
         String NAME = name.getText().toString();
         String FIRST_NAME = first_Name.getText().toString();
         String DATE_BIRTH = date_Birth.getText().toString();
@@ -409,7 +403,7 @@ public class AddPatientActivity extends AppCompatActivity
 
 
 
-        final Calendar myCalendar = Calendar.getInstance();
+         Calendar myCalendar = Calendar.getInstance();
 
         DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener() {
 
@@ -506,8 +500,53 @@ public class AddPatientActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
-                return true;
+                //onBackPressed();
+                if ( !name.getText().toString().equals("") ||
+                        !first_Name.getText().toString().equals("")||
+                        !address.getText().toString().equals("")||
+                        !mail.getText().toString().equals("") ||
+                        !date_Birth.getText().toString().equals("") ||
+                        !phone.getText().toString().equals("") ||
+                        !height.getText().toString().equals("") ||
+                        !weight.getText().toString().equals("") ||
+                        !hemoglobin.getText().toString().equals("") ||
+                        !vgm.getText().toString().equals("") ||
+                        !tcmh.getText().toString().equals("") ||
+                        !idr_cv.getText().toString().equals("") ||
+                        !hypo.getText().toString().equals("") ||
+                        !ret_he.getText().toString().equals("") ||
+                        !platelet.getText().toString().equals("") ||
+                        !ferritin.getText().toString().equals("") ||
+                        !transferrin.getText().toString().equals("") ||
+                        !serum_iron.getText().toString().equals("") ||
+                        !cst.getText().toString().equals("") ||
+                        !fibrinogen.getText().toString().equals("") ||
+                        !crp.getText().toString().equals("") ||
+                        !other.getText().toString().equals("") ) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddPatientActivity.this);
+                    alertDialogBuilder.setMessage(" Voulez vous vraiment annuler votre saisie ?  ");
+                    alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            onBackPressed();
+                        }
+                    });
+
+                    alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+
+                }else {
+                    onBackPressed();
+                }
+                break;
+
             case R.id.save:
                 if (isInputValid()) {
                     patientsList = getPatient();
@@ -561,4 +600,5 @@ public class AddPatientActivity extends AppCompatActivity
         else
             return "";
     }
+
 }

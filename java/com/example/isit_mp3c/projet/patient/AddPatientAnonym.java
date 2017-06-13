@@ -51,6 +51,27 @@ public class AddPatientAnonym extends AppCompatActivity
         pseudo = (EditText)findViewById(R.id.pseudo);
         genderSpinner = (Spinner) findViewById(R.id.sexe_patient);
         ironSpinner =(Spinner)findViewById(R.id.iron_unit);
+        height = (EditText)findViewById(R.id.height_patient);
+        weight = (EditText)findViewById(R.id.weight_patient);
+        hemoglobin = (EditText)findViewById(R.id.hb);
+        vgm = (EditText)findViewById(R.id.vgm);
+        tcmh = (EditText)findViewById(R.id.tcmh);
+        idr_cv = (EditText)findViewById(R.id.idr_cv);
+        hypo = (EditText)findViewById(R.id.hypo);
+        ret_he = (EditText)findViewById(R.id.ret_he);
+        platelet = (EditText)findViewById(R.id.platelet);
+        ferritin = (EditText)findViewById(R.id.ferritin);
+        transferrin = (EditText)findViewById(R.id.transferrin);
+        serum_iron = (EditText)findViewById(R.id.srum_iron);
+        cst = (EditText)findViewById(R.id.cst);
+        fibrinogen = (EditText)findViewById(R.id.fibrinogen);
+        crp = (EditText)findViewById(R.id.crp);
+        other = (EditText)findViewById(R.id.other);
+        age = (EditText)findViewById(R.id.age_patient);
+
+        rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
+        rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
+        rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> genderSpinnerAdapter = ArrayAdapter.createFromResource(this,
@@ -118,30 +139,6 @@ public class AddPatientAnonym extends AppCompatActivity
 
     private void addNewPatient() {
         long lastID =0;
-
-        height = (EditText)findViewById(R.id.height_patient);
-        weight = (EditText)findViewById(R.id.weight_patient);
-        hemoglobin = (EditText)findViewById(R.id.hb);
-        vgm = (EditText)findViewById(R.id.vgm);
-        tcmh = (EditText)findViewById(R.id.tcmh);
-        idr_cv = (EditText)findViewById(R.id.idr_cv);
-        hypo = (EditText)findViewById(R.id.hypo);
-        ret_he = (EditText)findViewById(R.id.ret_he);
-        platelet = (EditText)findViewById(R.id.platelet);
-        ferritin = (EditText)findViewById(R.id.ferritin);
-        transferrin = (EditText)findViewById(R.id.transferrin);
-        serum_iron = (EditText)findViewById(R.id.srum_iron);
-        cst = (EditText)findViewById(R.id.cst);
-        fibrinogen = (EditText)findViewById(R.id.fibrinogen);
-        crp = (EditText)findViewById(R.id.crp);
-        other = (EditText)findViewById(R.id.other);
-        age = (EditText)findViewById(R.id.age_patient);
-
-        rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
-        rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
-        rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
-
-        //pseudo = (EditText)findViewById(R.id.pseudo);
 
         String HEIGHT = height.getText().toString();
         String WEIGHT = weight.getText().toString();
@@ -228,8 +225,46 @@ public class AddPatientAnonym extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case android.R.id.home:
-                onBackPressed();
-                return true;
+                    if ( !height.getText().toString().equals("") ||
+                                !weight.getText().toString().equals("") ||
+                                !hemoglobin.getText().toString().equals("") ||
+                                !vgm.getText().toString().equals("") ||
+                                !tcmh.getText().toString().equals("") ||
+                                !idr_cv.getText().toString().equals("") ||
+                                !hypo.getText().toString().equals("") ||
+                                !ret_he.getText().toString().equals("") ||
+                                !platelet.getText().toString().equals("") ||
+                                !ferritin.getText().toString().equals("") ||
+                                !transferrin.getText().toString().equals("") ||
+                                !serum_iron.getText().toString().equals("") ||
+                                !cst.getText().toString().equals("") ||
+                                !fibrinogen.getText().toString().equals("") ||
+                                !crp.getText().toString().equals("") ||
+                                !other.getText().toString().equals("") ||
+                                !pseudo.getText().toString().equals("")) {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddPatientAnonym.this);
+                            alertDialogBuilder.setMessage(" Voulez vous vraiment annuler votre saisie ?  ");
+                            alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    onBackPressed();
+                                }
+                            });
+
+                            alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
+
+                        }else {
+                            onBackPressed();
+                        }
+                        break;
             case R.id.save:
                 if(!pseudo.getText().toString().isEmpty()) {
                     users = getPatient();

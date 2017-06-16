@@ -194,7 +194,7 @@ public class EditAnonymPatient extends AppCompatActivity
 
     private void updatePatient() {
         try {
-            String PSEUDO = idPatient.getText().toString();
+            String PSEUDO = idPatient.getText().toString().replace(" ","");
             String HEIGHT = height.getText().toString();
             String WEIGHT = weight.getText().toString();
             String HEMOGLOBIN = hemoglobin.getText().toString();

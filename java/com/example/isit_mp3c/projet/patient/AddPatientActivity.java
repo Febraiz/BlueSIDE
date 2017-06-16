@@ -480,8 +480,8 @@ public class AddPatientActivity extends AppCompatActivity
         long lastID = 0;
         int ID;
 
-        String NAME = name.getText().toString();
-        String FIRST_NAME = first_Name.getText().toString();
+        String NAME = name.getText().toString().replace(" ","");
+        String FIRST_NAME = first_Name.getText().toString().replace(" ","");
         String DATE_BIRTH = date_Birth.getText().toString();
         String ADDRESS = address.getText().toString();
         String MAIL = mail.getText().toString();

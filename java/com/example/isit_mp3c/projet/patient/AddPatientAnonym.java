@@ -221,7 +221,7 @@ public class AddPatientAnonym extends AppCompatActivity
         String FIBRINOGEN = fibrinogen.getText().toString();
         String CRP = crp.getText().toString();
         String OTHER = other.getText().toString();
-        String PSEUDO = pseudo.getText().toString();
+        String PSEUDO = pseudo.getText().toString().replace(" ","");
 
         String GENDER = String.valueOf(genderSpinner.getSelectedItem());
         String UNIT = String.valueOf(ironSpinner.getSelectedItem());

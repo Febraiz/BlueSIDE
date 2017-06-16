@@ -82,6 +82,7 @@
         <EditText
             android:id="@+id/patient_birth"
             android:textSize="15sp"
+            android:focusableInTouchMode="false"
             android:inputType="date|textNoSuggestions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

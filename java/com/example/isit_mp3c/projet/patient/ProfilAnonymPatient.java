@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,11 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
 import com.example.isit_mp3c.projet.camera.CameraActivity;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
@@ -31,7 +28,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin,
             transferrin, serum_iron, cst, fibrinogen, crp, other, imc, deficiency, nbAcquisition, age;
     private List<User> users;
-    private int id ;
+    private int listPosition;
     SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
     private User user;
 
@@ -46,13 +43,13 @@ public class ProfilAnonymPatient extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle extras = getIntent().getExtras();
-        id = extras.getInt("last_ID");
+        listPosition = extras.getInt("last_ID");
         users = getPatient();
-        user = users.get(id-1);
-        Log.i("Profil Last ID", "AnonymProfilPatient_java, Get the last ID pleaaase = " + id);
+        user = users.get(listPosition -1);
+        Log.i("Profil Last ID", "AnonymProfilPatient_java, Get the last ID pleaaase = " + listPosition);
 
         //set toolbar title
-        getSupportActionBar().setTitle("Patient " + id);
+        getSupportActionBar().setTitle("Patient " + listPosition);
 
         idPatient = (TextView)findViewById(R.id.id_patient);
         height = (TextView)findViewById(R.id.height_patient);
@@ -93,7 +90,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent editIntent = new Intent(ProfilAnonymPatient.this, EditAnonymPatient.class);
-                editIntent.putExtra("ID",id);
+                editIntent.putExtra("ID", listPosition);
                 startActivity(editIntent);
             }
         });
@@ -110,41 +107,41 @@ public class ProfilAnonymPatient extends AppCompatActivity {
         return users;
     }
 
-    public void getProfil(int id){
+    public void getProfil(){
 
         try {
 
-            idPatient.setText(users.get(id - 1).getPseudo());
-            age.setText(users.get(id - 1).getAge());
-            height.setText(users.get(id - 1).getHeight().toString());
-            weight.setText(users.get(id - 1).getWeight().toString());
-            imc.setText(users.get(id - 1).getImc());
-            hemoglobin.setText(users.get(id - 1).getHb());
-            vgm.setText(users.get(id - 1).getVgm());
-            tcmh.setText(users.get(id - 1).gettcmh());
-            idr_cv.setText(users.get(id - 1).getIdr_cv());
-            hypo.setText(users.get(id - 1).getHypo());
-            ret_he.setText(users.get(id - 1).getRet_he());
-            platelet.setText(users.get(id - 1).getPlatelet());
-            ferritin.setText(users.get(id - 1).getFerritin());
-            transferrin.setText(users.get(id - 1).getTransferrin());
+            idPatient.setText(users.get(listPosition - 1).getPseudo());
+            age.setText(users.get(listPosition - 1).getAge());
+            height.setText(users.get(listPosition - 1).getHeight().toString());
+            weight.setText(users.get(listPosition - 1).getWeight().toString());
+            imc.setText(users.get(listPosition - 1).getImc());
+            hemoglobin.setText(users.get(listPosition - 1).getHb());
+            vgm.setText(users.get(listPosition - 1).getVgm());
+            tcmh.setText(users.get(listPosition - 1).gettcmh());
+            idr_cv.setText(users.get(listPosition - 1).getIdr_cv());
+            hypo.setText(users.get(listPosition - 1).getHypo());
+            ret_he.setText(users.get(listPosition - 1).getRet_he());
+            platelet.setText(users.get(listPosition - 1).getPlatelet());
+            ferritin.setText(users.get(listPosition - 1).getFerritin());
+            transferrin.setText(users.get(listPosition - 1).getTransferrin());
             //String ironValue = user.getSerum_iron()+
             // user.getSerum_iron_unit();
-            String ironValue = users.get(id - 1).getSerum_iron();
-            String ironUnit = users.get(id - 1).getSerum_iron_unit();
+            String ironValue = users.get(listPosition - 1).getSerum_iron();
+            String ironUnit = users.get(listPosition - 1).getSerum_iron_unit();
             Log.i("Serum iron value", "The serum iron value is : " + ironValue +
                     " ,The serum iron unit is : " + ironUnit);
             if(!ironValue.equals("")) {
                 serum_iron.append(ironValue + " " + ironUnit);
             }
-            cst.setText(users.get(id - 1).getCst());
-            fibrinogen.setText(users.get(id - 1).getFibrinogen());
-            crp.setText(users.get(id - 1).getCrp());
-            other.setText(users.get(id - 1).getOther());
-            sex.setText(users.get(id - 1).getSexe());
+            cst.setText(users.get(listPosition - 1).getCst());
+            fibrinogen.setText(users.get(listPosition - 1).getFibrinogen());
+            crp.setText(users.get(listPosition - 1).getCrp());
+            other.setText(users.get(listPosition - 1).getOther());
+            sex.setText(users.get(listPosition - 1).getSexe());
 
             //Mise en place du bon radioButton
-            String carence = users.get(id - 1).getDeficiency();
+            String carence = users.get(listPosition - 1).getDeficiency();
 
             switch(carence) {
                 case "Carence certaine":
@@ -161,7 +158,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
                     break;
             }
 
-            nbAcquisition.setText(String.valueOf(dbHelper.getNextAcquisitionNumber(users.get(id-1).getUserID())-1));
+            nbAcquisition.setText(String.valueOf(dbHelper.getNextAcquisitionNumber(users.get(listPosition-1).getUserID())-1));
 
         } catch (Exception e) {
             Log.e("DB error", "ProfilPatient_java, It did not read the ID value");
@@ -173,7 +170,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
         super.onResume();
 
         users = getPatient();
-        getProfil(id);
+        getProfil();
 
     }
 
@@ -195,7 +192,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
                 return true;
             case R.id.edit:
                 Intent editIntent = new Intent(ProfilAnonymPatient.this, EditAnonymPatient.class);
-                editIntent.putExtra("ID",id);
+                editIntent.putExtra("ID", listPosition);
                 startActivity(editIntent);
                 break;
             case R.id.takePicture :
@@ -217,7 +214,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.i("row ID deleted",
-                                "ProfilPatient_java, the row ID wich will be deleted is " + id);
+                                "ProfilPatient_java, the row ID wich will be deleted is " + listPosition);
                         if (deletePatient()) {
                             Toast.makeText(ProfilAnonymPatient
                                             .this, R.string.patient_deleted,
@@ -244,7 +241,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
     public boolean deletePatient(){
         boolean isDeleted;
         final int ID;
-        ID = users.get(id-1).getUserID();
+        ID = users.get(listPosition -1).getUserID();
         Log.i("deletePatient", "the ID is : " + ID);
 
         if(dbHelper.openDatabase()){

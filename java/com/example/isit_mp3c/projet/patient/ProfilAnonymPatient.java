@@ -22,6 +22,7 @@ import com.example.isit_mp3c.projet.camera.CameraActivity;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -212,8 +213,8 @@ public class ProfilAnonymPatient extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    public void deleteDialog(View view){
 
-    private void deleteDialog(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.delete_patient)
                 .setMessage(R.string.delete_patient_msg)
@@ -221,16 +222,16 @@ public class ProfilAnonymPatient extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.i("row ID deleted",
-                                "ProfilPatient_java, the row ID wich will be deleted is " + id);
+                                "ProfilPatient_java, the row ID wich will be deleted is "+id);
                         if (deletePatient()) {
-                            Toast.makeText(ProfilAnonymPatient
-                                            .this, R.string.patient_deleted,
+                            Toast.makeText(ProfilAnonymPatient.this, R.string.patient_deleted,
                                     Toast.LENGTH_LONG).show();
+
+                            deleteDataDialog(new View(getBaseContext()));
                         } else {
                             Toast.makeText(ProfilAnonymPatient.this, R.string.patient_not_deleted,
                                     Toast.LENGTH_LONG).show();
                         }
-                        finish();
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -244,11 +245,38 @@ public class ProfilAnonymPatient extends AppCompatActivity {
         dialog.show();
     }
 
-    //delete patient
+    public void deleteDataDialog(View view){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.delete_image)
+                .setMessage(R.string.delete_images_msg)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.i("suppression acq",
+                                "patient : " + id);
+                        deleteImages();
+                        Toast.makeText(ProfilAnonymPatient.this, R.string.images_deleted,
+                                Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     public boolean deletePatient(){
         boolean isDeleted;
         final int ID;
-        ID = users.get(id-1).getUserID();
+        user = users.get(id-1);
+        ID = user.getUserID();
         Log.i("deletePatient", "the ID is : " + ID);
 
         if(dbHelper.openDatabase()){
@@ -259,5 +287,25 @@ public class ProfilAnonymPatient extends AppCompatActivity {
         }
         dbHelper.close();
         return isDeleted ? true:false;
+    }
+
+    //delete images
+    public void deleteImages(){
+        final int ID;
+        ID = user.getUserID();
+        String directory = ID + "-" + user.getPseudo();
+        Log.i("Directory", directory);
+
+        File dir = new File(getExternalFilesDir("")+ "/"+ directory);
+        Log.i("dir", dir.getAbsolutePath());
+        deleteRecursive(dir);
+    }
+
+    void deleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory())
+            for (File child : fileOrDirectory.listFiles())
+                deleteRecursive(child);
+
+        fileOrDirectory.delete();
     }
 }

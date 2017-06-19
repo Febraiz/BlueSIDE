@@ -484,7 +484,7 @@ public class MainActivity extends AppCompatActivity {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, "UTF8");
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
             printWriter.println("sep=;");
-            printWriter.println("ID; NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; DATE; ACQ_IDX; SEX;" +
+            printWriter.println("ID; NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
                     " PSEUDO; DEFICIENCY");
@@ -499,7 +499,7 @@ public class MainActivity extends AppCompatActivity {
                     String firstName = users.get(i).getFirstName();
                     String birthDate = users.get(i).getDateBirth();
                     String age = users.get(i).getAge();
-                    String adress = users.get(i).getAddress();
+                    String address = users.get(i).getAddress();
                     String mail = users.get(i).getMail();
                     String phone = users.get(i).getPhone();
                     String sex = users.get(i).getSexe();
@@ -530,7 +530,7 @@ public class MainActivity extends AppCompatActivity {
                     String pseudo = users.get(i).getPseudo();
                     String carence = users.get(i).getDeficiency();
 
-                    String record = id + ";" + name + ";" + firstName + ";" + birthDate + ";" + age + ";" + adress
+                    String record = id + ";" + name + ";" + firstName + ";" + birthDate + ";" + age + ";" + address
                             + ";" + mail + ";" + phone + ";" + sex + ";" + height + ";"
                             + weight + ";" + imc + ";" + hb + ";" + vgm + ";" + tcmh
                             + ";" + idr_cv + ";" + hypo + ";" + ret_he + ";" + platelet
@@ -611,7 +611,7 @@ public class MainActivity extends AppCompatActivity {
                     String carence = user.getDeficiency();
 
                     String record = id + ";" + name + ";" + firstName + ";" + birthDate + ";" + age + ";" + adress
-                            + ";" + mail + ";" + phone + ";"+date+";"+acq_idx+";" + sex + ";" + height + ";"
+                            + ";" + mail + ";" + phone + ";" + date + ";" + acq_idx + ";" + sex + ";" + height + ";"
                             + weight + ";" + imc + ";" + hb + ";" + vgm + ";" + tcmh
                             + ";" + idr_cv + ";" + hypo + ";" + ret_he + ";" + platelet
                             + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"

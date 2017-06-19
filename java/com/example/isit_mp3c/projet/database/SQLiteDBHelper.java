@@ -619,6 +619,38 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
 
     }
 
+    /*public int deleteUserAcquisition(int id){
+
+        int cmpt = 0;
+
+        try{
+            String query = "SELECT * FROM " + TABLE_ACQUISITION + " WHERE " + ACQUISITION_ID_PATIENT + "=" + id;
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath+DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+            Cursor cursor = db.rawQuery(query, null);
+
+            while (cursor.moveToNext()) {
+                cmpt = Integer.parseInt(cursor.getString(0));
+            }
+            cursor.close();
+        }catch (Exception e){
+            Log.d("database ", e.getMessage());
+        }
+
+        db.close();
+        return cmpt;
+
+        String query = "SELECT * FROM " + TABLE_USER + " where user.IDuser=" + id;
+        Cursor cursor = db.rawQuery(query, null);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = "IDuser=?";
+        String[] whereArgs = new String[]{String.valueOf(id)};
+        db.delete(TABLE_USER, where, whereArgs);
+        db.close();
+
+    }*/
+
     public int getCountPatient()
     {
 

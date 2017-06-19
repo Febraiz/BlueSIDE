@@ -1186,7 +1186,7 @@ public class CameraActivity extends AppCompatActivity
     //select seed point and readjust it to correspond to the size of the image
     public void selectPoint(){
 
-        File file_preview = new File(getExternalFilesDir(directoryFiles), "image01_1.png");
+        File file_preview = new File(getExternalFilesDir(directoryFiles), nomsImages.get(1));
         Bitmap img = BitmapFactory.decodeFile(file_preview.getAbsolutePath());
 
         imageDisplay.setImageBitmap(img);
@@ -1203,6 +1203,7 @@ public class CameraActivity extends AppCompatActivity
                     int textureWidth = textureCapture.getMeasuredWidth();
                     x = (480 * (int) event.getX()) / textureWidth;
                     y = (640 * (int) event.getY()) / textureHeight;
+
                     Log.i(TAG, "resize x: " + String.valueOf(x) + " resize y: " + String.valueOf(y));
                     progressDialog = ProgressDialog.show(CameraActivity.this, "Starting detection...", "", true);
                     nativeDetection();
@@ -1227,7 +1228,7 @@ public class CameraActivity extends AppCompatActivity
                 double time;
 
                 String dir = getExternalFilesDir(directoryFiles).getAbsolutePath();
-                String name = "/image01_1.png";
+                String name = nomsImages.get(1);
 
                 Log.i(TAG, "start detection native");
                 start = System.currentTimeMillis();
@@ -1255,8 +1256,8 @@ public class CameraActivity extends AppCompatActivity
             public void run() {
 
                 String dir = getExternalFilesDir(directoryFiles).getAbsolutePath();
-                String nameSclera = "/image00_2.png";
-                String nameRef = "/image01_1.png";
+                String nameSclera = "/" + nomsImages.get(0);
+                String nameRef = "/" + nomsImages.get(1);
                 int size_window = 12;
                 int iSclera = 100;
                 int jSclera = 100;

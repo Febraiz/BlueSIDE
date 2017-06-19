@@ -56,6 +56,34 @@ public class ProfilPatient extends AppCompatActivity {
         //set toolbar title
         getSupportActionBar().setTitle("Patient "+id);
 
+        name = (TextView)findViewById(R.id.name_patient);
+        first_Name = (TextView)findViewById(R.id.first_name_patient);
+        date_Birth = (TextView)findViewById(R.id.patient_birth);
+        address = (TextView)findViewById(R.id.adress_patient);
+        mail = (TextView)findViewById(R.id.mail_patient);
+        phone = (TextView)findViewById(R.id.phone_patient);
+        height = (TextView)findViewById(R.id.height_patient);
+        weight = (TextView)findViewById(R.id.weight_patient);
+        imc = (TextView)findViewById(R.id.imc);
+        hemoglobin = (TextView)findViewById(R.id.hb);
+        vgm = (TextView)findViewById(R.id.vgm);
+        tcmh = (TextView)findViewById(R.id.tcmh);
+        idr_cv = (TextView)findViewById(R.id.idr_cv);
+        hypo = (TextView)findViewById(R.id.hypo);
+        ret_he = (TextView)findViewById(R.id.ret_he);
+        platelet = (TextView)findViewById(R.id.platelet);
+        ferritin = (TextView)findViewById(R.id.ferritin);
+        transferrin = (TextView)findViewById(R.id.transferrin);
+        serum_iron = (TextView)findViewById(R.id.srum_iron);
+        cst = (TextView)findViewById(R.id.cst);
+        fibrinogen = (TextView)findViewById(R.id.fibrinogen);
+        crp = (TextView)findViewById(R.id.crp);
+        other = (TextView)findViewById(R.id.other);
+        sex = (TextView)findViewById(R.id.sexe_patient);
+        deficiency = (TextView)findViewById(R.id.textViewDeficiency);
+        nbAcquisition = (TextView)findViewById(R.id.nbAcquisitionTV2);
+        age = (TextView)findViewById(R.id.age_patient);
+
         //Get all patient + Get the right patient in the "onResume" Method
 
         Button okBtn = (Button)findViewById(R.id.ok_button);
@@ -90,45 +118,9 @@ public class ProfilPatient extends AppCompatActivity {
     }
 
     public void getProfil(int id){
-        //idPatient = (TextView)findViewById(R.id.id_patient);
-        name = (TextView)findViewById(R.id.name_patient);
-        first_Name = (TextView)findViewById(R.id.first_name_patient);
-        date_Birth = (TextView)findViewById(R.id.patient_birth);
-        address = (TextView)findViewById(R.id.adress_patient);
-        mail = (TextView)findViewById(R.id.mail_patient);
-        phone = (TextView)findViewById(R.id.phone_patient);
-        height = (TextView)findViewById(R.id.height_patient);
-        weight = (TextView)findViewById(R.id.weight_patient);
-        imc = (TextView)findViewById(R.id.imc);
-        hemoglobin = (TextView)findViewById(R.id.hb);
-        vgm = (TextView)findViewById(R.id.vgm);
-        tcmh = (TextView)findViewById(R.id.tcmh);
-        idr_cv = (TextView)findViewById(R.id.idr_cv);
-        hypo = (TextView)findViewById(R.id.hypo);
-        ret_he = (TextView)findViewById(R.id.ret_he);
-        platelet = (TextView)findViewById(R.id.platelet);
-        ferritin = (TextView)findViewById(R.id.ferritin);
-        transferrin = (TextView)findViewById(R.id.transferrin);
-        serum_iron = (TextView)findViewById(R.id.srum_iron);
-        cst = (TextView)findViewById(R.id.cst);
-        fibrinogen = (TextView)findViewById(R.id.fibrinogen);
-        crp = (TextView)findViewById(R.id.crp);
-        other = (TextView)findViewById(R.id.other);
-        sex = (TextView)findViewById(R.id.sexe_patient);
-        deficiency = (TextView)findViewById(R.id.textViewDeficiency);
-        nbAcquisition = (TextView)findViewById(R.id.nbAcquisitionTV2);
-        age = (TextView)findViewById(R.id.age_patient);
-
-        String nameValue, firsNameValue, birthValue , addressValue, mailValue, phoneValue, sexValue;
-
-        TextView nametv = (TextView)findViewById(R.id.textview1);
-
-        String idText = String.valueOf(id);
 
         try {
 
-            //idPatient.setText(idText);
-            //idPatient.setText(users.get(id-1).getPseudo());
             name.setText(users.get(id-1).getName());
             first_Name.setText(users.get(id-1).getFirstName());
             date_Birth.setText(users.get(id-1).getDateBirth());
@@ -148,7 +140,6 @@ public class ProfilPatient extends AppCompatActivity {
             platelet.setText(users.get(id-1).getPlatelet());
             ferritin.setText(users.get(id-1).getFerritin());
             transferrin.setText(users.get(id - 1).getTransferrin());
-            //String ironValue = users.get(id-1).getSerum_iron()+ users.get(id-1).getSerum_iron_unit();
             String ironValue = users.get(id-1).getSerum_iron();
             String ironUnit = users.get(id-1).getSerum_iron_unit();
             //Log.i("Serum iron value", "The serum iron value is : " + ironValue

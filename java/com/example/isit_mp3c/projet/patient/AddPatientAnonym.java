@@ -41,8 +41,7 @@ public class AddPatientAnonym extends AppCompatActivity
     private RadioButton rbCertain, rbAbsence, rbIncertain;
     private Spinner genderSpinner, ironSpinner;
     private List<User> users;
-    SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
-    private boolean mode2 = false;
+    private SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
     private Menu menu;
 
     @Override
@@ -191,7 +190,7 @@ public class AddPatientAnonym extends AppCompatActivity
     }
 
     //get all patients
-    public List<User> getPatient() {
+    private List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
         if(dbH.openDatabase()){
@@ -247,7 +246,7 @@ public class AddPatientAnonym extends AppCompatActivity
         return lastID;
     }
 
-    public void saveDialog(View view, final long lastID){
+    private void saveDialog(View view, final long lastID){
         final long id = lastID; // Not necessary. Could be deleted.
 
         Log.i("return id", "AddPatientActivity_java, retuuuuurn extra id " + id);
@@ -296,46 +295,8 @@ public class AddPatientAnonym extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case android.R.id.home:
-                    if ( !height.getText().toString().equals("") ||
-                                !weight.getText().toString().equals("") ||
-                                !hemoglobin.getText().toString().equals("") ||
-                                !vgm.getText().toString().equals("") ||
-                                !tcmh.getText().toString().equals("") ||
-                                !idr_cv.getText().toString().equals("") ||
-                                !hypo.getText().toString().equals("") ||
-                                !ret_he.getText().toString().equals("") ||
-                                !platelet.getText().toString().equals("") ||
-                                !ferritin.getText().toString().equals("") ||
-                                !transferrin.getText().toString().equals("") ||
-                                !serum_iron.getText().toString().equals("") ||
-                                !cst.getText().toString().equals("") ||
-                                !fibrinogen.getText().toString().equals("") ||
-                                !crp.getText().toString().equals("") ||
-                                !other.getText().toString().equals("") ||
-                                !pseudo.getText().toString().equals("")) {
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddPatientAnonym.this);
-                            alertDialogBuilder.setMessage(" Voulez vous vraiment annuler votre saisie ?  ");
-                            alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    finish();
-                                }
-                            });
-
-                            alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            });
-
-                            AlertDialog alertDialog = alertDialogBuilder.create();
-                            alertDialog.show();
-
-                        }else {
-                            finish();
-                        }
-                        break;
+                askToLeave();
+                break;
             case R.id.save:
                 if(!pseudo.getText().toString().isEmpty()) {
                     users = getPatient();
@@ -399,7 +360,7 @@ public class AddPatientAnonym extends AppCompatActivity
     }
 
     // Méthode nécessaire au bon fonctionnement des radioButtons
-    public void onRadioButtonClicked(View view) {
+    private void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 
@@ -420,7 +381,7 @@ public class AddPatientAnonym extends AppCompatActivity
         }
     }
 
-    public boolean isInputValid() {
+    private boolean isInputValid() {
         boolean[] test = new boolean[5];
         boolean isValid = true;
 
@@ -472,7 +433,7 @@ public class AddPatientAnonym extends AppCompatActivity
     }
 
 
-    public String getDeficiencyType()
+    private String getDeficiencyType()
     {
         if (rbCertain.isChecked())
             return "Carence certaine";
@@ -486,6 +447,10 @@ public class AddPatientAnonym extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        askToLeave();
+    }
+
+    private void askToLeave(){
         if ( !height.getText().toString().equals("") ||
                 !weight.getText().toString().equals("") ||
                 !hemoglobin.getText().toString().equals("") ||

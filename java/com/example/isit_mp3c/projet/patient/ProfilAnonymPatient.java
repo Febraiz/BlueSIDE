@@ -29,7 +29,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
             transferrin, serum_iron, cst, fibrinogen, crp, other, imc, deficiency, nbAcquisition, age;
     private List<User> users;
     private int listPosition;
-    SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
+    private SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
     private User user;
 
     @Override
@@ -97,7 +97,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
     }
 
     //get all patients
-    public List<User> getPatient() {
+    private List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
         if(dbHelper.openDatabase()){
@@ -107,7 +107,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
         return users;
     }
 
-    public void getProfil(){
+    private void getProfil(){
 
         try {
 
@@ -238,7 +238,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
     }
 
     //delete patient
-    public boolean deletePatient(){
+    private boolean deletePatient(){
         boolean isDeleted;
         final int ID;
         ID = users.get(listPosition -1).getUserID();

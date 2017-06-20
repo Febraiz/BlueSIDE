@@ -104,7 +104,7 @@ public class ProfilPatient extends AppCompatActivity {
     }
 
     //get all patients
-    public List<User> getPatient() {
+    private List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
         if(dbHelper.openDatabase()){
@@ -114,7 +114,7 @@ public class ProfilPatient extends AppCompatActivity {
         return users;
     }
 
-    public void getProfil(){
+    private void getProfil(){
 
         try {
 
@@ -218,7 +218,7 @@ public class ProfilPatient extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void deleteDialog(View view){
+    private void deleteDialog(View view){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.delete_patient)
@@ -250,7 +250,7 @@ public class ProfilPatient extends AppCompatActivity {
     }
 
     //delete patient
-    public boolean deletePatient(){
+    private boolean deletePatient(){
         boolean isDeleted;
         final int ID;
         ID = users.get(listPosition -1).getUserID();

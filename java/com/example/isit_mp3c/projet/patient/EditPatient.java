@@ -52,7 +52,7 @@ public class EditPatient extends AppCompatActivity
     private boolean isDateValid = true;
     private boolean isPhoneValid = true;
 
-    SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
+    private SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,7 +227,7 @@ public class EditPatient extends AppCompatActivity
     }
 
 
-    public boolean validEmail(CharSequence mail){
+    private boolean validEmail(CharSequence mail){
         //return !TextUtils.isEmpty(mail) && Patterns.EMAIL_ADDRESS.matcher(mail).matches();
         if(!TextUtils.isEmpty(mail)){
             return Patterns.EMAIL_ADDRESS.matcher(mail).matches();
@@ -237,7 +237,7 @@ public class EditPatient extends AppCompatActivity
     }
 
     //check for french mobile format
-    public boolean validPhone(CharSequence phone){
+    private boolean validPhone(CharSequence phone){
         boolean isValid = true;
         if(!TextUtils.isEmpty(phone)){
             if(phone.length() < 9 || phone.length() > 13 ){
@@ -252,7 +252,7 @@ public class EditPatient extends AppCompatActivity
         return isValid ? true : false;
     }
 
-    public boolean validDate(CharSequence date){
+    private boolean validDate(CharSequence date){
         boolean isValid;
         String input =  String.valueOf(date);
         //hard coding
@@ -266,7 +266,7 @@ public class EditPatient extends AppCompatActivity
 
 
     //condition for the input
-    public boolean isInputValid(){
+    private boolean isInputValid(){
         boolean[] test = new boolean[4];
         boolean isValid = true;
         if(!name.getText().toString().isEmpty()){
@@ -307,7 +307,7 @@ public class EditPatient extends AppCompatActivity
     }
 
     //get all patients
-    public List<User> getPatient() {
+    private List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
         if(dbHelper.openDatabase()){
@@ -319,7 +319,7 @@ public class EditPatient extends AppCompatActivity
     }
 
     //get the patient's data
-    public void getProfil() {
+    private void getProfil() {
 
         try {
             //idPatient.setText(String.valueOf(users.get(id).getUserID()));
@@ -378,7 +378,7 @@ public class EditPatient extends AppCompatActivity
     }
 
     //Update patient data
-    public void updatePatient(){
+    private void updatePatient(){
         try {
             String NAME = name.getText().toString().replace(" ","");
             String FIRST_NAME = first_Name.getText().toString().replace(" ","");
@@ -492,7 +492,7 @@ public class EditPatient extends AppCompatActivity
     }
 
     // Méthode nécessaire au bon fonctionnement des radioButtons
-    public void onRadioButtonClicked(View view) {
+    private void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 
@@ -513,7 +513,7 @@ public class EditPatient extends AppCompatActivity
         }
     }
 
-    public String getDeficiencyType()
+    private String getDeficiencyType()
     {
         if (rbCertain.isChecked())
             return "Carence certaine";

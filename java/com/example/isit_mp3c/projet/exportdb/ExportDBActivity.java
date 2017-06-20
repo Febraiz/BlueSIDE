@@ -138,7 +138,7 @@ public class ExportDBActivity extends AppCompatActivity {
         });
     }
 
-    public void createAnonymFile(Context context, String fileName) throws IOException {
+    private void createAnonymFile(Context context, String fileName) throws IOException {
         File cacheFile = new File(context.getCacheDir() + File.separator + fileName);
         cacheFile.createNewFile();
 
@@ -223,7 +223,7 @@ public class ExportDBActivity extends AppCompatActivity {
         }
     }
 
-    public void createNonAnonymFile(Context context, String fileName) throws IOException {
+    private void createNonAnonymFile(Context context, String fileName) throws IOException {
         File cacheFile = new File(context.getCacheDir() + File.separator + fileName);
         cacheFile.createNewFile();
 
@@ -306,7 +306,7 @@ public class ExportDBActivity extends AppCompatActivity {
 
     }
 
-    public void createFile(Context context, String fileName) throws IOException {
+    private void createFile(Context context, String fileName) throws IOException {
         File cacheFile = new File(context.getCacheDir() + File.separator + fileName);
         cacheFile.createNewFile();
 
@@ -389,7 +389,7 @@ public class ExportDBActivity extends AppCompatActivity {
     }
 
     //get all patients
-    public List<User> getPatient() {
+    private List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
         if(dbHelper.openDatabase()){
@@ -400,7 +400,7 @@ public class ExportDBActivity extends AppCompatActivity {
     }
 
 
-    public void onCheckboxClicked(View view) {
+    private void onCheckboxClicked(View view) {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
         // Check which checkbox was clicked

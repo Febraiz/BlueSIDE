@@ -13,6 +13,7 @@
     <string name="search">Search</string>
     <string name="language">Change language</string>
     <string name="capture">Take photos</string>
+    <string name="otherOptions">Other options</string>
     <string name="english_v">English</string>
     <string name="french_v">Français</string>
     <string-array name="languageSpinner">

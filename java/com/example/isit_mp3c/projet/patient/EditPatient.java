@@ -37,6 +37,7 @@ import java.util.Locale;
 public class EditPatient extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener{
 
+    private Calendar myCalendar = Calendar.getInstance();
     private EditText name, first_Name, date_Birth,
             address, mail, phone, height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin,
@@ -67,6 +68,12 @@ public class EditPatient extends AppCompatActivity
         //idPatient = (TextView) findViewById(R.id.id_patient);
         name = (EditText) findViewById(R.id.name_patient);
         first_Name = (EditText) findViewById(R.id.first_name_patient);
+
+        // Disable those 2 editTexts
+        name.setInputType(0);
+        first_Name.setInputType(0);
+        first_Name.setTextIsSelectable(false);
+
         date_Birth = (EditText) findViewById(R.id.patient_birth);
         address = (EditText) findViewById(R.id.adress_patient);
         mail = (EditText) findViewById(R.id.mail_patient);
@@ -225,7 +232,6 @@ public class EditPatient extends AppCompatActivity
             }
         });
     }
-
 
     private boolean validEmail(CharSequence mail){
         //return !TextUtils.isEmpty(mail) && Patterns.EMAIL_ADDRESS.matcher(mail).matches();
@@ -431,9 +437,6 @@ public class EditPatient extends AppCompatActivity
         }
     }
 
-
-    Calendar myCalendar = Calendar.getInstance();
-
     DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener(){
 
         @Override
@@ -492,7 +495,7 @@ public class EditPatient extends AppCompatActivity
     }
 
     // Méthode nécessaire au bon fonctionnement des radioButtons
-    private void onRadioButtonClicked(View view) {
+    public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 

@@ -52,6 +52,10 @@ public class EditAnonymPatient extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         idPatient = (TextView) findViewById(R.id.id_patient);
+
+        // Disable the editText
+        idPatient.setInputType(0);
+
         age = (EditText) findViewById(R.id.age_patient);
         height = (EditText) findViewById(R.id.height_patient);
         weight = (EditText) findViewById(R.id.weight_patient);
@@ -280,7 +284,7 @@ public class EditAnonymPatient extends AppCompatActivity
     }
 
     // Méthode nécessaire au bon fonctionnement des radioButtons
-    private void onRadioButtonClicked(View view) {
+    public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 

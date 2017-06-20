@@ -54,35 +54,6 @@ public class AddPatientAnonym extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        name = (EditText)findViewById(R.id.name_patient);
-        first_Name = (EditText)findViewById(R.id.first_name_patient);
-        mail = (EditText)findViewById(R.id.mail_patient);
-        date_Birth = (EditText)findViewById(R.id.patient_birth);
-        phone = (EditText)findViewById(R.id.phone_patient);
-        age = (EditText) findViewById(R.id.age_patient);
-
-        address = (EditText) findViewById(R.id.adress_patient);
-        height = (EditText) findViewById(R.id.height_patient);
-        weight = (EditText) findViewById(R.id.weight_patient);
-        hemoglobin = (EditText) findViewById(R.id.hb);
-        vgm = (EditText) findViewById(R.id.vgm);
-        tcmh = (EditText) findViewById(R.id.tcmh);
-        idr_cv = (EditText) findViewById(R.id.idr_cv);
-        hypo = (EditText) findViewById(R.id.hypo);
-        ret_he = (EditText) findViewById(R.id.ret_he);
-        platelet = (EditText) findViewById(R.id.platelet);
-        ferritin = (EditText) findViewById(R.id.ferritin);
-        transferrin = (EditText) findViewById(R.id.transferrin);
-        serum_iron = (EditText) findViewById(R.id.srum_iron);
-        cst = (EditText) findViewById(R.id.cst);
-        fibrinogen = (EditText) findViewById(R.id.fibrinogen);
-        crp = (EditText) findViewById(R.id.crp);
-        other = (EditText) findViewById(R.id.other);
-
-        rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
-        rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
-        rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
-
         pseudo = (EditText)findViewById(R.id.pseudo);
         genderSpinner = (Spinner) findViewById(R.id.sexe_patient);
         ironSpinner =(Spinner)findViewById(R.id.iron_unit);
@@ -360,7 +331,7 @@ public class AddPatientAnonym extends AppCompatActivity
     }
 
     // Méthode nécessaire au bon fonctionnement des radioButtons
-    private void onRadioButtonClicked(View view) {
+    public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 
@@ -431,7 +402,6 @@ public class AddPatientAnonym extends AppCompatActivity
 
         return isValid ? true : false;
     }
-
 
     private String getDeficiencyType()
     {

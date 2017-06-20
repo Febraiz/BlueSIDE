@@ -47,6 +47,9 @@
     <string name="female">Féminin</string>
     <string name="nombre_acquisition">Nombre d\'acquisition(s)</string>
 
+    <string name="addNonAnonWarning">Attention ! Le nom et prenom du patient ne pourront plus être modifiés après son enregistrement !</string>
+    <string name="addAnonWarning">Attention ! Le pseudo du patient ne pourra plus être modifié après son enregistrement !</string>
+
     <string name="mail_request">Êtes-vous sûr de vouloir envoyer ces données par mail ? La connexion n\'est pas sécurisée</string>
 
     <string name="save">Enregistrer</string>

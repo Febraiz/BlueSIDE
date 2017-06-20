@@ -670,7 +670,7 @@ public class AddPatientActivity extends AppCompatActivity
     }
 
     // Méthode nécessaire au bon fonctionnement des radioButtons
-    private void onRadioButtonClicked(View view) {
+    public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 

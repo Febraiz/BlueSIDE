@@ -1113,7 +1113,7 @@ public class CameraActivity extends AppCompatActivity
     public native int eyeDetection(String name, String dir, int x, int y);
     public native int analysisLDR(String name1, int i1, int j1, String name2, int i2, int j2, int size, String dir);
 
-    private void nativeHDR(){
+    public void nativeHDR(){
 
         new Thread(new Runnable() {
 
@@ -1216,7 +1216,7 @@ public class CameraActivity extends AppCompatActivity
 
     }
 
-    private void nativeDetection() {
+    public void nativeDetection() {
 
         new Thread(new Runnable() {
 
@@ -1247,7 +1247,7 @@ public class CameraActivity extends AppCompatActivity
         }).start();
     }
 
-    private void nativeAnalysisLDR(){
+    public void nativeAnalysisLDR(){
 
         new Thread(new Runnable() {
 

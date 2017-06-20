@@ -40,8 +40,6 @@
             android:layout_column="1"
             android:layout_row="0" />
 
-
-
         <TextView
             android:id="@+id/textview2"
             android:text="@string/first_name"
@@ -62,7 +60,16 @@
             android:layout_column="1"
             android:layout_row="1"/>
 
-
+        <TextView
+            android:id="@+id/textviewWarning"
+            android:text="@string/addNonAnonWarning"
+            android:textColor="#ff0000"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/warning"
+            android:layout_column="1"
+            android:layout_row="2">
+        </TextView>
 
         <TextView
             android:id="@+id/textview3"
@@ -70,7 +77,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="2"
+            android:layout_row="3"
             >
         </TextView>
         <EditText
@@ -83,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="2"/>
+            android:layout_row="3"/>
 
         <TextView
             android:id="@+id/textviewAge"
@@ -91,7 +98,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="3">
+            android:layout_row="4">
         </TextView>
         <TextView
             android:id="@+id/age_patient"
@@ -100,8 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="3"/>
-
+            android:layout_row="4"/>
 
         <TextView
             android:id="@+id/textview4"
@@ -109,7 +115,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="4">
+            android:layout_row="5">
         </TextView>
         <EditText
             android:id="@+id/adress_patient"
@@ -121,9 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="4"/>
-
-
+            android:layout_row="5"/>
 
         <TextView
             android:id="@+id/textview5"
@@ -131,7 +135,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="5">
+            android:layout_row="6">
         </TextView>
         <EditText
             android:id="@+id/mail_patient"
@@ -142,9 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="5"/>
-
-
+            android:layout_row="6"/>
 
         <TextView
             android:id="@+id/textview6"
@@ -152,7 +154,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="6">
+            android:layout_row="7">
         </TextView>
         <EditText
             android:id="@+id/phone_patient"
@@ -163,9 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="6"/>
-
-
+            android:layout_row="7"/>
 
         <TextView
             android:id="@+id/textview7"
@@ -173,7 +173,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="7">
+            android:layout_row="8">
         </TextView>
         <Spinner
             android:id="@+id/sexe_patient"
@@ -181,8 +181,7 @@
             android:layout_height="wrap_content"
             android:text="Set the gender"
             android:layout_column="1"
-            android:layout_row="7"/>
-
+            android:layout_row="8"/>
 
         <TextView
             android:id="@+id/textview8"
@@ -190,7 +189,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="8">
+            android:layout_row="9">
         </TextView>
         <EditText
             android:id="@+id/height_patient"
@@ -200,9 +199,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="8"/>
-
-
+            android:layout_row="9"/>
 
         <TextView
             android:id="@+id/textview9"
@@ -210,7 +207,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="9">
+            android:layout_row="10">
         </TextView>
         <EditText
             android:id="@+id/weight_patient"
@@ -220,7 +217,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="9"/>
+            android:layout_row="10"/>
 
         <TextView
             android:id="@+id/textViewRadioButton"
@@ -228,7 +225,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="10">
+            android:layout_row="11">
         </TextView>
 
         <RadioGroup
@@ -236,7 +233,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="11">
+            android:layout_row="12">
 
             <RadioButton android:id="@+id/radioDeficiencyClear"
                 android:text="@string/deficiencyClear"
@@ -270,7 +267,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="12">
+            android:layout_row="13">
         </TextView>
         <EditText
             android:id="@+id/hb"
@@ -280,9 +277,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="12"/>
-
-
+            android:layout_row="13"/>
 
         <TextView
             android:id="@+id/textview11"
@@ -290,7 +285,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="13">
+            android:layout_row="14">
         </TextView>
         <EditText
             android:id="@+id/vgm"
@@ -300,9 +295,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="13"/>
-
-
+            android:layout_row="14"/>
 
         <TextView
             android:id="@+id/textview12"
@@ -310,7 +303,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="14">
+            android:layout_row="15">
         </TextView>
         <EditText
             android:id="@+id/tcmh"
@@ -320,9 +313,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="14"/>
-
-
+            android:layout_row="15"/>
 
         <TextView
             android:id="@+id/textview13"
@@ -330,7 +321,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="15">
+            android:layout_row="16">
         </TextView>
         <EditText
             android:id="@+id/idr_cv"
@@ -340,9 +331,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="15"/>
-
-
+            android:layout_row="16"/>
 
         <TextView
             android:id="@+id/textview14"
@@ -350,7 +339,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="16">
+            android:layout_row="17">
         </TextView>
         <EditText
             android:id="@+id/hypo"
@@ -360,9 +349,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="16"/>
-
-
+            android:layout_row="17"/>
 
         <TextView
             android:id="@+id/textview15"
@@ -370,7 +357,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="17">
+            android:layout_row="18">
         </TextView>
         <EditText
             android:id="@+id/ret_he"
@@ -380,9 +367,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="17"/>
-
-
+            android:layout_row="18"/>
 
         <TextView
             android:id="@+id/textview16"
@@ -390,7 +375,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="18">
+            android:layout_row="19">
         </TextView>
         <EditText
             android:id="@+id/platelet"
@@ -400,9 +385,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="18"/>
-
-
+            android:layout_row="19"/>
 
         <TextView
             android:id="@+id/textview17"
@@ -410,7 +393,7 @@
             android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="19">
+            android:layout_row="20">
         </TextView>
         <EditText
             android:id="@+id/ferritin"
@@ -420,9 +403,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="19"/>
-
-
+            android:layout_row="20"/>
 
         <TextView
             android:id="@+id/textview18"
@@ -430,7 +411,7 @@
             android:layout_width="109dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="20">
+            android:layout_row="21">
         </TextView>
         <EditText
             android:id="@+id/transferrin"
@@ -440,9 +421,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="20"/>
-
-
+            android:layout_row="21"/>
 
         <TextView
             android:id="@+id/textview19"
@@ -450,7 +429,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="21">
+            android:layout_row="22">
         </TextView>
         <EditText
             android:id="@+id/srum_iron"
@@ -459,15 +438,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_row="21"/>
+            android:layout_row="22"/>
         <Spinner
             android:id="@+id/iron_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="2"
-            android:layout_row="21"/>
-
-
+            android:layout_row="22"/>
 
         <TextView
             android:id="@+id/textview20"
@@ -475,7 +452,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="22">
+            android:layout_row="23">
         </TextView>
         <EditText
             android:id="@+id/cst"
@@ -485,9 +462,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="22"/>
-
-
+            android:layout_row="23"/>
 
         <TextView
             android:id="@+id/textview21"
@@ -495,7 +470,7 @@
             android:layout_width="108dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="23">
+            android:layout_row="24">
         </TextView>
         <EditText
             android:id="@+id/fibrinogen"
@@ -505,9 +480,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="23"/>
-
-
+            android:layout_row="24"/>
 
         <TextView
             android:id="@+id/textview22"
@@ -515,7 +488,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="24">
+            android:layout_row="25">
         </TextView>
         <EditText
             android:id="@+id/crp"
@@ -525,9 +498,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="24"/>
-
-
+            android:layout_row="25"/>
 
         <TextView
             android:id="@+id/textview23"
@@ -535,7 +506,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="25">
+            android:layout_row="26">
         </TextView>
         <EditText
             android:id="@+id/other"
@@ -545,8 +516,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="25"/>
-
+            android:layout_row="26"/>
 
         <Button
             android:id="@+id/cancel_button"
@@ -558,7 +528,7 @@
             android:backgroundTint="@color/colorPrimary"
             android:textColor="@android:color/white"
             android:layout_column="0"
-            android:layout_row="26"/>
+            android:layout_row="27"/>
         <Button
             android:id="@+id/save_button"
             android:layout_gravity="fill_horizontal"
@@ -570,7 +540,7 @@
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
-            android:layout_row="26"/>
+            android:layout_row="27"/>
 
 
     </GridLayout>

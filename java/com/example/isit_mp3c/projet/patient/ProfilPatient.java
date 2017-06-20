@@ -309,6 +309,7 @@ public class ProfilPatient extends AppCompatActivity {
         File dir = new File(getExternalFilesDir("")+ "/"+ directory);
         Log.i("dir", dir.getAbsolutePath());
         deleteRecursive(dir);
+        dbHelper.deleteUserAcquisition(ID);
     }
 
     void deleteRecursive(File fileOrDirectory) {

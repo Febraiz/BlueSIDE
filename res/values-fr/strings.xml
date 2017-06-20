@@ -86,9 +86,12 @@
 
     <string name="delete">Supprimer</string>
     <string name="new_patient">Ajouter patient</string>
-    <string name="delete_patient">Supression du  patient</string>
-    <string name="delete_patient_msg">Êtes-vous sure de vouloir supprimer le profil du patient?</string>
+    <string name="delete_patient">Supression du patient</string>
+    <string name="delete_image">Suppression des images</string>
+    <string name="delete_patient_msg">Êtes-vous sûr de vouloir supprimer le profil du patient ?</string>
+    <string name="delete_images_msg">Voulez-vous supprimer les images associées à ce patient ?</string>
     <string name="patient_deleted">Patient supprimé</string>
+    <string name="images_deleted">Images supprimées</string>
     <string name="empty_fields">Champs vides</string>
 
     <string name="export_db">Exporter les données par mail</string>

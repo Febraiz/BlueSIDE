@@ -16,6 +16,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.isit_mp3c.projet.R.drawable.db2;
+
 /**
  * Created by ISIT on 21/07/2016.
  */
@@ -617,6 +619,52 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         db.close();
         return cmpt;
 
+    }
+
+    public void deleteUserAcquisition(int id){
+        // Table acquisition avant suppression
+
+        /*try{
+            String query = "SELECT * FROM " + TABLE_ACQUISITION;
+            SQLiteDatabase db3 = SQLiteDatabase.openDatabase(dbPath+DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+            Cursor cursor = db3.rawQuery(query, null);
+
+            while (cursor.moveToNext()) {
+                String s = cursor.getString(0) + " " + cursor.getString(1) + " " + cursor.getString(2) + " " + cursor.getString(3);
+                Log.i("sql",s);
+            }
+            cursor.close();
+
+            db3.close();
+        }catch (Exception e){
+            Log.d("database ", e.getMessage());
+        }*/
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = ACQUISITION_ID_PATIENT + "=?";
+        String[] whereArgs = new String[]{String.valueOf(id)};
+        db.delete(TABLE_ACQUISITION, where, whereArgs);
+        db.close();
+
+
+        // Table acquisition après suppression
+
+        /*try{
+            String query = "SELECT * FROM " + TABLE_ACQUISITION;
+            SQLiteDatabase db2 = SQLiteDatabase.openDatabase(dbPath+DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+            Cursor cursor = db2.rawQuery(query, null);
+
+            while (cursor.moveToNext()) {
+                String s = cursor.getString(0) + " " + cursor.getString(1) + " " + cursor.getString(2) + " " + cursor.getString(3);
+                Log.i("sql",s);
+            }
+            cursor.close();
+
+            db2.close();
+        }catch (Exception e){
+            Log.d("database ", e.getMessage());
+        }*/
     }
 
     public int getCountPatient()

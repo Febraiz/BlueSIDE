@@ -50,6 +50,7 @@ public class ExportDBActivity extends AppCompatActivity {
     private Boolean get_anonym = false;
     private Boolean get_non_anonym = false;
     private Boolean get_all_data = false;
+    ArrayList<File> files = new ArrayList<File>();
     private SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
 
     @Override
@@ -77,7 +78,7 @@ public class ExportDBActivity extends AppCompatActivity {
 
                 if(get_anonym){
                     try {
-                        createAnonymFile(getApplicationContext(), anonymFileName);
+                        files.add(createAnonymFile(getApplicationContext(), anonymFileName));
                         filesName.add(anonymFileName);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -85,7 +86,7 @@ public class ExportDBActivity extends AppCompatActivity {
                 }
                 if(get_non_anonym){
                     try {
-                        createNonAnonymFile(getApplicationContext(), nonAnonymFileName);
+                        files.add(createNonAnonymFile(getApplicationContext(), nonAnonymFileName));
                         filesName.add(nonAnonymFileName);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -93,7 +94,7 @@ public class ExportDBActivity extends AppCompatActivity {
                 }
                 if(get_all_data) {
                     try {
-                        createFile(getApplicationContext(), fileName);
+                        files.add(createFile(getApplicationContext(), fileName));
                         filesName.add(fileName);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -106,11 +107,11 @@ public class ExportDBActivity extends AppCompatActivity {
                     public void run() {
                         try {
                             GMailSender sender = new GMailSender("blueside.project@gmail.com", "blueside123");
-                            ArrayList<File> files = new ArrayList<File>();
+
                             try {
-                                for(int i = 0; i < filesName.size(); i++) {
+                                /*for(int i = 0; i < filesName.size(); i++) {
                                     files.add(new File(getApplicationContext().getCacheDir(), filesName.get(i)));
-                                }
+                                }*/
                                 sender.sendMail(mailSubject.getText().toString(),
                                         mailBody.getText().toString()
                                         , "blueside.project@gmail.com", mailAddress.getText().toString(),files);
@@ -138,7 +139,8 @@ public class ExportDBActivity extends AppCompatActivity {
         });
     }
 
-    private void createAnonymFile(Context context, String fileName) throws IOException {
+
+    private File createAnonymFile(Context context, String fileName) throws IOException {
         File cacheFile = new File(context.getCacheDir() + File.separator + fileName);
         cacheFile.createNewFile();
 
@@ -150,13 +152,11 @@ public class ExportDBActivity extends AppCompatActivity {
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
             SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
             users = getPatient();
-            printWriter.append("sep=;");
-            printWriter.append("\n");
-            printWriter.append("NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; SEX;" +
+            printWriter.println("sep=;");
+            printWriter.println("NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
                     " PSEUDO; DEFICIENCY ");
-            printWriter.append("\n");
 
             for(int i =0; i<users.size(); i++) {
                 try {
@@ -203,8 +203,7 @@ public class ExportDBActivity extends AppCompatActivity {
                                 + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
                                 + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
                                 + ";" + pseudo + ";" + carence;
-                        printWriter.append(record);
-                        printWriter.append("\n");
+                        printWriter.println(record);
                     }else {
                         Log.i("export db","row not secured");
                     }
@@ -221,9 +220,11 @@ public class ExportDBActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
+        return cacheFile;
     }
 
-    private void createNonAnonymFile(Context context, String fileName) throws IOException {
+    private File createNonAnonymFile(Context context, String fileName) throws IOException {
+
         File cacheFile = new File(context.getCacheDir() + File.separator + fileName);
         cacheFile.createNewFile();
 
@@ -234,13 +235,11 @@ public class ExportDBActivity extends AppCompatActivity {
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
             SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
             users = getPatient();
-            printWriter.append("sep=;");
-            printWriter.append("\n");
-            printWriter.append("NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; SEX;" +
+            printWriter.println("sep=;");
+            printWriter.println("NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
                     " PSEUDO; DEFICIENCY ");
-            printWriter.append("\n");
 
             for(int i =0; i<users.size(); i++) {
                 try {
@@ -287,8 +286,7 @@ public class ExportDBActivity extends AppCompatActivity {
                                 + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
                                 + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
                                 + ";" + pseudo + ";" + carence;
-                        printWriter.append(record);
-                        printWriter.append("\n");
+                        printWriter.println(record);
                     }else {
                         Log.i("export db","row not secured");
                     }
@@ -303,10 +301,11 @@ public class ExportDBActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-
+        return cacheFile;
     }
 
-    private void createFile(Context context, String fileName) throws IOException {
+    private File createFile(Context context, String fileName) throws IOException {
+
         File cacheFile = new File(context.getCacheDir() + File.separator + fileName);
         cacheFile.createNewFile();
 
@@ -317,13 +316,11 @@ public class ExportDBActivity extends AppCompatActivity {
             PrintWriter printWriter = new PrintWriter(outputStreamWriter);
             SQLiteDBHelper dbHelper = new SQLiteDBHelper(getApplicationContext());
             users = getPatient();
-            printWriter.append("sep=;");
-            printWriter.append("\n");
-            printWriter.append("ID; NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; SEX;" +
+            printWriter.println("sep=;");
+            printWriter.println("ID; NAME; FIRST_NAME; BIRTH_DATE; AGE; ADDRESS; MAIL; PHONE; SEX;" +
                     " HEIGHT; WEIGHT; IMC; HB; VGM; TCMH; IDR_CV; HYPO; RET_HE; PLATELET;" +
                     " FERRITINE; TRANSFERRIN; SERUM_IRON; CST; FIBRINOGEN; CRP; NOTES; SECURED;" +
                     " PSEUDO; DEFICIENCY ");
-            printWriter.append("\n");
 
             for(int i =0; i<users.size(); i++) {
                 try {
@@ -372,8 +369,7 @@ public class ExportDBActivity extends AppCompatActivity {
                             + ";" + ferritin + ";" + transferrin + ";" + serum_iron + ";"
                             + cst + ";" + fibrinogen + ";" + crp + ";" + notes + ";" + secured
                             + ";" + pseudo + ";" + carence;
-                    printWriter.append(record);
-                    printWriter.append("\n");
+                    printWriter.println(record);
                 }catch (Exception e) {
                     e.printStackTrace();
                     Log.e("ExportDB", "Error in for : " + e.getMessage());
@@ -385,7 +381,7 @@ public class ExportDBActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-
+        return cacheFile;
     }
 
     //get all patients

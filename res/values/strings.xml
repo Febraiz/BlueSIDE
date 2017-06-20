@@ -106,8 +106,11 @@
     <string name="patient">Patient</string>
     <string name="new_patient">add patient</string>
     <string name="delete_patient">Delete patient</string>
-    <string name="delete_patient_msg">Do you really want to delete this patient\'s profile?</string>
+    <string name="delete_image">Delete images</string>
+    <string name="delete_patient_msg">Do you really want to delete this patient\'s profile ?</string>
     <string name="patient_deleted">Patient deleted</string>
+    <string name="images_deleted">Images deleted</string>
+    <string name="delete_images_msg">Do you want to delete the images associated with this patient ?</string>
     <string name="empty_fields">Empty fields</string>
     <string name="title_activity_export_db">ExportDBActivity</string>
     <string name="export_db">Export database by mail</string>

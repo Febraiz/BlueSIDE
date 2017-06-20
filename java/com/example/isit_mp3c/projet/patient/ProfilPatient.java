@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.example.isit_mp3c.projet.camera.CameraActivity;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,6 +202,7 @@ public class ProfilPatient extends AppCompatActivity {
                 return true;
             case R.id.delete_patient:
                 deleteDialog(new View(getBaseContext()));
+
                 return true;
             case R.id.edit:
                 Intent editIntent = new Intent(ProfilPatient.this, EditPatient.class);
@@ -231,11 +234,12 @@ public class ProfilPatient extends AppCompatActivity {
                         if (deletePatient()) {
                             Toast.makeText(ProfilPatient.this, R.string.patient_deleted,
                                     Toast.LENGTH_LONG).show();
+
+                            deleteDataDialog(new View(getBaseContext()));
                         } else {
                             Toast.makeText(ProfilPatient.this, R.string.patient_not_deleted,
                                     Toast.LENGTH_LONG).show();
                         }
-                        finish();
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -249,11 +253,41 @@ public class ProfilPatient extends AppCompatActivity {
         dialog.show();
     }
 
+
+    public void deleteDataDialog(View view){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.delete_image)
+                .setMessage(R.string.delete_images_msg)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.i("suppression acq",
+                                "patient : " + listPosition);
+                        deleteImages();
+                        Toast.makeText(ProfilPatient.this, R.string.images_deleted,
+                                    Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     //delete patient
     private boolean deletePatient(){
         boolean isDeleted;
         final int ID;
-        ID = users.get(listPosition -1).getUserID();
+
+        ID = user.getUserID();
+
         Log.i("deletePatient", "the ID is : " + ID);
         if(dbHelper.openDatabase()){
             dbHelper.deletePatient(ID);
@@ -263,6 +297,27 @@ public class ProfilPatient extends AppCompatActivity {
         }
         dbHelper.close();
         return isDeleted ? true:false;
+    }
+
+    //delete images
+    public void deleteImages(){
+        final int ID;
+        ID = user.getUserID();
+        String directory = ID + "-" + user.getPseudo();
+        Log.i("Directory", directory);
+
+        File dir = new File(getExternalFilesDir("")+ "/"+ directory);
+        Log.i("dir", dir.getAbsolutePath());
+        deleteRecursive(dir);
+        dbHelper.deleteUserAcquisition(ID);
+    }
+
+    void deleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory())
+            for (File child : fileOrDirectory.listFiles())
+                deleteRecursive(child);
+
+        fileOrDirectory.delete();
     }
 
 }

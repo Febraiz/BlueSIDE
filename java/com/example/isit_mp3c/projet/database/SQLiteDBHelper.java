@@ -372,7 +372,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         values.put(USER_HYPO,patient.getHypo());
         values.put(USER_RET_HE,patient.getRet_he());
         values.put(USER_PLATELET,patient.getPlatelet());
-        values.put(USER_PLATELET,patient.getFerritin());
+        values.put(USER_FERRITIN,patient.getFerritin());
         values.put(USER_TRANSFERRIN,patient.getTransferrin());
         values.put(USER_SERUM_IRON,patient.getSerum_iron());
         values.put(USER_CST,patient.getCst());
@@ -414,7 +414,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         values.put(USER_HYPO,patient.getHypo());
         values.put(USER_RET_HE,patient.getRet_he());
         values.put(USER_PLATELET,patient.getPlatelet());
-        values.put(USER_PLATELET,patient.getFerritin());
+        values.put(USER_FERRITIN,patient.getFerritin());
         values.put(USER_TRANSFERRIN,patient.getTransferrin());
         values.put(USER_SERUM_IRON,patient.getSerum_iron());
         values.put(USER_CST,patient.getCst());

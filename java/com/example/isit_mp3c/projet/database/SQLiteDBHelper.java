@@ -41,6 +41,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         return singleton;
     }
 
+
     //Takes and keeps a reference of the passed context in order to access to the application assets and resources.
     public SQLiteDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -371,7 +372,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         values.put(USER_HYPO,patient.getHypo());
         values.put(USER_RET_HE,patient.getRet_he());
         values.put(USER_PLATELET,patient.getPlatelet());
-        values.put(USER_PLATELET,patient.getFerritin());
+        values.put(USER_FERRITIN,patient.getFerritin());
         values.put(USER_TRANSFERRIN,patient.getTransferrin());
         values.put(USER_SERUM_IRON,patient.getSerum_iron());
         values.put(USER_CST,patient.getCst());
@@ -413,7 +414,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         values.put(USER_HYPO,patient.getHypo());
         values.put(USER_RET_HE,patient.getRet_he());
         values.put(USER_PLATELET,patient.getPlatelet());
-        values.put(USER_PLATELET,patient.getFerritin());
+        values.put(USER_FERRITIN,patient.getFerritin());
         values.put(USER_TRANSFERRIN,patient.getTransferrin());
         values.put(USER_SERUM_IRON,patient.getSerum_iron());
         values.put(USER_CST,patient.getCst());

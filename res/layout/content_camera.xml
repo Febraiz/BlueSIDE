@@ -28,8 +28,7 @@
         android:id="@+id/image_display"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"/>
-
+        android:layout_alignParentTop="true" />
 
 
 </RelativeLayout>

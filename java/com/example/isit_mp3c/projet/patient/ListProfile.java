@@ -35,7 +35,7 @@ import java.util.List;
 public class ListProfile extends AppCompatActivity {
 
     //adapter to display the list's data
-    ArrayAdapter<String> mAdapter;
+    private ArrayAdapter<String> mAdapter;
 
     //Patient rows that will be retrieved
     private ArrayList<String> values = new ArrayList<String>();
@@ -43,7 +43,7 @@ public class ListProfile extends AppCompatActivity {
     private List<User> users;
     private ListView listProfile;
 
-    SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
+    private SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +124,7 @@ public class ListProfile extends AppCompatActivity {
         return values;
     }
 
-    public List<User> getPatient() {
+    private List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
         if (dbH.openDatabase()) {
@@ -174,7 +174,7 @@ public class ListProfile extends AppCompatActivity {
         }
     }
 
-    public void chooseDialog(View view) {
+    private void chooseDialog(View view) {
         AlertDialog alertDialog = null;
         final Intent[] intent = new Intent[1];
 

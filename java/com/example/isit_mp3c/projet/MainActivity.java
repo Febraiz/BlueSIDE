@@ -62,12 +62,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_READ_STORAGE_RESULT = 1;
 
     private String android_id;
-    List<User> users = new ArrayList<>();
-    ExportDBActivity exportDBActivity;
-    SQLiteDBHelper dbHelper;
-    String directory = "/home/comptemicroct/blueside";
+    private List<User> users = new ArrayList<>();
+    private ExportDBActivity exportDBActivity;
+    private SQLiteDBHelper dbHelper;
+    private String directory = "/home/comptemicroct/blueside";
     private ProgressDialog progressDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Open the file explorer
-    public void openFileEx() {
+    private void openFileEx() {
         Intent intent = new Intent(MainActivity.this, FileBrowser.class);
         startActivity(intent);
     }
@@ -236,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setLanguage(String lang) {
+    private void setLanguage(String lang) {
         String languageToLoad = lang;
         //Current local application
         Locale locale = new Locale(languageToLoad);
@@ -279,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void chooseDialog(View view) {
+    private void chooseDialog(View view) {
         AlertDialog alertDialog = null;
         final Intent[] intent = new Intent[1];
 
@@ -329,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public void sendData() {
+    private void sendData() {
         final Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -398,7 +397,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //new
-    public void upload(File src, ChannelSftp sftp, String dir) throws IOException, SftpException {
+    private void upload(File src, ChannelSftp sftp, String dir) throws IOException, SftpException {
         if (src.isDirectory()) {
             SftpATTRS attrs = null;
             try {
@@ -472,7 +471,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public FileInputStream createFile(Context context) throws IOException {
+    private FileInputStream createFile(Context context) throws IOException {
         users = dbHelper.getPatient();
         String fileName = "blueSIDE.csv";
         File cacheFile = new File(context.getCacheDir() + File.separator + fileName);
@@ -553,7 +552,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //new
-    public FileInputStream createdataFile(Context context, User user, Acquisition acquisition) throws IOException {
+    private FileInputStream createdataFile(Context context, User user, Acquisition acquisition) throws IOException {
         users = dbHelper.getPatient();
         String fileName = "data.csv";
         File cacheFile = new File(context.getCacheDir() + File.separator + fileName);

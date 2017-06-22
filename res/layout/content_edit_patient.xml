@@ -28,7 +28,6 @@
         tools:showIn="@layout/activity_add_patient"
         android:id="@+id/test">
 
-
         <TextView
             android:id="@+id/textview1"
             android:layout_width="100dp"
@@ -40,14 +39,13 @@
         <EditText
             android:id="@+id/name_patient"
             android:textSize="15sp"
+            android:focusableInTouchMode="false"
             android:inputType="text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
             android:layout_row="0" />
-
-
 
         <TextView
             android:id="@+id/textview2"
@@ -60,6 +58,7 @@
         </TextView>
         <EditText
             android:id="@+id/first_name_patient"
+            android:focusableInTouchMode="false"
             android:inputType="text"
             android:textSize="15sp"
             android:layout_width="wrap_content"
@@ -67,8 +66,6 @@
             android:layout_columnSpan="2"
             android:layout_column="1"
             android:layout_row="1"/>
-
-
 
         <TextView
             android:id="@+id/textview3"
@@ -82,13 +79,13 @@
         <EditText
             android:id="@+id/patient_birth"
             android:textSize="15sp"
+            android:focusableInTouchMode="false"
             android:inputType="date|textNoSuggestions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_column="1"
             android:layout_row="2"/>
-
 
         <TextView
             android:id="@+id/textview4"
@@ -109,8 +106,6 @@
             android:layout_column="1"
             android:layout_row="3"/>
 
-
-
         <TextView
             android:id="@+id/textview5"
             android:text="@string/mail"
@@ -128,8 +123,6 @@
             android:layout_columnSpan="2"
             android:layout_column="1"
             android:layout_row="4"/>
-
-
 
         <TextView
             android:id="@+id/textview6"
@@ -149,8 +142,6 @@
             android:layout_column="1"
             android:layout_row="5"/>
 
-
-
         <TextView
             android:id="@+id/textview7"
             android:text="@string/sex"
@@ -166,7 +157,6 @@
             android:text="Set the gender"
             android:layout_column="1"
             android:layout_row="6"/>
-
 
         <TextView
             android:id="@+id/textview8"
@@ -185,8 +175,6 @@
             android:layout_columnSpan="2"
             android:layout_column="1"
             android:layout_row="7"/>
-
-
 
         <TextView
             android:id="@+id/textview9"
@@ -248,7 +236,6 @@
 
         </RadioGroup>
 
-
         <TextView
             android:id="@+id/textview10"
             android:text="@string/hb"
@@ -266,8 +253,6 @@
             android:layout_columnSpan="2"
             android:layout_column="1"
             android:layout_row="11"/>
-
-
 
         <TextView
             android:id="@+id/textview11"
@@ -287,8 +272,6 @@
             android:layout_column="1"
             android:layout_row="12"/>
 
-
-
         <TextView
             android:id="@+id/textview12"
             android:text="@string/tcmh"
@@ -306,8 +289,6 @@
             android:layout_columnSpan="2"
             android:layout_column="1"
             android:layout_row="13"/>
-
-
 
         <TextView
             android:id="@+id/textview13"
@@ -327,8 +308,6 @@
             android:layout_column="1"
             android:layout_row="14"/>
 
-
-
         <TextView
             android:id="@+id/textview14"
             android:text="@string/hypo"
@@ -346,8 +325,6 @@
             android:layout_columnSpan="2"
             android:layout_column="1"
             android:layout_row="15"/>
-
-
 
         <TextView
             android:id="@+id/textview15"
@@ -367,8 +344,6 @@
             android:layout_column="1"
             android:layout_row="16"/>
 
-
-
         <TextView
             android:id="@+id/textview16"
             android:text="@string/platelet"
@@ -386,8 +361,6 @@
             android:layout_columnSpan="2"
             android:layout_column="1"
             android:layout_row="17"/>
-
-
 
         <TextView
             android:id="@+id/textview17"
@@ -407,8 +380,6 @@
             android:layout_column="1"
             android:layout_row="18"/>
 
-
-
         <TextView
             android:id="@+id/textview18"
             android:text="@string/transferrin"
@@ -426,8 +397,6 @@
             android:layout_columnSpan="2"
             android:layout_column="1"
             android:layout_row="19"/>
-
-
 
         <TextView
             android:id="@+id/textview19"
@@ -452,8 +421,6 @@
             android:layout_column="2"
             android:layout_row="20"/>
 
-
-
         <TextView
             android:id="@+id/textview20"
             android:text="@string/cst"
@@ -471,8 +438,6 @@
             android:layout_columnSpan="2"
             android:layout_column="1"
             android:layout_row="21"/>
-
-
 
         <TextView
             android:id="@+id/textview21"
@@ -492,8 +457,6 @@
             android:layout_column="1"
             android:layout_row="22"/>
 
-
-
         <TextView
             android:id="@+id/textview22"
             android:text="@string/crp"
@@ -512,8 +475,6 @@
             android:layout_column="1"
             android:layout_row="23"/>
 
-
-
         <TextView
             android:id="@+id/textview23"
             android:text="@string/others"
@@ -531,7 +492,6 @@
             android:layout_columnSpan="2"
             android:layout_column="1"
             android:layout_row="24"/>
-
 
         <Button
             android:id="@+id/cancel_button"
@@ -556,7 +516,6 @@
             android:layout_columnSpan="2"
             android:layout_column="1"
             android:layout_row="25"/>
-
 
     </GridLayout>
 

@@ -31,7 +31,6 @@ public class UiView extends ListFragment {
         setHasOptionsMenu(true);
     }
 
-
     //Return the view to the Activity for display.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,6 +41,8 @@ public class UiView extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        //Set the presenter
         setPresenter(new Presenter(this));
     }
 

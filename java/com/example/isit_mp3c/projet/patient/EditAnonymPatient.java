@@ -39,7 +39,7 @@ public class EditAnonymPatient extends AppCompatActivity
     private List<User> users;
     private int id;
     private ArrayAdapter<CharSequence> genderSpinnerAdapter, ironSpinnerAdapter;
-    SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
+    private SQLiteDBHelper dbH = SQLiteDBHelper.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +52,10 @@ public class EditAnonymPatient extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         idPatient = (TextView) findViewById(R.id.id_patient);
+
+        // Disable the editText
+        idPatient.setInputType(0);
+
         age = (EditText) findViewById(R.id.age_patient);
         height = (EditText) findViewById(R.id.height_patient);
         weight = (EditText) findViewById(R.id.weight_patient);
@@ -124,7 +128,7 @@ public class EditAnonymPatient extends AppCompatActivity
     }
 
     //get all patients
-    public List<User> getPatient() {
+    private List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
         if(dbH.openDatabase()){
@@ -136,7 +140,7 @@ public class EditAnonymPatient extends AppCompatActivity
     }
 
     //get the patient's data
-    public void getProfil() {
+    private void getProfil() {
 
         try {
             //idPatient.setText(String.valueOf(users.get(id).getUserID()));
@@ -301,7 +305,7 @@ public class EditAnonymPatient extends AppCompatActivity
         }
     }
 
-    public String getDeficiencyType()
+    private String getDeficiencyType()
     {
         if (rbCertain.isChecked())
             return "Carence certaine";

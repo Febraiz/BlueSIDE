@@ -12,7 +12,7 @@
     <string name="search">Recherche</string>
     <string name="language">Changer de langue</string>
     <string name="capture">Prendre des photos</string>
-
+    <string name="otherOptions">Autres options</string>
 
     <string name="name">Nom </string>
     <string name="first_name">Prénom </string>
@@ -46,6 +46,9 @@
     <string name="male">Masculin</string>
     <string name="female">Féminin</string>
     <string name="nombre_acquisition">Nombre d\'acquisition(s)</string>
+
+    <string name="addNonAnonWarning">Attention ! Le nom et prenom du patient ne pourront plus être modifiés après son enregistrement !</string>
+    <string name="addAnonWarning">Attention ! Le pseudo du patient ne pourra plus être modifié après son enregistrement !</string>
 
     <string name="mail_request">Êtes-vous sûr de vouloir envoyer ces données par mail ? La connexion n\'est pas sécurisée</string>
 

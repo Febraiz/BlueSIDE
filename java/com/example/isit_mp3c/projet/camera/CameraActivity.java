@@ -205,7 +205,7 @@ public class CameraActivity extends AppCompatActivity
 
     }
 
-    public void setDirectoryName(){
+    private void setDirectoryName(){
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         idPatient = Integer.parseInt(directoryPatient.split("-")[0]);
@@ -217,7 +217,7 @@ public class CameraActivity extends AppCompatActivity
         }
     }
 
-    public void getNameFileDialog() {
+    private void getNameFileDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(CameraActivity.this);
 
         builder.setCancelable(false);
@@ -261,7 +261,7 @@ public class CameraActivity extends AppCompatActivity
     }
 
     //get all patients
-    public List<User> getPatient() {
+    private List<User> getPatient() {
         List<User> users = new ArrayList<>();
 
         if(dbHelper.openDatabase()){
@@ -937,7 +937,7 @@ public class CameraActivity extends AppCompatActivity
 
 
     //to convert temperature to rggbchannelvector
-    public double getRGBToDouble(int color) {
+    private double getRGBToDouble(int color) {
         double t = color;
         t = t * 3 *2;
         t = t / (255);
@@ -947,7 +947,7 @@ public class CameraActivity extends AppCompatActivity
         return t;
     }
 
-    public RggbChannelVector setColorTemp(float temp){
+    private RggbChannelVector setColorTemp(float temp){
 
         float r,g,b;
         int[] rgb = ColorTemp(temp);
@@ -967,7 +967,7 @@ public class CameraActivity extends AppCompatActivity
         return v;
     }
 
-    public int[] ColorTemp(float temp){
+    private int[] ColorTemp(float temp){
 
         float temperature = temp/100;
         float t;
@@ -1022,7 +1022,7 @@ public class CameraActivity extends AppCompatActivity
     }
 
     //thread to save images
-    public void saveImages(){
+    private void saveImages(){
 
         new Thread(new Runnable(){
 
@@ -1084,7 +1084,7 @@ public class CameraActivity extends AppCompatActivity
         }).start();
     }
 
-    public void saveImage(){
+    private void saveImage(){
 
         new Thread(new Runnable(){
 
@@ -1162,7 +1162,7 @@ public class CameraActivity extends AppCompatActivity
         }).start();
     }
 
-    public void showImage(){
+    private void showImage(){
 
         File file_preview = new File(getExternalFilesDir(directoryFiles), "sclera.png");
 
@@ -1193,7 +1193,7 @@ public class CameraActivity extends AppCompatActivity
     }
 
     //select seed point and readjust it to correspond to the size of the image
-    public void selectPoint(){
+    private void selectPoint(){
 
         File file_preview = new File(getExternalFilesDir(directoryFiles), nomsImages.get(1));
         Bitmap img = BitmapFactory.decodeFile(file_preview.getAbsolutePath());
@@ -1294,7 +1294,7 @@ public class CameraActivity extends AppCompatActivity
 
     }
 
-    public void createTimesFile(){
+    private void createTimesFile(){
         //VERSION 2
         //save exposure times to a file .csv
         File timesFile = new File(getExternalFilesDir(directoryFiles), "times.csv");

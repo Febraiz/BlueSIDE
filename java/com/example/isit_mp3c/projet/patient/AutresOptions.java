@@ -25,7 +25,7 @@ import com.example.isit_mp3c.projet.exportdb.ExportDBActivity;
 
 public class AutresOptions extends AppCompatActivity {
 
-    Toast mToast = null;
+    private Toast mToast = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

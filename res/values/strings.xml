@@ -13,6 +13,7 @@
     <string name="search">Search</string>
     <string name="language">Change language</string>
     <string name="capture">Take photos</string>
+    <string name="otherOptions">Other options</string>
     <string name="english_v">English</string>
     <string name="french_v">Français</string>
     <string-array name="languageSpinner">
@@ -54,6 +55,9 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="nombre_acquisition">Number of acquisition</string>
+
+    <string name="addNonAnonWarning">Warning ! You won\'t be able to change patient\'s Name and firstName after save !</string>
+    <string name="addAnonWarning">Warning ! You won\'t be able to change patient\'s pseudo after save !</string>
 
     <string name="mail_request">Are you sure you want to send data by mail ? This connection is not secured</string>
 

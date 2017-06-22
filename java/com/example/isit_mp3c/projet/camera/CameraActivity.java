@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -28,6 +30,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -165,8 +168,8 @@ public class CameraActivity extends AppCompatActivity
         textureView = (TextureView) findViewById(R.id.textView);
         textureCapture = (TextureView) findViewById(R.id.textCapture);
 
-        imageDisplay = (ImageView) findViewById(R.id.image_display);
-        imageDisplay.setVisibility(View.INVISIBLE);
+        //imageDisplay = (ImageView) findViewById(R.id.image_display);
+        //imageDisplay.setVisibility(View.VISIBLE);
 
         textureView.setSurfaceTextureListener(this);
         textureView.setOnTouchListener(new View.OnTouchListener() {
@@ -541,6 +544,12 @@ public class CameraActivity extends AppCompatActivity
                 e.printStackTrace();
             }
         }
+
+
+        //  Find Screen size first
+        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+        int screenWidth = metrics.widthPixels;
+        int screenHeight = (int) (metrics.heightPixels*0.9);
 
     }
 

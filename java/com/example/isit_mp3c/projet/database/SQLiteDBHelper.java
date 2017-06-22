@@ -41,6 +41,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper implements DatabaseConstant
         return singleton;
     }
 
+
     //Takes and keeps a reference of the passed context in order to access to the application assets and resources.
     public SQLiteDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

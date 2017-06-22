@@ -168,8 +168,8 @@ public class CameraActivity extends AppCompatActivity
         textureView = (TextureView) findViewById(R.id.textView);
         textureCapture = (TextureView) findViewById(R.id.textCapture);
 
-        //imageDisplay = (ImageView) findViewById(R.id.image_display);
-        //imageDisplay.setVisibility(View.VISIBLE);
+        imageDisplay = (ImageView) findViewById(R.id.image_display);
+        imageDisplay.setVisibility(View.INVISIBLE);
 
         textureView.setSurfaceTextureListener(this);
         textureView.setOnTouchListener(new View.OnTouchListener() {
@@ -1165,6 +1165,7 @@ public class CameraActivity extends AppCompatActivity
     private void showImage(){
 
         File file_preview = new File(getExternalFilesDir(directoryFiles), "sclera.png");
+        Log.i("path",file_preview.getAbsolutePath());
 
         Bitmap img_preview = BitmapFactory.decodeFile(file_preview.getAbsolutePath());
 

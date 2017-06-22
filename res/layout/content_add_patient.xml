@@ -281,7 +281,7 @@
 
         <TextView
             android:id="@+id/textview11"
-            android:text="@string/vgm"
+            android:text= "@string/vgm"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_column="0"

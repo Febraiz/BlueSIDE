@@ -505,7 +505,7 @@ public class ExportDBActivity extends AppCompatActivity {
     }
 
 
-    private void onCheckboxClicked(View view) {
+    public void onCheckboxClicked(View view) {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
         // Check which checkbox was clicked

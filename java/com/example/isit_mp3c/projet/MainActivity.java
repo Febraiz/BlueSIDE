@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         dbHelper = SQLiteDBHelper.getInstance(this);
 
-        if (isOnline()) {
+        /*if (isOnline()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.senddata)
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     });
             builder.create();
             builder.show();
-        }
+        }*/
 
         addPatientBtn = (Button) findViewById(R.id.add_patient_button);
         addPatientBtn.setOnClickListener(new View.OnClickListener() {

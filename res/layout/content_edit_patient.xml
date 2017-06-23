@@ -29,7 +29,6 @@
             />
         <EditText
             android:id="@+id/name_patient"
-            android:hint="patient's name"
             android:focusableInTouchMode="false"
             android:textSize="15sp"
             android:layout_width="0dp"
@@ -50,7 +49,6 @@
             />
         <EditText
             android:id="@+id/first_name_patient"
-            android:hint="first-name "
             android:focusableInTouchMode="false"
             android:textSize="15sp"
             android:layout_width="0dp"
@@ -90,7 +88,6 @@
             />
         <EditText
             android:id="@+id/adress_patient"
-            android:hint="patient's adress"
             android:textSize="15sp"
             android:layout_width="0dp"
             android:overScrollMode="always"

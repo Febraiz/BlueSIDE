@@ -140,4 +140,5 @@
     <string name="senddata">Voulez-vous envoyer les données ?</string>
     <string name="sending_data">Envoi des données...</string>
     <string name="no_connection">Vous n\'êtes pas connecté</string>
+    <string name="first_name_error">Le prénom est obligatoire</string>
 </resources>

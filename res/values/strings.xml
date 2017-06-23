@@ -171,5 +171,6 @@
     <string name="senddata">Do you want to send data ?</string>
     <string name="sending_data">Sending data...</string>
     <string name="no_connection">You are not online</string>
+    <string name="first_name_error">First-name is required</string>
 
 </resources>

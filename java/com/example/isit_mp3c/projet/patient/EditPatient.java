@@ -71,6 +71,7 @@ public class EditPatient extends AppCompatActivity
 
         // Disable those 2 editTexts
         name.setInputType(0);
+        name.setTextIsSelectable(false);
         first_Name.setInputType(0);
         first_Name.setTextIsSelectable(false);
 

@@ -374,7 +374,7 @@ public class AddPatientActivity extends AppCompatActivity
 
     //condition for the input
     private boolean isInputValid() {
-        boolean[] test = new boolean[4];
+        boolean[] test = new boolean[5];
         boolean isValid = true;
 
         if (!name.getText().toString().isEmpty()) {
@@ -384,24 +384,31 @@ public class AddPatientActivity extends AppCompatActivity
             name.setError(getString(R.string.condition_name));
         }
 
-        if (isMailValid) {
+        if (!first_Name.getText().toString().isEmpty()){
             test[1] = true;
         } else {
             test[1] = false;
+            first_Name.setError(getString(R.string.first_name_error));
+        }
+
+        if (isMailValid) {
+            test[2] = true;
+        } else {
+            test[2] = false;
             mail.setError(getString(R.string.condition_mail));
         }
 
         if (isDateValid) {
-            test[2] = true;
+            test[3] = true;
         } else {
-            test[2] = false;
+            test[3] = false;
             date_Birth.setError(getString(R.string.condition_date));
         }
 
         if (isPhoneValid) {
-            test[3] = true;
+            test[4] = true;
         } else {
-            test[3] = false;
+            test[4] = false;
             phone.setError(getString(R.string.condition_phone));
         }
 

@@ -28,7 +28,7 @@
             android:layout_columnWeight="1"
             />
         <EditText
-            android:id="@+id/pseudo"
+            android:id="@+id/id_patient"
             android:textSize="15sp"
             android:focusableInTouchMode="false"
             android:layout_width="0dp"

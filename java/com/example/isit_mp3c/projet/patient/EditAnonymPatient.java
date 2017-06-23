@@ -32,10 +32,9 @@ public class EditAnonymPatient extends AppCompatActivity
 
     private EditText height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin,
-            transferrin, serum_iron, cst, fibrinogen, crp, other, age;
+            transferrin, serum_iron, cst, fibrinogen, crp, other, age, idPatient;
     private Spinner genderSpinner, ironSpinner;
     private RadioButton rbCertain, rbAbsence, rbIncertain;
-    private TextView idPatient;
     private List<User> users;
     private int id;
     private ArrayAdapter<CharSequence> genderSpinnerAdapter, ironSpinnerAdapter;
@@ -51,7 +50,7 @@ public class EditAnonymPatient extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        idPatient = (TextView) findViewById(R.id.id_patient);
+        idPatient = (EditText) findViewById(R.id.id_patient);
 
         // Disable the editText
         idPatient.setInputType(0);

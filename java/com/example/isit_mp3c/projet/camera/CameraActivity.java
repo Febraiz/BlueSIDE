@@ -124,6 +124,9 @@ public class CameraActivity extends AppCompatActivity
 
     private SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
 
+    int width = 960;
+    int height = 1260;
+
     private BaseLoaderCallback openCVLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -480,7 +483,8 @@ public class CameraActivity extends AppCompatActivity
             //Log.i(TAG, "exposure time captured: " + String.valueOf(result.get(CaptureResult.SENSOR_EXPOSURE_TIME)));
             Log.i(TAG, "exposure time captured (seconds): " + String.valueOf((float) result.get(CaptureResult.SENSOR_EXPOSURE_TIME) / 1000000000));
 
-            Bitmap bitmap = Bitmap.createBitmap(480, 640, Bitmap.Config.ARGB_8888);
+            //Bitmap bitmap = Bitmap.createBitmap(480, 640, Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             bmplist.add(textureCapture.getBitmap(bitmap));
 
             //only one capture
@@ -880,8 +884,7 @@ public class CameraActivity extends AppCompatActivity
             int cptExp = 0;
             int cptTemp = 0;
 
-            //tabExp = new long[]{1,4,8,16,32,64,128,256};
-            tabExp = new long[]{2,1,-2,-4,-8,-16,-32,-64};
+            tabExp = new long[]{16, 8, 4, 2, 1,-2,-4,-8};//,-16,-32,-64};
 
             //tabTemp = new int[]{0,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000};
             tabTemp = new int[]{0};
@@ -1196,7 +1199,7 @@ public class CameraActivity extends AppCompatActivity
     //select seed point and readjust it to correspond to the size of the image
     private void selectPoint(){
 
-        File file_preview = new File(getExternalFilesDir(directoryFiles), nomsImages.get(1));
+        File file_preview = new File(getExternalFilesDir(directoryFiles), nomsImages.get(4));
         Bitmap img = BitmapFactory.decodeFile(file_preview.getAbsolutePath());
 
         imageDisplay.setImageBitmap(img);
@@ -1211,8 +1214,8 @@ public class CameraActivity extends AppCompatActivity
 
                     int textureHeight = textureCapture.getMeasuredHeight();
                     int textureWidth = textureCapture.getMeasuredWidth();
-                    x = (480 * (int) event.getX()) / textureWidth;
-                    y = (640 * (int) event.getY()) / textureHeight;
+                    x = (width * (int) event.getX()) / textureWidth;
+                    y = (height * (int) event.getY()) / textureHeight;
 
                     Log.i(TAG, "resize x: " + String.valueOf(x) + " resize y: " + String.valueOf(y));
                     progressDialog = ProgressDialog.show(CameraActivity.this, "Starting detection...", "", true);
@@ -1238,7 +1241,7 @@ public class CameraActivity extends AppCompatActivity
                 double time;
 
                 String dir = getExternalFilesDir(directoryFiles).getAbsolutePath();
-                String name = nomsImages.get(1);
+                String name = nomsImages.get(4);
 
                 Log.i(TAG, "start detection native");
                 start = System.currentTimeMillis();
@@ -1266,8 +1269,8 @@ public class CameraActivity extends AppCompatActivity
             public void run() {
 
                 String dir = getExternalFilesDir(directoryFiles).getAbsolutePath();
-                String nameSclera = "/" + nomsImages.get(0);
-                String nameRef = "/" + nomsImages.get(1);
+                String nameSclera = "/" + nomsImages.get(4);
+                String nameRef = "/" + nomsImages.get(4);
                 int size_window = 12;
                 int iSclera = 100;
                 int jSclera = 100;

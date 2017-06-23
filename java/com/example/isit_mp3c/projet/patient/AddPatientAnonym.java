@@ -35,7 +35,7 @@ import java.util.List;
 public class AddPatientAnonym extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener{
 
-    private EditText name, first_Name, mail, date_Birth, phone, address, height, weight, hemoglobin,
+    private EditText height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin, transferrin, serum_iron, cst,
             fibrinogen, crp, other, pseudo, age;
     private RadioButton rbCertain, rbAbsence, rbIncertain;
@@ -155,6 +155,8 @@ public class AddPatientAnonym extends AppCompatActivity
                     Toast.makeText(AddPatientAnonym.this, "Error",
                             Toast.LENGTH_LONG);
                 }*/
+
+
 
             }
         });

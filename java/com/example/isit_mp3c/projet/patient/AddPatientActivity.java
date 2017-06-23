@@ -110,29 +110,6 @@ public class AddPatientActivity extends AppCompatActivity
         rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
         rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
 
-        address = (EditText) findViewById(R.id.adress_patient);
-        height = (EditText) findViewById(R.id.height_patient);
-        weight = (EditText) findViewById(R.id.weight_patient);
-        hemoglobin = (EditText) findViewById(R.id.hb);
-        vgm = (EditText) findViewById(R.id.vgm);
-        tcmh = (EditText) findViewById(R.id.tcmh);
-        idr_cv = (EditText) findViewById(R.id.idr_cv);
-        hypo = (EditText) findViewById(R.id.hypo);
-        ret_he = (EditText) findViewById(R.id.ret_he);
-        platelet = (EditText) findViewById(R.id.platelet);
-        ferritin = (EditText) findViewById(R.id.ferritin);
-        transferrin = (EditText) findViewById(R.id.transferrin);
-        serum_iron = (EditText) findViewById(R.id.srum_iron);
-        cst = (EditText) findViewById(R.id.cst);
-        fibrinogen = (EditText) findViewById(R.id.fibrinogen);
-        crp = (EditText) findViewById(R.id.crp);
-        other = (EditText) findViewById(R.id.other);
-
-        rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
-        rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
-        rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
-
-
         genderSpinner = (Spinner) findViewById(R.id.sexe_patient);
         ironSpinner = (Spinner) findViewById(R.id.iron_unit);
 
@@ -505,7 +482,6 @@ public class AddPatientActivity extends AppCompatActivity
 
         String GENDER = String.valueOf(genderSpinner.getSelectedItem());
         String UNIT = String.valueOf(ironSpinner.getSelectedItem());
-
 
         // Récupération de la carence
         String DEFICIENCY = getDeficiencyType();

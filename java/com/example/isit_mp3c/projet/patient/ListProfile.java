@@ -1,34 +1,23 @@
 package com.example.isit_mp3c.projet.patient;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
-import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,16 +53,13 @@ public class ListProfile extends AppCompatActivity {
         listProfile.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("last_ID", "ListProfile : the id putted in extra is : "
-                        + Integer.valueOf(position + 1));
+
                 String secured;
                 try {
                     secured = users.get(position).getSecured();
                 } catch (Exception e) {
                     e.printStackTrace();
                     secured = "null";
-                    Log.i("secured", "ListProfil, the system was enable to read the " +
-                            "value of secured");
                 }
                 if (secured == null) {
                     secured = "null";
@@ -106,7 +92,6 @@ public class ListProfile extends AppCompatActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.e("switch type", "erreur lors de la lecture du type de profil");
                 }
             }
         });

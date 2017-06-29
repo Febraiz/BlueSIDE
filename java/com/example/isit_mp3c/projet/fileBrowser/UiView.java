@@ -22,6 +22,15 @@ public class UiView extends ListFragment {
     //This is a passive view, so my presenter handles all of the updating, etc.
     private Presenter presenter;
 
+    //This is a good place to do final initialization as the Fragment is finished initializing itself.
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        //Set the presenter
+        setPresenter(new Presenter(this));
+    }
+
     public void setPresenter(Presenter p) {
         presenter = p;
 
@@ -35,15 +44,6 @@ public class UiView extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.listfragment_main, container, false);
-    }
-
-    //This is a good place to do final initialization as the Fragment is finished initializing itself.
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        //Set the presenter
-        setPresenter(new Presenter(this));
     }
 
     //When we intercept a click, call through to the appropriate method in the presenter.

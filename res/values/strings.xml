@@ -152,9 +152,9 @@
     <string name="condition_pseudo">Identifier is required</string>
     <string name="condition_height">Incorrect height</string>
     <string name="condition_weight">Incorrect weight</string>
-    <string name="condition_idr_cv">Incorrect : IDR-CV>100%</string>
-    <string name="condition_hypo">Incorrect : Hypo>100%</string>
-    <string name="condition_transferrin">Incorrect : Transferrin>100%</string>
+    <string name="condition_idr_cv">Incorrect : IDR-CV &lt; 100%</string>
+    <string name="condition_hypo">Incorrect : Hypo &lt; 100%</string>
+    <string name="condition_transferrin">Incorrect : Transferrin &lt; 100%</string>
 
     <string name="patient_not_deleted">Error while deleting patient</string>
 

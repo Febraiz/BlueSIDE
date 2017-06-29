@@ -20,6 +20,7 @@ public class FileBrowser extends AppCompatActivity {
 
         mView = (UiView) getFragmentManager().findFragmentById(R.id.file_list);
 
+        //Activate top actionBar
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

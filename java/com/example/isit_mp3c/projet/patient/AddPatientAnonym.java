@@ -3,7 +3,6 @@ package com.example.isit_mp3c.projet.patient;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,19 +10,17 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.RadioButton;
 
-import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
 import com.example.isit_mp3c.projet.camera.CameraActivity;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
@@ -123,6 +120,14 @@ public class AddPatientAnonym extends AppCompatActivity
         // Apply the adapter to the spinner
         ironSpinner.setAdapter(ironSpinnerAdapter);
         ironSpinner.setOnItemSelectedListener(this);
+        ironSpinner.setOnTouchListener(new View.OnTouchListener(){
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                serum_iron.requestFocus();
+                return false;
+            }
+        });
 
         Button cancel =(Button)findViewById(R.id.cancel_button);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -148,16 +153,13 @@ public class AddPatientAnonym extends AppCompatActivity
 
             @Override
             public void onClick(View v) {
-                //if (isInputValid()) {
+                if (isInputValid()) {
                     addNewPatient();
                     saveDialog(new View(getBaseContext()), lastID);
-                /*} else {
+                } else {
                     Toast.makeText(AddPatientAnonym.this, "Error",
                             Toast.LENGTH_LONG);
-                }*/
-
-
-
+                }
             }
         });
     }
@@ -214,7 +216,6 @@ public class AddPatientAnonym extends AppCompatActivity
                     TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER, "TRUE", PSEUDO, DEFICIENCY, AGE));
         }
 
-        Log.i("last ID is ", "AddNonAnonymPatientActivity_java, Last ID set is =" + lastID);
         dbH.close();
         return lastID;
     }
@@ -222,9 +223,6 @@ public class AddPatientAnonym extends AppCompatActivity
     private void saveDialog(View view, final long lastID){
         final long id = lastID; // Not necessary. Could be deleted.
 
-        Log.i("return id", "AddPatientActivity_java, retuuuuurn extra id " + id);
-        Log.i("return id", "AddPatientActivity_java, retuuuuurn extra id " +
-                Integer.parseInt(String.valueOf(lastID)));
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setCancelable(false);
@@ -255,12 +253,10 @@ public class AddPatientAnonym extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
-        //if(mode2)
-        //    getMenuInflater().inflate(R.menu.menu_patient2, menu);
-        //else {
-            getMenuInflater().inflate(R.menu.menu_patient, menu);
-            menu.getItem(0).setEnabled(true);
-        //}
+
+        getMenuInflater().inflate(R.menu.menu_patient, menu);
+        menu.getItem(0).setEnabled(true);
+
         return true;
     }
 
@@ -274,19 +270,21 @@ public class AddPatientAnonym extends AppCompatActivity
                 if(!pseudo.getText().toString().isEmpty()) {
                     users = getPatient();
                     final long lastID2;
+
                     if(users.size() != -1) {
                         lastID2 = users.size()+1;
                     } else {
                         lastID2 = 0;
                     }
 
-                    //if (isInputValid()) {
+                    if (isInputValid()) {
                         addNewPatient();
                         saveDialog(new View(getBaseContext()), lastID2);
-                    /*} else {
+                    } else {
                         Toast.makeText(AddPatientAnonym.this, "Error",
                                 Toast.LENGTH_LONG);
-                    }*/
+                    }
+
                 } else {
                     pseudo.setError(getString(R.string.condition_pseudo));
                     Toast.makeText(AddPatientAnonym.this, "Error",
@@ -358,47 +356,77 @@ public class AddPatientAnonym extends AppCompatActivity
         boolean[] test = new boolean[5];
         boolean isValid = true;
 
-        String tmpHeight = height.getText().toString();
-        if (!tmpHeight.isEmpty()) {
-            if (Float.parseFloat(tmpHeight) > 100) {
-                tmpHeight = tmpHeight.substring(0, 1) + "." + tmpHeight.substring(1);
+        String tmp_height = height.getText().toString();
+        String tmp_weight = weight.getText().toString();
+        String tmp_idr_cv = idr_cv.getText().toString();
+        String tmp_hypo = hypo.getText().toString();
+        String tmp_transferrin = transferrin.getText().toString();
+
+        if (tmp_height.isEmpty()) {
+            test[0] = true;
+        }
+        else{
+            if (Float.parseFloat(tmp_height) > 100) {
+                tmp_height = tmp_height.substring(0, 1) + "." + tmp_height.substring(1);
             }
-            if(Float.parseFloat(tmpHeight) > 2.3) {
-                test[1] = false;
+            if (Float.parseFloat(tmp_height) > 2.3) {
+                test[0] = false;
                 height.setError(getString(R.string.condition_height));
+            } else {
+                test[0] = true;
+            }
+        }
+
+        if (tmp_weight.isEmpty()) {
+            test[1] = true;
+        }
+        else {
+            if ((Integer.parseInt(tmp_weight) > 400 || Integer.parseInt(tmp_weight) < 20)) {
+                test[1] = false;
+                weight.setError(getString(R.string.condition_weight));
             } else {
                 test[1] = true;
             }
         }
 
-        if (!weight.getText().toString().equalsIgnoreCase("") && (Integer.parseInt(weight.getText().toString()) > 400 || Integer.parseInt(weight.getText().toString()) < 20)) {
-            test[2] = false;
-            weight.setError(getString(R.string.condition_weight));
-        } else {
+        if (tmp_idr_cv.isEmpty()) {
             test[2] = true;
         }
-        if (!idr_cv.getText().toString().isEmpty() && Integer.parseInt(idr_cv.getText().toString()) > 100) {
-            test[3] = false;
-            idr_cv.setError(getString(R.string.condition_idr_cv));
-        } else {
+        else {
+            if (Integer.parseInt(tmp_idr_cv) > 100) {
+                test[2] = false;
+                idr_cv.setError(getString(R.string.condition_idr_cv));
+            } else {
+                test[2] = true;
+            }
+        }
+
+        if (tmp_hypo.isEmpty()) {
             test[3] = true;
-        }
-        if (!hypo.getText().toString().isEmpty() && Integer.parseInt(hypo.getText().toString()) > 100) {
-            test[4] = false;
-            hypo.setError(getString(R.string.condition_hypo));
         } else {
+            if (Integer.parseInt(tmp_hypo) > 100) {
+                test[3] = false;
+                hypo.setError(getString(R.string.condition_hypo));
+            } else {
+                test[3] = true;
+            }
+        }
+
+        if (tmp_transferrin.isEmpty()) {
             test[4] = true;
-        }
-        /*if (!transferrin.getText().toString().isEmpty() && Integer.parseInt(transferrin.getText().toString()) > 100) {
-            test[5] = false;
-            transferrin.setError(getString(R.string.condition_transferrin));
         } else {
-            test[5] = true;
-        }*/
+            if (Integer.parseInt(tmp_transferrin) > 100) {
+                test[4] = false;
+                transferrin.setError(getString(R.string.condition_transferrin));
+            } else {
+                test[4] = true;
+            }
+        }
 
         int i = 0;
         while (i < test.length) {
-            if (!test[i]) isValid = false;
+            if (!test[i])
+                isValid = false;
             i++;
         }
 
@@ -442,14 +470,14 @@ public class AddPatientAnonym extends AppCompatActivity
                 !pseudo.getText().toString().equals("")) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddPatientAnonym.this);
             alertDialogBuilder.setMessage(" Voulez vous vraiment annuler votre saisie ?  ");
-            alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {
                     finish();
                 }
             });
 
-            alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setNegativeButton(R.string.no,new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 

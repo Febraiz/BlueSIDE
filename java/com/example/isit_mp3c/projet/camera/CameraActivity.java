@@ -124,8 +124,9 @@ public class CameraActivity extends AppCompatActivity
 
     private SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
 
-    int width = 960;
-    int height = 1260;
+    // Width & height (pixels) for the output pictures
+    private int width = 960;
+    private int height = 1260;
 
     private BaseLoaderCallback openCVLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -954,7 +955,6 @@ public class CameraActivity extends AppCompatActivity
 
         float r,g,b;
         int[] rgb = ColorTemp(temp);
-
 
         r = (float)getRGBToDouble(rgb[0]);
         g = (float)getRGBToDouble(rgb[1])/2;

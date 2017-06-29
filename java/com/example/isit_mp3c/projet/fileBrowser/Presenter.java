@@ -83,11 +83,6 @@ public class Presenter implements LoaderManager.LoaderCallbacks<List<File>> {
         }
     }
 
-    //Called when settings is clicked from UIView menu.
-    public void settings() {
-        Toast.makeText(mView.getActivity(), "settings cclicked", Toast.LENGTH_LONG).show();
-    }
-
     //Fires intents to handle files of known mime types.
     private void openFile(Uri fileUri) {
 

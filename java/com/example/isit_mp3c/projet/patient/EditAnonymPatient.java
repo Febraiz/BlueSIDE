@@ -1,14 +1,12 @@
 package com.example.isit_mp3c.projet.patient;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,10 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
@@ -99,10 +95,17 @@ public class EditAnonymPatient extends AppCompatActivity
         // Apply the adapter to the spinner
         ironSpinner.setAdapter(ironSpinnerAdapter);
         ironSpinner.setOnItemSelectedListener(this);
+        ironSpinner.setOnTouchListener(new View.OnTouchListener(){
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                serum_iron.requestFocus();
+                return false;
+            }
+        });
 
         Bundle extras = getIntent().getExtras();
         id = extras.getInt("ID");
-        Log.i("Profil Last ID", "lest ID in activity EditPatient = " + id);
 
         users = getPatient();
         getProfil();
@@ -111,9 +114,14 @@ public class EditAnonymPatient extends AppCompatActivity
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updatePatient();
-                Toast.makeText(EditAnonymPatient.this, R.string.update, Toast.LENGTH_SHORT).show();
-                finish();
+                if (isInputValid()){
+                    updatePatient();
+                    Toast.makeText(EditAnonymPatient.this, R.string.update, Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(EditAnonymPatient.this, "Error",
+                            Toast.LENGTH_LONG);
+                }
             }
         });
 
@@ -124,7 +132,6 @@ public class EditAnonymPatient extends AppCompatActivity
                 onBackPressed();
             }
         });
-
     }
 
     //get all patients
@@ -143,8 +150,6 @@ public class EditAnonymPatient extends AppCompatActivity
     private void getProfil() {
 
         try {
-            //idPatient.setText(String.valueOf(users.get(id).getUserID()));
-            //idPatient.setText(String.valueOf(id));
             idPatient.setText(users.get(id - 1).getPseudo());
             height.setText(users.get(id - 1).getHeight().toString());
             weight.setText(users.get(id - 1).getWeight().toString());
@@ -163,7 +168,6 @@ public class EditAnonymPatient extends AppCompatActivity
             crp.setText(users.get(id - 1).getCrp());
             other.setText(users.get(id - 1).getOther());
             age.setText(users.get(id - 1).getAge());
-            // sex.setText(users.get(id - 1).getSexe());
 
             String sex = users.get(id - 1).getSexe();
             if(!sex.equals(null)){
@@ -192,7 +196,6 @@ public class EditAnonymPatient extends AppCompatActivity
             }
 
         } catch (Exception e) {
-            Log.e("DB error", "It did not read the ID value");
         }
     }
 
@@ -232,7 +235,6 @@ public class EditAnonymPatient extends AppCompatActivity
             }
 
             int ID = users.get(id - 1).getUserID();
-            Log.i("APRES CHANGEMENT", DEFICIENCY);
             dbH.updatePatient(new User(GENDER, HEIGHT, WEIGHT, HEMOGLOBIN,
                     VGM, TCMH, IDR_CV, HYPO, RET_HE, PLATELET, FERRITIN,
                     TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER,
@@ -241,6 +243,87 @@ public class EditAnonymPatient extends AppCompatActivity
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private boolean isInputValid() {
+        boolean[] test = new boolean[5];
+        boolean isValid = true;
+
+        String tmp_height = height.getText().toString();
+        String tmp_weight = weight.getText().toString();
+        String tmp_idr_cv = idr_cv.getText().toString();
+        String tmp_hypo = hypo.getText().toString();
+        String tmp_transferrin = transferrin.getText().toString();
+
+        if (tmp_height.isEmpty()) {
+            test[0] = true;
+        }
+        else{
+            if (Float.parseFloat(tmp_height) > 100) {
+                tmp_height = tmp_height.substring(0, 1) + "." + tmp_height.substring(1);
+            }
+            if (Float.parseFloat(tmp_height) > 2.3) {
+                test[0] = false;
+                height.setError(getString(R.string.condition_height));
+            } else {
+                test[0] = true;
+            }
+        }
+
+        if (tmp_weight.isEmpty()) {
+            test[1] = true;
+        }
+        else {
+            if ((Integer.parseInt(tmp_weight) > 400 || Integer.parseInt(tmp_weight) < 20)) {
+                test[1] = false;
+                weight.setError(getString(R.string.condition_weight));
+            } else {
+                test[1] = true;
+            }
+        }
+
+        if (tmp_idr_cv.isEmpty()) {
+            test[2] = true;
+        }
+        else {
+            if (Integer.parseInt(tmp_idr_cv) > 100) {
+                test[2] = false;
+                idr_cv.setError(getString(R.string.condition_idr_cv));
+            } else {
+                test[2] = true;
+            }
+        }
+
+        if (tmp_hypo.isEmpty()) {
+            test[3] = true;
+        } else {
+            if (Integer.parseInt(tmp_hypo) > 100) {
+                test[3] = false;
+                hypo.setError(getString(R.string.condition_hypo));
+            } else {
+                test[3] = true;
+            }
+        }
+
+        if (tmp_transferrin.isEmpty()) {
+            test[4] = true;
+        } else {
+            if (Integer.parseInt(tmp_transferrin) > 100) {
+                test[4] = false;
+                transferrin.setError(getString(R.string.condition_transferrin));
+            } else {
+                test[4] = true;
+            }
+        }
+
+        int i = 0;
+        while (i < test.length) {
+            if (!test[i])
+                isValid = false;
+            i++;
+        }
+
+        return isValid ? true : false;
     }
 
     @Override
@@ -267,13 +350,11 @@ public class EditAnonymPatient extends AppCompatActivity
                 onBackPressed();
                 return true;
             case R.id.save:
-                if(!idPatient.getText().toString().isEmpty()) {
+                if (isInputValid()){
                     updatePatient();
-                    Toast.makeText(EditAnonymPatient.this,
-                            R.string.update, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditAnonymPatient.this, R.string.update, Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    idPatient.setError(getString(R.string.condition_pseudo));
                     Toast.makeText(EditAnonymPatient.this, "Error",
                             Toast.LENGTH_LONG);
                 }

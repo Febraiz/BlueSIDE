@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -32,6 +31,7 @@ import java.util.List;
 public class AddPatientAnonym extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener{
 
+    private Toast mToast = null;
     private EditText height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin, transferrin, serum_iron, cst,
             fibrinogen, crp, other, pseudo, age;
@@ -156,9 +156,6 @@ public class AddPatientAnonym extends AppCompatActivity
                 if (isInputValid()) {
                     addNewPatient();
                     saveDialog(new View(getBaseContext()), lastID);
-                } else {
-                    Toast.makeText(AddPatientAnonym.this, "Error",
-                            Toast.LENGTH_LONG);
                 }
             }
         });
@@ -262,59 +259,52 @@ public class AddPatientAnonym extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
+
+        final long lastID2;
+
         switch (item.getItemId()){
             case android.R.id.home:
                 askToLeave();
                 break;
             case R.id.save:
-                if(!pseudo.getText().toString().isEmpty()) {
-                    users = getPatient();
-                    final long lastID2;
+                users = getPatient();
 
-                    if(users.size() != -1) {
-                        lastID2 = users.size()+1;
-                    } else {
-                        lastID2 = 0;
-                    }
-
-                    if (isInputValid()) {
-                        addNewPatient();
-                        saveDialog(new View(getBaseContext()), lastID2);
-                    } else {
-                        Toast.makeText(AddPatientAnonym.this, "Error",
-                                Toast.LENGTH_LONG);
-                    }
-
+                if(users.size() != -1) {
+                    lastID2 = users.size()+1;
                 } else {
-                    pseudo.setError(getString(R.string.condition_pseudo));
-                    Toast.makeText(AddPatientAnonym.this, "Error",
-                            Toast.LENGTH_LONG);
+                    lastID2 = 0;
+                }
+
+                if (isInputValid()) {
+                    addNewPatient();
+                    saveDialog(new View(getBaseContext()), lastID2);
                 }
                 break;
             case R.id.takePicture:
                 long id = 0;
                 User user = new User();
-                if(!pseudo.getText().toString().isEmpty()) {
+
+                if(isInputValid()) {
                     users = getPatient();
-                    final long lastID2;
+
                     if(users.size() != -1) {
                         lastID2 = users.size()+1;
                     } else {
                         lastID2 = 0;
                     }
+
                     id = addNewPatient();
                     user = dbH.getPatientWithId(Integer.parseInt((Long.toString(id))));
                     saveDialog(new View(getBaseContext()), lastID2);
-                } else {
-                    pseudo.setError(getString(R.string.condition_pseudo));
-                    Toast.makeText(AddPatientAnonym.this, "Error",
-                            Toast.LENGTH_LONG);
+
+                    Intent intent = new Intent(AddPatientAnonym.this, CameraActivity.class);
+                    Bundle b = new Bundle();
+                    b.putString("pseudo", id + "-" + user.getPseudo());
+                    intent.putExtras(b);
+                    startActivity(intent);
+
                 }
-                Intent intent = new Intent(AddPatientAnonym.this, CameraActivity.class);
-                Bundle b = new Bundle();
-                b.putString("pseudo", id + "-" + user.getPseudo());
-                intent.putExtras(b);
-                startActivity(intent);
+
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -353,81 +343,114 @@ public class AddPatientAnonym extends AppCompatActivity
     }
 
     private boolean isInputValid() {
-        boolean[] test = new boolean[5];
+        ArrayList<Boolean> test = new ArrayList<>();
         boolean isValid = true;
 
+        String tmp_pseudo = pseudo.getText().toString();
+        String tmp_age = age.getText().toString();
         String tmp_height = height.getText().toString();
         String tmp_weight = weight.getText().toString();
         String tmp_idr_cv = idr_cv.getText().toString();
         String tmp_hypo = hypo.getText().toString();
         String tmp_transferrin = transferrin.getText().toString();
 
+        if (tmp_pseudo.isEmpty()) {
+            test.add(false);
+            pseudo.setError(getString(R.string.condition_pseudo));
+        }
+        else{
+
+            if (tmp_pseudo.matches("[a-zA-Z ]*")) {
+                test.add(true);
+            } else {
+                test.add(false);
+                pseudo.setError(getString(R.string.condition_pseudo_incorrectChars));
+            }
+
+        }
+
+        if (tmp_age.isEmpty()) {
+            test.add(true);
+        } else {
+            if (Integer.parseInt(tmp_age) <= 0 || Integer.parseInt(tmp_age) >= 130 ) {
+                test.add(false);
+                age.setError(getString(R.string.condition_age));
+            } else {
+                test.add(true);
+            }
+        }
+
         if (tmp_height.isEmpty()) {
-            test[0] = true;
+            test.add(true);
         }
         else{
             if (Float.parseFloat(tmp_height) > 100) {
                 tmp_height = tmp_height.substring(0, 1) + "." + tmp_height.substring(1);
             }
             if (Float.parseFloat(tmp_height) > 2.3) {
-                test[0] = false;
+                test.add(false);
                 height.setError(getString(R.string.condition_height));
             } else {
-                test[0] = true;
+                test.add(true);
             }
         }
 
         if (tmp_weight.isEmpty()) {
-            test[1] = true;
+            test.add(true);
         }
         else {
             if ((Integer.parseInt(tmp_weight) > 400 || Integer.parseInt(tmp_weight) < 20)) {
-                test[1] = false;
+                test.add(false);
                 weight.setError(getString(R.string.condition_weight));
             } else {
-                test[1] = true;
+                test.add(true);
             }
         }
 
         if (tmp_idr_cv.isEmpty()) {
-            test[2] = true;
+            test.add(true);
         }
         else {
             if (Integer.parseInt(tmp_idr_cv) > 100) {
-                test[2] = false;
+                test.add(false);
                 idr_cv.setError(getString(R.string.condition_idr_cv));
             } else {
-                test[2] = true;
+                test.add(true);
             }
         }
 
         if (tmp_hypo.isEmpty()) {
-            test[3] = true;
+            test.add(true);
         } else {
             if (Integer.parseInt(tmp_hypo) > 100) {
-                test[3] = false;
+                test.add(false);
                 hypo.setError(getString(R.string.condition_hypo));
             } else {
-                test[3] = true;
+                test.add(true);
             }
         }
 
         if (tmp_transferrin.isEmpty()) {
-            test[4] = true;
+            test.add(true);
         } else {
             if (Integer.parseInt(tmp_transferrin) > 100) {
-                test[4] = false;
+                test.add(false);
                 transferrin.setError(getString(R.string.condition_transferrin));
             } else {
-                test[4] = true;
+                test.add(true);
             }
         }
 
-        int i = 0;
-        while (i < test.length) {
-            if (!test[i])
-                isValid = false;
-            i++;
+        for (Boolean iter : test) {
+            if(!iter){
+                isValid=false;
+
+                if (mToast != null) mToast.cancel();
+                mToast = Toast.makeText(AddPatientAnonym.this, getString(R.string.error), Toast.LENGTH_SHORT);
+                mToast.show();
+
+                break;
+            }
         }
 
         return isValid ? true : false;

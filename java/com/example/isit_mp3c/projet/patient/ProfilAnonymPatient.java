@@ -201,6 +201,7 @@ public class ProfilAnonymPatient extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void deleteDialog(View view){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

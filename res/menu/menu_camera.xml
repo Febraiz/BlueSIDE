@@ -11,6 +11,7 @@
         app:showAsAction="always" />
     -->
 
+
     <item
         android:id="@+id/detect"
         android:orderInCategory="1"
@@ -24,14 +25,21 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/hdr"
+        android:id="@+id/grid"
         android:orderInCategory="3"
+        android:title="@string/grid"
+        android:icon="@drawable/ic_grid_on_white_24dp"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/hdr"
+        android:orderInCategory="4"
         android:title="@string/title_hdr"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/analysisLDR"
-        android:orderInCategory="4"
+        android:orderInCategory="5"
         android:title="@string/title_analysis_ldr"
         app:showAsAction="ifRoom" />
 

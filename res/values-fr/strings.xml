@@ -141,4 +141,6 @@
     <string name="sending_data">Envoi des données...</string>
     <string name="no_connection">Vous n\'êtes pas connecté</string>
     <string name="first_name_error">Le prénom est obligatoire</string>
+    <string name="grid">Grille</string>
+    <string name="prefs">prefs</string>
 </resources>

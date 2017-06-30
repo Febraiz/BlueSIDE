@@ -15,7 +15,7 @@ public interface DatabaseConstants {
     String IMAGE_REF_IMAGE = "ref_image";
     String IMAGE_TITLE = "title";
     String IMAGE_DATE = "Date";
-    String IMAGE_FLASH = "Flasg";
+    String IMAGE_FLASH = "Flash";
     String IMAGE_EXPOSURE_TIME = "exposure_time";
     String IMAGE_RESULT = "Result";
 

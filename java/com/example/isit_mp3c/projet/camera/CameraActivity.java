@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -32,6 +33,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,9 +41,11 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -55,7 +59,20 @@ import com.example.isit_mp3c.projet.database.User;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.photo.CalibrateDebevec;
+import org.opencv.photo.MergeDebevec;
+import org.opencv.photo.MergeMertens;
+import org.opencv.photo.Photo;
+import org.opencv.photo.TonemapDurand;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -124,8 +141,10 @@ public class CameraActivity extends AppCompatActivity
 
     private SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
 
-    int width = 960;
-    int height = 1260;
+    private int width = 960;
+    private int height = 1260;
+
+    private ImageView cadre;
 
     private BaseLoaderCallback openCVLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -162,6 +181,35 @@ public class CameraActivity extends AppCompatActivity
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        cadre = (ImageView) findViewById(R.id.cadre_display);
+
+        //Display display = getWindowManager().getDefaultDisplay();
+        int height = getResources().getDisplayMetrics().heightPixels;
+        int width = getResources().getDisplayMetrics().widthPixels;
+
+        Log.i("widht", width + "");
+        Log.i("height", height + "");
+
+
+        RelativeLayout.LayoutParams lp= (RelativeLayout.LayoutParams)cadre.getLayoutParams();
+        int percentHeight= (int)Math.round(height*0.50);
+        int percentWidth= (int)Math.round(width*0.50);
+        lp.height=percentHeight;
+        lp.width=percentWidth;
+
+        cadre.setLayoutParams(lp);
+
+
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        boolean gridIsDisplay = sharedPref.getBoolean(getString(R.string.gridDisplay), true);
+
+        Log.i("grid is display", String.valueOf(gridIsDisplay));
+
+        if(!gridIsDisplay)
+            cadre.setVisibility(View.INVISIBLE);
+
 
         Bundle b = getIntent().getExtras();
         String name = ""; // or other values
@@ -294,8 +342,8 @@ public class CameraActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu_camera, menu);
         menu.getItem(0).setEnabled(false);
         menu.getItem(1).setEnabled(false);
-        menu.getItem(2).setEnabled(false);
         menu.getItem(3).setEnabled(false);
+        menu.getItem(4).setEnabled(false);
         return true;
     }
 
@@ -304,8 +352,8 @@ public class CameraActivity extends AppCompatActivity
         if (enableMenu) {
             menu.getItem(0).setEnabled(true);
             menu.getItem(1).setEnabled(true);
-            menu.getItem(2).setEnabled(true);
             menu.getItem(3).setEnabled(true);
+            menu.getItem(4).setEnabled(true);
         }
         return true;
     }
@@ -339,6 +387,23 @@ public class CameraActivity extends AppCompatActivity
         }
         if(id == android.R.id.home){
             onBackPressed();
+            return true;
+        }
+        if(id == R.id.grid){
+            SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            if(cadre.getVisibility() == View.VISIBLE) {
+                cadre.setVisibility(View.INVISIBLE);
+                editor.putBoolean(getString(R.string.gridDisplay), false);
+            }
+            else {
+                cadre.setVisibility(View.VISIBLE);
+                editor.putBoolean(getString(R.string.gridDisplay), true);
+            }
+
+            editor.commit();
+
             return true;
         }
 
@@ -459,7 +524,7 @@ public class CameraActivity extends AppCompatActivity
 
         @Override
         public void onCaptureProgressed(CameraCaptureSession session, CaptureRequest request, CaptureResult result) {
-            Log.i(TAG, "camViewCallback onCaptureProgressed");
+            //Log.i(TAG, "camViewCallback onCaptureProgressed");
 
 
         }
@@ -1241,7 +1306,9 @@ public class CameraActivity extends AppCompatActivity
                 double time;
 
                 String dir = getExternalFilesDir(directoryFiles).getAbsolutePath();
-                String name = nomsImages.get(4);
+                String name = "/"+nomsImages.get(4);
+
+                Log.i("name", name);
 
                 Log.i(TAG, "start detection native");
                 start = System.currentTimeMillis();
@@ -1269,8 +1336,10 @@ public class CameraActivity extends AppCompatActivity
             public void run() {
 
                 String dir = getExternalFilesDir(directoryFiles).getAbsolutePath();
-                String nameSclera = "/" + nomsImages.get(4);
+                String nameSclera = "/" + nomsImages.get(3);
                 String nameRef = "/" + nomsImages.get(4);
+                Log.i("nameSclera", nameSclera);
+                Log.i("nameRef", nameRef);
                 int size_window = 12;
                 int iSclera = 100;
                 int jSclera = 100;

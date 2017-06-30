@@ -172,5 +172,8 @@
     <string name="sending_data">Sending data...</string>
     <string name="no_connection">You are not online</string>
     <string name="first_name_error">First-name is required</string>
+    <string name="grid">Grid</string>
+    <string name="gridDisplay">gridDisplay</string>
+    <string name="prefs">prefs</string>
 
 </resources>

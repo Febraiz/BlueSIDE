@@ -58,6 +58,8 @@ public class ExportDBActivity extends AppCompatActivity {
         mailBody = (EditText)findViewById(R.id.mail_body);
 
         Button sendButton = (Button)findViewById(R.id.send_button);
+
+        // Method without external application (gmail) --> bug : empty attachments
         /*sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +130,7 @@ public class ExportDBActivity extends AppCompatActivity {
             }
         });*/
 
+        // method with external application (gmail) : work -> but need gmail and an account
         sendButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {

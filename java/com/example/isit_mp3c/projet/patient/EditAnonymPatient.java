@@ -26,9 +26,10 @@ import java.util.List;
 public class EditAnonymPatient extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener{
 
+    private Toast mToast = null;
     private EditText height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin,
-            transferrin, serum_iron, cst, fibrinogen, crp, other, age, idPatient;
+            transferrin, serum_iron, cst, fibrinogen, crp, other, age, pseudo;
     private Spinner genderSpinner, ironSpinner;
     private RadioButton rbCertain, rbAbsence, rbIncertain;
     private List<User> users;
@@ -46,11 +47,11 @@ public class EditAnonymPatient extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        idPatient = (EditText) findViewById(R.id.id_patient);
+        pseudo = (EditText) findViewById(R.id.id_patient);
 
         // Disable the editText
-        idPatient.setInputType(0);
-        idPatient.setTextIsSelectable(false);
+        pseudo.setInputType(0);
+        pseudo.setTextIsSelectable(false);
 
         age = (EditText) findViewById(R.id.age_patient);
         height = (EditText) findViewById(R.id.height_patient);
@@ -72,7 +73,6 @@ public class EditAnonymPatient extends AppCompatActivity
         rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
         rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
         rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
-        //sex = (EditText) findViewById(R.id.sexe_patient);
 
         genderSpinner = (Spinner) findViewById(R.id.sexe_patient);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -116,11 +116,12 @@ public class EditAnonymPatient extends AppCompatActivity
             public void onClick(View v) {
                 if (isInputValid()){
                     updatePatient();
-                    Toast.makeText(EditAnonymPatient.this, R.string.update, Toast.LENGTH_SHORT).show();
+
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(EditAnonymPatient.this, R.string.update, Toast.LENGTH_SHORT);
+                    mToast.show();
+
                     finish();
-                } else {
-                    Toast.makeText(EditAnonymPatient.this, "Error",
-                            Toast.LENGTH_LONG);
                 }
             }
         });
@@ -150,7 +151,7 @@ public class EditAnonymPatient extends AppCompatActivity
     private void getProfil() {
 
         try {
-            idPatient.setText(users.get(id - 1).getPseudo());
+            pseudo.setText(users.get(id - 1).getPseudo());
             height.setText(users.get(id - 1).getHeight().toString());
             weight.setText(users.get(id - 1).getWeight().toString());
             hemoglobin.setText(users.get(id - 1).getHb());
@@ -201,7 +202,7 @@ public class EditAnonymPatient extends AppCompatActivity
 
     private void updatePatient() {
         try {
-            String PSEUDO = idPatient.getText().toString().replace(" ","");
+            String PSEUDO = pseudo.getText().toString().replace(" ","");
             String HEIGHT = height.getText().toString();
             String WEIGHT = weight.getText().toString();
             String HEMOGLOBIN = hemoglobin.getText().toString();
@@ -246,81 +247,98 @@ public class EditAnonymPatient extends AppCompatActivity
     }
 
     private boolean isInputValid() {
-        boolean[] test = new boolean[5];
+        ArrayList<Boolean> test = new ArrayList<>();
         boolean isValid = true;
 
+        String tmp_age = age.getText().toString();
         String tmp_height = height.getText().toString();
         String tmp_weight = weight.getText().toString();
         String tmp_idr_cv = idr_cv.getText().toString();
         String tmp_hypo = hypo.getText().toString();
         String tmp_transferrin = transferrin.getText().toString();
 
+        if (tmp_age.isEmpty()) {
+            test.add(true);
+        } else {
+            if (Integer.parseInt(tmp_age) <= 0 || Integer.parseInt(tmp_age) >= 130 ) {
+                test.add(false);
+                age.setError(getString(R.string.condition_age));
+            } else {
+                test.add(true);
+            }
+        }
+
         if (tmp_height.isEmpty()) {
-            test[0] = true;
+            test.add(true);
         }
         else{
             if (Float.parseFloat(tmp_height) > 100) {
                 tmp_height = tmp_height.substring(0, 1) + "." + tmp_height.substring(1);
             }
             if (Float.parseFloat(tmp_height) > 2.3) {
-                test[0] = false;
+                test.add(false);
                 height.setError(getString(R.string.condition_height));
             } else {
-                test[0] = true;
+                test.add(true);
             }
         }
 
         if (tmp_weight.isEmpty()) {
-            test[1] = true;
+            test.add(true);
         }
         else {
             if ((Integer.parseInt(tmp_weight) > 400 || Integer.parseInt(tmp_weight) < 20)) {
-                test[1] = false;
+                test.add(false);
                 weight.setError(getString(R.string.condition_weight));
             } else {
-                test[1] = true;
+                test.add(true);
             }
         }
 
         if (tmp_idr_cv.isEmpty()) {
-            test[2] = true;
+            test.add(true);
         }
         else {
             if (Integer.parseInt(tmp_idr_cv) > 100) {
-                test[2] = false;
+                test.add(false);
                 idr_cv.setError(getString(R.string.condition_idr_cv));
             } else {
-                test[2] = true;
+                test.add(true);
             }
         }
 
         if (tmp_hypo.isEmpty()) {
-            test[3] = true;
+            test.add(true);
         } else {
             if (Integer.parseInt(tmp_hypo) > 100) {
-                test[3] = false;
+                test.add(false);
                 hypo.setError(getString(R.string.condition_hypo));
             } else {
-                test[3] = true;
+                test.add(true);
             }
         }
 
         if (tmp_transferrin.isEmpty()) {
-            test[4] = true;
+            test.add(true);
         } else {
             if (Integer.parseInt(tmp_transferrin) > 100) {
-                test[4] = false;
+                test.add(false);
                 transferrin.setError(getString(R.string.condition_transferrin));
             } else {
-                test[4] = true;
+                test.add(true);
             }
         }
 
-        int i = 0;
-        while (i < test.length) {
-            if (!test[i])
-                isValid = false;
-            i++;
+        for (Boolean iter : test) {
+            if(!iter){
+                isValid=false;
+
+                if (mToast != null) mToast.cancel();
+                mToast = Toast.makeText(EditAnonymPatient.this, getString(R.string.error), Toast.LENGTH_SHORT);
+                mToast.show();
+
+                break;
+            }
         }
 
         return isValid ? true : false;
@@ -352,11 +370,12 @@ public class EditAnonymPatient extends AppCompatActivity
             case R.id.save:
                 if (isInputValid()){
                     updatePatient();
-                    Toast.makeText(EditAnonymPatient.this, R.string.update, Toast.LENGTH_SHORT).show();
+
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(EditAnonymPatient.this, R.string.update, Toast.LENGTH_SHORT);
+                    mToast.show();
+
                     finish();
-                } else {
-                    Toast.makeText(EditAnonymPatient.this, "Error",
-                            Toast.LENGTH_LONG);
                 }
                 break;
 

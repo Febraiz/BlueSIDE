@@ -34,7 +34,20 @@ import java.util.Locale;
 public class EditPatient extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener{
 
+    private Toast mToast = null;
     private Calendar myCalendar = Calendar.getInstance();
+
+    DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener(){
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+    };
+
     private EditText name, first_Name, date_Birth,
             address, mail, phone, height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin,
@@ -222,11 +235,12 @@ public class EditPatient extends AppCompatActivity
             public void onClick(View v) {
                 if (isInputValid()){
                     updatePatient();
-                    Toast.makeText(EditPatient.this, R.string.update, Toast.LENGTH_SHORT).show();
+
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(EditPatient.this, R.string.update, Toast.LENGTH_SHORT);
+                    mToast.show();
+
                     finish();
-                } else {
-                    Toast.makeText(EditPatient.this, "Error",
-                            Toast.LENGTH_LONG);
                 }
             }
         });
@@ -279,7 +293,8 @@ public class EditPatient extends AppCompatActivity
 
     //condition for the input
     private boolean isInputValid(){
-        boolean[] test = new boolean[8];
+        ArrayList<Boolean> test = new ArrayList<>();
+
         boolean isValid = true;
 
         String tmp_height = height.getText().toString();
@@ -288,92 +303,98 @@ public class EditPatient extends AppCompatActivity
         String tmp_hypo = hypo.getText().toString();
         String tmp_transferrin = transferrin.getText().toString();
 
-        if(isMailValid){
-            test[0] = true;
-        }else {
-            test[0] = false;
+        if (isMailValid) {
+            test.add(true);
+        } else {
+            test.add(false);
             mail.setError(getString(R.string.condition_mail));
         }
 
-        if(isDateValid){
-            test[1] = true;
-        } else{
-            test[1] = false;
+        if (isDateValid) {
+            test.add(true);
+        } else {
+            test.add(false);
             date_Birth.setError(getString(R.string.condition_date));
         }
 
-        if(isPhoneValid){
-            test[2] = true;
-        } else{
-            test[2] = false;
+        if (isPhoneValid) {
+            test.add(true);
+        } else {
+            test.add(false);
             phone.setError(getString(R.string.condition_phone));
         }
 
         if (tmp_height.isEmpty()) {
-            test[3] = true;
+            test.add(true);
         }
         else{
             if (Float.parseFloat(tmp_height) > 100) {
                 tmp_height = tmp_height.substring(0, 1) + "." + tmp_height.substring(1);
             }
             if (Float.parseFloat(tmp_height) > 2.3) {
-                test[3] = false;
+                test.add(false);
                 height.setError(getString(R.string.condition_height));
             } else {
-                test[3] = true;
+                test.add(true);
             }
         }
 
         if (tmp_weight.isEmpty()) {
-            test[4] = true;
+            test.add(true);
         }
         else {
             if ((Integer.parseInt(tmp_weight) > 400 || Integer.parseInt(tmp_weight) < 20)) {
-                test[4] = false;
+                test.add(false);
                 weight.setError(getString(R.string.condition_weight));
             } else {
-                test[4] = true;
+                test.add(true);
             }
         }
 
         if (tmp_idr_cv.isEmpty()) {
-            test[5] = true;
+            test.add(true);
         }
         else {
             if (Integer.parseInt(tmp_idr_cv) > 100) {
-                test[5] = false;
+                test.add(false);
                 idr_cv.setError(getString(R.string.condition_idr_cv));
             } else {
-                test[5] = true;
+                test.add(true);
             }
         }
 
         if (tmp_hypo.isEmpty()) {
-            test[6] = true;
+            test.add(true);
         } else {
             if (Integer.parseInt(tmp_hypo) > 100) {
-                test[6] = false;
+                test.add(false);
                 hypo.setError(getString(R.string.condition_hypo));
             } else {
-                test[6] = true;
+                test.add(true);
             }
         }
 
         if (tmp_transferrin.isEmpty()) {
-            test[7] = true;
+            test.add(true);
         } else {
             if (Integer.parseInt(tmp_transferrin) > 100) {
-                test[7] = false;
+                test.add(false);
                 transferrin.setError(getString(R.string.condition_transferrin));
             } else {
-                test[7] = true;
+                test.add(true);
             }
         }
 
-        int i =0;
-        while(i < test.length){
-            if(!test[i]) isValid = false;
-            i++;
+        for (Boolean iter : test) {
+            if(!iter){
+                isValid=false;
+
+                if (mToast != null) mToast.cancel();
+                mToast = Toast.makeText(EditPatient.this, getString(R.string.error), Toast.LENGTH_SHORT);
+                mToast.show();
+
+                break;
+            }
         }
 
         return isValid ? true : false;
@@ -499,17 +520,6 @@ public class EditPatient extends AppCompatActivity
         }
     }
 
-    DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener(){
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel();
-        }
-    };
-
     private void updateLabel() {
 
         String myFormat = "yyyy-MM-dd"; //ISO8601
@@ -531,12 +541,13 @@ public class EditPatient extends AppCompatActivity
             case R.id.save:
                 if(isInputValid()) {
                     updatePatient();
-                    Toast.makeText(EditPatient.this, R.string.update, Toast.LENGTH_SHORT).show();
+
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(EditPatient.this, R.string.update, Toast.LENGTH_SHORT);
+                    mToast.show();
+
                     finish();
                     return true;
-                } else {
-                    Toast.makeText(EditPatient.this, "Error",
-                            Toast.LENGTH_LONG);
                 }
                 break;
             case android.R.id.home:

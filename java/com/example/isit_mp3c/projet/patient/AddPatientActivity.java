@@ -383,14 +383,24 @@ public class AddPatientActivity extends AppCompatActivity
         String tmp_transferrin = transferrin.getText().toString();
 
         if (!tmp_name.isEmpty()) {
-            test.add(true);
+            if (tmp_name.matches("[a-zA-Z ]*")) {
+                test.add(true);
+            } else {
+                test.add(false);
+                name.setError(getString(R.string.condition_pseudo_incorrectChars));
+            }
         } else {
             test.add(false);
             name.setError(getString(R.string.condition_name));
         }
 
         if (!tmp_firstName.isEmpty()){
-            test.add(true);
+            if (tmp_firstName.matches("[a-zA-Z ]*")) {
+                test.add(true);
+            } else {
+                test.add(false);
+                first_Name.setError(getString(R.string.condition_pseudo_incorrectChars));
+            }
         } else {
             test.add(false);
             first_Name.setError(getString(R.string.first_name_error));

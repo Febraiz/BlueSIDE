@@ -520,7 +520,7 @@ public class CameraActivity extends AppCompatActivity
         Log.i(TAG, "openCam");
 
         camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-
+        
         cameraConfig(camManager);
 
         Log.i("camId", camId);

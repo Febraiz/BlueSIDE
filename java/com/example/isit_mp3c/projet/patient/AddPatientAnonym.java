@@ -353,6 +353,7 @@ public class AddPatientAnonym extends AppCompatActivity
         String tmp_idr_cv = idr_cv.getText().toString();
         String tmp_hypo = hypo.getText().toString();
         String tmp_transferrin = transferrin.getText().toString();
+        String tmp_cst = cst.getText().toString();
 
         if (tmp_pseudo.isEmpty()) {
             test.add(false);
@@ -414,6 +415,18 @@ public class AddPatientAnonym extends AppCompatActivity
             if (Integer.parseInt(tmp_idr_cv) > 100) {
                 test.add(false);
                 idr_cv.setError(getString(R.string.condition_idr_cv));
+            } else {
+                test.add(true);
+            }
+        }
+
+        if (tmp_cst.isEmpty()) {
+            test.add(true);
+        }
+        else {
+            if (Integer.parseInt(tmp_cst) > 100) {
+                test.add(false);
+                cst.setError(getString(R.string.condition_cst));
             } else {
                 test.add(true);
             }

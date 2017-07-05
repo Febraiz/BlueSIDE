@@ -159,7 +159,7 @@
     <string name="condition_idr_cv">Incorrect : IDR-CV &lt; 100%</string>
     <string name="condition_hypo">Incorrect : Hypo &lt; 100%</string>
     <string name="condition_transferrin">Incorrect : Transferrin &lt; 100%</string>
-
+    <string name="condition_cst">Incorrect: CST &lt; 100%</string>
 
     <string name="patient_not_deleted">Error while deleting patient</string>
 

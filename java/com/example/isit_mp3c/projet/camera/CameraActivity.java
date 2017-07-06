@@ -7,13 +7,12 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.SurfaceTexture;
+import android.hardware.SensorManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -31,26 +30,24 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.isit_mp3c.projet.OrientationManager;
 import com.example.isit_mp3c.projet.R;
 import com.example.isit_mp3c.projet.database.Acquisition;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
@@ -59,20 +56,7 @@ import com.example.isit_mp3c.projet.database.User;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.photo.CalibrateDebevec;
-import org.opencv.photo.MergeDebevec;
-import org.opencv.photo.MergeMertens;
-import org.opencv.photo.Photo;
-import org.opencv.photo.TonemapDurand;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -84,8 +68,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static android.view.TextureView.*;
+
 public class CameraActivity extends AppCompatActivity
-        implements TextureView.SurfaceTextureListener, AdapterView.OnItemSelectedListener {
+        implements SurfaceTextureListener, AdapterView.OnItemSelectedListener, OrientationManager.OrientationListener {
 
     //minSDKversion = 21 to use android.hardware.camera2
 
@@ -141,10 +127,19 @@ public class CameraActivity extends AppCompatActivity
 
     private SQLiteDBHelper dbHelper = SQLiteDBHelper.getInstance(this);
 
+    //Résolution de la photo
     private int width = 960;
     private int height = 1260;
 
-    private ImageView cadre;
+    static int heightEcran;
+    static int widthEcran;
+
+    private int widthCadre;
+    private int heightCadre;
+
+    private int position = 1;
+
+    private static ImageView cadre_portrait, cadre_landscape, cadre_reverse_landscape;
 
     private BaseLoaderCallback openCVLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -179,36 +174,31 @@ public class CameraActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        OrientationManager orientationManager = new OrientationManager(CameraActivity.this, SensorManager.SENSOR_DELAY_NORMAL, this);
+        orientationManager.enable();
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        cadre = (ImageView) findViewById(R.id.cadre_display);
+        cadre_portrait = (ImageView) findViewById(R.id.cadre_display_portrait);
+        cadre_landscape = (ImageView) findViewById(R.id.cadre_display_landscape);
+        cadre_reverse_landscape = (ImageView) findViewById(R.id.cadre_display_reverse_landscape);
 
-        //Display display = getWindowManager().getDefaultDisplay();
-        int height = getResources().getDisplayMetrics().heightPixels;
-        int width = getResources().getDisplayMetrics().widthPixels;
-
-        Log.i("widht", width + "");
-        Log.i("height", height + "");
-
-
-        RelativeLayout.LayoutParams lp= (RelativeLayout.LayoutParams)cadre.getLayoutParams();
-        int percentHeight= (int)Math.round(height*0.50);
-        int percentWidth= (int)Math.round(width*0.50);
-        lp.height=percentHeight;
-        lp.width=percentWidth;
-
-        cadre.setLayoutParams(lp);
-
+        heightEcran = getResources().getDisplayMetrics().heightPixels;
+        widthEcran = getResources().getDisplayMetrics().widthPixels;
 
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         boolean gridIsDisplay = sharedPref.getBoolean(getString(R.string.gridDisplay), true);
 
         Log.i("grid is display", String.valueOf(gridIsDisplay));
 
-        if(!gridIsDisplay)
-            cadre.setVisibility(View.INVISIBLE);
+        if(!gridIsDisplay) {
+            cadre_portrait.setVisibility(View.INVISIBLE);
+            cadre_reverse_landscape.setVisibility(View.INVISIBLE);
+            cadre_landscape.setVisibility(View.INVISIBLE);
+        }
 
 
         Bundle b = getIntent().getExtras();
@@ -217,6 +207,7 @@ public class CameraActivity extends AppCompatActivity
             name = b.getString("pseudo");
 
         textureView = (TextureView) findViewById(R.id.textView);
+
         textureCapture = (TextureView) findViewById(R.id.textCapture);
 
         imageDisplay = (ImageView) findViewById(R.id.image_display);
@@ -240,7 +231,7 @@ public class CameraActivity extends AppCompatActivity
         bmplist = new ArrayList<>();
         nomsImages = new ArrayList<>();
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         //get patient ID for the directoryFiles
         if(name.equalsIgnoreCase(""))
@@ -393,12 +384,26 @@ public class CameraActivity extends AppCompatActivity
             SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
 
-            if(cadre.getVisibility() == View.VISIBLE) {
-                cadre.setVisibility(View.INVISIBLE);
+            if(cadre_portrait.getVisibility() == View.VISIBLE || cadre_landscape.getVisibility() == View.VISIBLE || cadre_reverse_landscape.getVisibility() == View.VISIBLE) {
+
+                cadre_portrait.setVisibility(View.INVISIBLE);
+                cadre_landscape.setVisibility(View.INVISIBLE);
+                cadre_reverse_landscape.setVisibility(View.INVISIBLE);
                 editor.putBoolean(getString(R.string.gridDisplay), false);
             }
             else {
-                cadre.setVisibility(View.VISIBLE);
+                switch (position) {
+                    case 1 :
+                        cadre_portrait.setVisibility(View.VISIBLE);
+                        break;
+                    case 2 :
+                        cadre_landscape.setVisibility(View.VISIBLE);
+                        break;
+                    case 3 :
+                        cadre_reverse_landscape.setVisibility(View.VISIBLE);
+                        break;
+
+                }
                 editor.putBoolean(getString(R.string.gridDisplay), true);
             }
 
@@ -613,13 +618,6 @@ public class CameraActivity extends AppCompatActivity
                 e.printStackTrace();
             }
         }
-
-
-        //  Find Screen size first
-        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        int screenWidth = metrics.widthPixels;
-        int screenHeight = (int) (metrics.heightPixels*0.9);
-
     }
 
     @Override
@@ -763,7 +761,7 @@ public class CameraActivity extends AppCompatActivity
                     //orientation
                     //270 for nexus5X (instead of 90 for most phones)
                     orientation = camCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
-                    Log.i(TAG,"SENSOR ORIENTATION: "+orientation);
+                    Log.i(TAG,"SENSOR ORIENTATION: "+ orientation);
                 }
 
                 //back camera
@@ -860,6 +858,7 @@ public class CameraActivity extends AppCompatActivity
         surfaceTexture = textureView.getSurfaceTexture();
         surfaceView = new Surface(surfaceTexture);
 
+
         surfaceCapture = textureCapture.getSurfaceTexture();
         imageCapture = new Surface(surfaceCapture);
         textureCapture.setVisibility(View.INVISIBLE);
@@ -949,6 +948,7 @@ public class CameraActivity extends AppCompatActivity
             int cptExp = 0;
             int cptTemp = 0;
 
+            // Temps d'exposition
             tabExp = new long[]{16, 8, 4, 2, 1,-2,-4,-8};//,-16,-32,-64};
 
             //tabTemp = new int[]{0,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000};
@@ -1388,8 +1388,87 @@ public class CameraActivity extends AppCompatActivity
             e.printStackTrace();
         }
     }
-}
 
+    @Override
+    public void onOrientationChange(OrientationManager.ScreenOrientation screenOrientation) {
+
+        int percentHeight;
+        int percentWidth;
+
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        boolean gridIsDisplay = sharedPref.getBoolean(getString(R.string.gridDisplay), true);
+
+        if(gridIsDisplay) {
+            switch (screenOrientation) {
+                case PORTRAIT:
+                    position = 1;
+                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) cadre_portrait.getLayoutParams();
+                    percentHeight = (int) Math.round(heightEcran * 0.40);
+                    percentWidth = (int) Math.round(widthEcran * 0.40);
+
+                    /*lp.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
+                    lp.removeRule(RelativeLayout.CENTER_HORIZONTAL);
+                    lp.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);*/
+
+                    lp.height = percentHeight;
+                    lp.width = percentWidth;
+                    /*lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                    lp.addRule(RelativeLayout.CENTER_VERTICAL);*/
+                    //cadre_portrait.setLayoutParams(lp);
+
+                    cadre_portrait.setVisibility(View.VISIBLE);
+                    cadre_landscape.setVisibility(View.INVISIBLE);
+                    cadre_reverse_landscape.setVisibility(View.INVISIBLE);
+                    break;
+                case REVERSED_PORTRAIT:
+                    break;
+                case REVERSED_LANDSCAPE:
+                    position = 3;
+                    RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) cadre_reverse_landscape.getLayoutParams();
+                    percentHeight = (int) Math.round(heightEcran * 0.60);
+                    percentWidth = (int) Math.round(widthEcran * 0.60);
+
+                    /*lp2.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
+                    lp2.removeRule(RelativeLayout.CENTER_HORIZONTAL);
+                    lp2.removeRule(RelativeLayout.CENTER_VERTICAL);
+                    lp2.removeRule(RelativeLayout.ALIGN_PARENT_LEFT);*/
+
+                    lp2.height = percentHeight;
+                    lp2.width = percentWidth;
+                    /*lp2.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                    lp2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);*/
+                    //cadre_reverse_landscape.setLayoutParams(lp2);
+
+                    cadre_reverse_landscape.setVisibility(View.VISIBLE);
+                    cadre_landscape.setVisibility(View.INVISIBLE);
+                    cadre_portrait.setVisibility(View.INVISIBLE);
+                    break;
+                case LANDSCAPE:
+                    position = 2;
+                    RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) cadre_landscape.getLayoutParams();
+                    percentHeight = (int) Math.round(heightEcran * 0.60);
+                    percentWidth = (int) Math.round(widthEcran * 0.60);
+
+                    /*lp3.removeRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                    lp3.removeRule(RelativeLayout.CENTER_VERTICAL);
+                    lp3.removeRule(RelativeLayout.CENTER_HORIZONTAL);
+                    lp3.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);*/
+
+                    lp3.height = percentHeight;
+                    lp3.width = percentWidth;
+                    /*lp3.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                    lp3.addRule(RelativeLayout.ALIGN_PARENT_TOP);*/
+                    //cadre_landscape.setLayoutParams(lp3);
+
+                    cadre_landscape.setVisibility(View.VISIBLE);
+                    cadre_portrait.setVisibility(View.INVISIBLE);
+                    cadre_reverse_landscape.setVisibility(View.INVISIBLE);
+
+                    break;
+            }
+        }
+    }
+}
 
 
 

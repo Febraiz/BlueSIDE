@@ -24,20 +24,5 @@
 
     <include layout="@layout/content_camera" />
 
-    <!--
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:progress="50"
-        android:max="100"
-        android:layout_gravity="bottom|center"
-        android:layout_margin="30dp"
-        android:progressBackgroundTint="#ffffff"
-        android:progressTint="@color/colorPrimaryDark"
-        android:thumbTint="@color/colorPrimary"
-        android:thumb="@android:drawable/btn_radio"
-        android:id="@+id/exposureBar" />
-    -->
-
 
 </android.support.design.widget.CoordinatorLayout>

@@ -32,12 +32,27 @@
         android:layout_alignParentTop="true" />
 
     <ImageView
-        android:id="@+id/cadre_display"
+        android:id="@+id/cadre_display_portrait"
         android:src="@drawable/cadre"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"/>
 
+    <ImageView
+        android:id="@+id/cadre_display_landscape"
+        android:src="@drawable/cadre"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:id="@+id/cadre_display_reverse_landscape"
+        android:src="@drawable/cadre"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

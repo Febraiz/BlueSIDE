@@ -2,7 +2,6 @@ package com.example.isit_mp3c.projet.database;
 
 import android.util.Log;
 
-import java.sql.Date;
 import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -28,6 +27,7 @@ public class User {
     private String hb;
     private String vgm;
     private String tcmh;
+
     private String idr_cv;
     private String hypo;
     private String ret_he;

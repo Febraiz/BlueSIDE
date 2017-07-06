@@ -1,9 +1,5 @@
 package com.example.isit_mp3c.projet.email;
 
-/**
- * Created by Corailla20 on 26/02/2016.
- */
-
 
 import java.security.AccessController;
 import java.security.Provider;

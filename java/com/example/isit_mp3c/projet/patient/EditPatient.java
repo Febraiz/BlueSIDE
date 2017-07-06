@@ -1,17 +1,16 @@
 package com.example.isit_mp3c.projet.patient;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,10 +19,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
@@ -37,7 +34,20 @@ import java.util.Locale;
 public class EditPatient extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener{
 
+    private Toast mToast = null;
     private Calendar myCalendar = Calendar.getInstance();
+
+    DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener(){
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+    };
+
     private EditText name, first_Name, date_Birth,
             address, mail, phone, height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin,
@@ -98,7 +108,6 @@ public class EditPatient extends AppCompatActivity
         rbCertain = (RadioButton) findViewById(R.id.radioDeficiencyClear);
         rbAbsence = (RadioButton) findViewById(R.id.radioNoDeficiency);
         rbIncertain = (RadioButton) findViewById(R.id.radioDeficiencyUnclear);
-        //sex = (EditText) findViewById(R.id.sexe_patient);
 
         genderSpinner = (Spinner) findViewById(R.id.sexe_patient);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -120,6 +129,14 @@ public class EditPatient extends AppCompatActivity
         // Apply the adapter to the spinner
         ironSpinner.setAdapter(ironSpinnerAdapter);
         ironSpinner.setOnItemSelectedListener(this);
+        ironSpinner.setOnTouchListener(new View.OnTouchListener(){
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                serum_iron.requestFocus();
+                return false;
+            }
+        });
 
 
         date_Birth.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +152,6 @@ public class EditPatient extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
         id = extras.getInt("ID");
-        Log.i("Profil Last ID", "lest ID in activity EditPatient = " + id);
 
         users = getPatient();
         getProfil();
@@ -146,7 +162,6 @@ public class EditPatient extends AppCompatActivity
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 if (!validEmail(s)) {
                     isMailValid = false;
-                    //mail.setError(getString(R.string.condition_mail));
                 } else {
                     isMailValid = true;
                 }
@@ -161,7 +176,6 @@ public class EditPatient extends AppCompatActivity
             public void afterTextChanged(Editable s) {
                 if (!validEmail(s)) {
                     isMailValid = false;
-                    //mail.setError(getString(R.string.condition_mail));
                 } else {
                     isMailValid = true;
                 }
@@ -219,9 +233,15 @@ public class EditPatient extends AppCompatActivity
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updatePatient();
-                Toast.makeText(EditPatient.this, R.string.update, Toast.LENGTH_SHORT).show();
-                finish();
+                if (isInputValid()){
+                    updatePatient();
+
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(EditPatient.this, R.string.update, Toast.LENGTH_SHORT);
+                    mToast.show();
+
+                    finish();
+                }
             }
         });
 
@@ -235,7 +255,6 @@ public class EditPatient extends AppCompatActivity
     }
 
     private boolean validEmail(CharSequence mail){
-        //return !TextUtils.isEmpty(mail) && Patterns.EMAIL_ADDRESS.matcher(mail).matches();
         if(!TextUtils.isEmpty(mail)){
             return Patterns.EMAIL_ADDRESS.matcher(mail).matches();
         }else{
@@ -262,6 +281,7 @@ public class EditPatient extends AppCompatActivity
     private boolean validDate(CharSequence date){
         boolean isValid;
         String input =  String.valueOf(date);
+
         //hard coding
         if(input.matches("([0-9]{4})-([0-9]{2})-([0-9]{2})")){
             isValid = true;
@@ -271,43 +291,123 @@ public class EditPatient extends AppCompatActivity
         return isValid ? true : false;
     }
 
-
     //condition for the input
     private boolean isInputValid(){
-        boolean[] test = new boolean[4];
-        boolean isValid = true;
-        if(!name.getText().toString().isEmpty()){
-            test[0] = true;
-        }else{
-            test[0] = false;
-            name.setError(getString(R.string.condition_name));
-        }
+        ArrayList<Boolean> test = new ArrayList<>();
 
-        if(isMailValid){
-            test[1] = true;
-        }else {
-            test[1] = false;
+        boolean isValid = true;
+
+        String tmp_height = height.getText().toString();
+        String tmp_weight = weight.getText().toString();
+        String tmp_idr_cv = idr_cv.getText().toString();
+        String tmp_hypo = hypo.getText().toString();
+        String tmp_transferrin = transferrin.getText().toString();
+        String tmp_cst = cst.getText().toString();
+
+        if (isMailValid) {
+            test.add(true);
+        } else {
+            test.add(false);
             mail.setError(getString(R.string.condition_mail));
         }
 
-        if(isDateValid){
-            test[2] = true;
-        } else{
-            test[2] = false;
+        if (isDateValid) {
+            test.add(true);
+        } else {
+            test.add(false);
             date_Birth.setError(getString(R.string.condition_date));
         }
 
-        if(isPhoneValid){
-            test[3] = true;
-        } else{
-            test[3] = false;
+        if (isPhoneValid) {
+            test.add(true);
+        } else {
+            test.add(false);
             phone.setError(getString(R.string.condition_phone));
         }
 
-        int i =0;
-        while(i < test.length){
-            if(!test[i]) isValid = false;
-            i++;
+        if (tmp_height.isEmpty()) {
+            test.add(true);
+        }
+        else{
+            if (Float.parseFloat(tmp_height) > 100) {
+                tmp_height = tmp_height.substring(0, 1) + "." + tmp_height.substring(1);
+            }
+            if (Float.parseFloat(tmp_height) > 2.3) {
+                test.add(false);
+                height.setError(getString(R.string.condition_height));
+            } else {
+                test.add(true);
+            }
+        }
+
+        if (tmp_weight.isEmpty()) {
+            test.add(true);
+        }
+        else {
+            if ((Integer.parseInt(tmp_weight) > 400 || Integer.parseInt(tmp_weight) < 20)) {
+                test.add(false);
+                weight.setError(getString(R.string.condition_weight));
+            } else {
+                test.add(true);
+            }
+        }
+
+        if (tmp_idr_cv.isEmpty()) {
+            test.add(true);
+        }
+        else {
+            if (Integer.parseInt(tmp_idr_cv) > 100) {
+                test.add(false);
+                idr_cv.setError(getString(R.string.condition_idr_cv));
+            } else {
+                test.add(true);
+            }
+        }
+
+        if (tmp_cst.isEmpty()) {
+            test.add(true);
+        }
+        else {
+            if (Integer.parseInt(tmp_cst) > 100) {
+                test.add(false);
+                cst.setError(getString(R.string.condition_cst));
+            } else {
+                test.add(true);
+            }
+        }
+
+        if (tmp_hypo.isEmpty()) {
+            test.add(true);
+        } else {
+            if (Integer.parseInt(tmp_hypo) > 100) {
+                test.add(false);
+                hypo.setError(getString(R.string.condition_hypo));
+            } else {
+                test.add(true);
+            }
+        }
+
+        if (tmp_transferrin.isEmpty()) {
+            test.add(true);
+        } else {
+            if (Integer.parseInt(tmp_transferrin) > 100) {
+                test.add(false);
+                transferrin.setError(getString(R.string.condition_transferrin));
+            } else {
+                test.add(true);
+            }
+        }
+
+        for (Boolean iter : test) {
+            if(!iter){
+                isValid=false;
+
+                if (mToast != null) mToast.cancel();
+                mToast = Toast.makeText(EditPatient.this, getString(R.string.error), Toast.LENGTH_SHORT);
+                mToast.show();
+
+                break;
+            }
         }
 
         return isValid ? true : false;
@@ -318,7 +418,6 @@ public class EditPatient extends AppCompatActivity
         List<User> users = new ArrayList<>();
 
         if(dbHelper.openDatabase()){
-            // users = db.getPatient();
             users = dbHelper.getPatient();
         }
         dbHelper.close();
@@ -329,8 +428,6 @@ public class EditPatient extends AppCompatActivity
     private void getProfil() {
 
         try {
-            //idPatient.setText(String.valueOf(users.get(id).getUserID()));
-            //idPatient.setText(String.valueOf(id));
             name.setText(users.get(id - 1).getName());
             first_Name.setText(users.get(id - 1).getFirstName());
             date_Birth.setText(users.get(id - 1).getDateBirth());
@@ -380,7 +477,6 @@ public class EditPatient extends AppCompatActivity
             }
 
         } catch (Exception e) {
-            Log.e("DB error", "It did not read the ID value");
         }
     }
 
@@ -434,20 +530,8 @@ public class EditPatient extends AppCompatActivity
             dbHelper.close();
         }catch(Exception e){
             e.printStackTrace();
-            Log.e("Update ERROR", "erreur lors de la mise à jour du profil");
         }
     }
-
-    DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener(){
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel();
-        }
-    };
 
     private void updateLabel() {
 
@@ -470,12 +554,13 @@ public class EditPatient extends AppCompatActivity
             case R.id.save:
                 if(isInputValid()) {
                     updatePatient();
-                    Toast.makeText(EditPatient.this, R.string.update, Toast.LENGTH_SHORT).show();
+
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(EditPatient.this, R.string.update, Toast.LENGTH_SHORT);
+                    mToast.show();
+
                     finish();
                     return true;
-                } else {
-                    Toast.makeText(EditPatient.this, "Error",
-                            Toast.LENGTH_LONG);
                 }
                 break;
             case android.R.id.home:

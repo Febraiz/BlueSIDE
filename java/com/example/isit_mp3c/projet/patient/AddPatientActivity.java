@@ -4,14 +4,12 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,12 +25,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.isit_mp3c.projet.MainActivity;
 import com.example.isit_mp3c.projet.R;
 import com.example.isit_mp3c.projet.camera.CameraActivity;
 import com.example.isit_mp3c.projet.database.SQLiteDBHelper;
 import com.example.isit_mp3c.projet.database.User;
-import com.example.isit_mp3c.projet.exportdb.ExportDBActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,6 +37,8 @@ import java.util.List;
 
 public class AddPatientActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener {
+
+    private Toast mToast = null;
 
     private EditText name, first_Name, date_Birth, address, mail, phone, height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin, transferrin, serum_iron, cst,
@@ -57,9 +55,9 @@ public class AddPatientActivity extends AppCompatActivity
     private User newUser = new User();
     private Menu menu;
 
-    Calendar myCalendar = Calendar.getInstance();
+    private Calendar myCalendar = Calendar.getInstance();
 
-    DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener() {
+    private DatePickerDialog.OnDateSetListener dateD = new DatePickerDialog.OnDateSetListener() {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -130,6 +128,14 @@ public class AddPatientActivity extends AppCompatActivity
         // Apply the adapter to the spinner
         ironSpinner.setAdapter(ironSpinnerAdapter);
         ironSpinner.setOnItemSelectedListener(this);
+        ironSpinner.setOnTouchListener(new View.OnTouchListener(){
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                serum_iron.requestFocus();
+                return false;
+            }
+        });
 
         name.addTextChangedListener(new TextWatcher() {
             @Override
@@ -223,7 +229,6 @@ public class AddPatientActivity extends AppCompatActivity
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 if (!validEmail(s)) {
                     isMailValid = false;
-                    //mail.setError(getString(R.string.condition_mail));
                 } else {
                     isMailValid = true;
                 }
@@ -238,7 +243,6 @@ public class AddPatientActivity extends AppCompatActivity
             public void afterTextChanged(Editable s) {
                 if (!validEmail(s)) {
                     isMailValid = false;
-                    //mail.setError(getString(R.string.condition_mail));
                 } else {
                     isMailValid = true;
                 }
@@ -316,21 +320,16 @@ public class AddPatientActivity extends AppCompatActivity
             //long lastID;
             @Override
             public void onClick(View v) {
-                Log.i("input value", "is input value valid? " + isInputValid());
                 if (isInputValid()) {
-
                     addNewPatient();
                     saveDialog(new View(getBaseContext()), lastID);
-                } else {
-                    Toast.makeText(AddPatientActivity.this, "Error",
-                            Toast.LENGTH_LONG);
                 }
             }
         });
     }
 
     private boolean validEmail(CharSequence mail) {
-        //return !TextUtils.isEmpty(mail) && Patterns.EMAIL_ADDRESS.matcher(mail).matches();
+
         if (!TextUtils.isEmpty(mail)) {
             return Patterns.EMAIL_ADDRESS.matcher(mail).matches();
         } else {
@@ -340,19 +339,17 @@ public class AddPatientActivity extends AppCompatActivity
 
     //check for french mobile format
     private boolean validPhone(CharSequence phone) {
+
         boolean isValid = true;
+
         if (!TextUtils.isEmpty(phone)) {
-            //Log.i("phone check", "phone number length : "+ phone.length());
             if (phone.length() < 9 || phone.length() > 13) {
                 isValid = false;
-                //Log.i("validate phone", "Phone Format is not valid");
             } else {
                 isValid = Patterns.PHONE.matcher(phone).matches();
-                // Log.i("validate phone", "Phone number is getting checked");
             }
         } else if (TextUtils.isEmpty(phone)) {
             isValid = true;
-            // Log.i("validate phone", "Phone number empty");
         }
 
         return isValid ? true : false;
@@ -371,89 +368,149 @@ public class AddPatientActivity extends AppCompatActivity
         return isValid ? true : false;
     }
 
-
     //condition for the input
     private boolean isInputValid() {
-        boolean[] test = new boolean[5];
+        ArrayList<Boolean> test = new ArrayList<>();
+
         boolean isValid = true;
 
-        if (!name.getText().toString().isEmpty()) {
-            test[0] = true;
+        String tmp_name = name.getText().toString();
+        String tmp_firstName = first_Name.getText().toString();
+        String tmp_height = height.getText().toString();
+        String tmp_weight = weight.getText().toString();
+        String tmp_idr_cv = idr_cv.getText().toString();
+        String tmp_hypo = hypo.getText().toString();
+        String tmp_transferrin = transferrin.getText().toString();
+        String tmp_cst = cst.getText().toString();
+
+        if (!tmp_name.isEmpty()) {
+            if (tmp_name.matches("[a-zA-Z ]*")) {
+                test.add(true);
+            } else {
+                test.add(false);
+                name.setError(getString(R.string.condition_pseudo_incorrectChars));
+            }
         } else {
-            test[0] = false;
+            test.add(false);
             name.setError(getString(R.string.condition_name));
         }
 
-        if (!first_Name.getText().toString().isEmpty()){
-            test[1] = true;
+        if (!tmp_firstName.isEmpty()){
+            if (tmp_firstName.matches("[a-zA-Z ]*")) {
+                test.add(true);
+            } else {
+                test.add(false);
+                first_Name.setError(getString(R.string.condition_pseudo_incorrectChars));
+            }
         } else {
-            test[1] = false;
+            test.add(false);
             first_Name.setError(getString(R.string.first_name_error));
         }
 
         if (isMailValid) {
-            test[2] = true;
+            test.add(true);
         } else {
-            test[2] = false;
+            test.add(false);
             mail.setError(getString(R.string.condition_mail));
         }
 
         if (isDateValid) {
-            test[3] = true;
+            test.add(true);
         } else {
-            test[3] = false;
+            test.add(false);
             date_Birth.setError(getString(R.string.condition_date));
         }
 
         if (isPhoneValid) {
-            test[4] = true;
+            test.add(true);
         } else {
-            test[4] = false;
+            test.add(false);
             phone.setError(getString(R.string.condition_phone));
         }
 
-        /*String tmpHeight = height.getText().toString();
-        if (!tmpHeight.isEmpty()) {
-            if (Float.parseFloat(tmpHeight) > 100) {
-                tmpHeight = tmpHeight.substring(0, 1) + "." + tmpHeight.substring(1);
+        if (tmp_height.isEmpty()) {
+            test.add(true);
+        }
+        else{
+            if (Float.parseFloat(tmp_height) > 100) {
+                tmp_height = tmp_height.substring(0, 1) + "." + tmp_height.substring(1);
             }
-            if(Float.parseFloat(tmpHeight) > 2.3) {
-                test[4] = false;
+            if (Float.parseFloat(tmp_height) > 2.3) {
+                test.add(false);
                 height.setError(getString(R.string.condition_height));
             } else {
-                test[4] = true;
+                test.add(true);
             }
         }
 
-        if (!weight.getText().toString().equalsIgnoreCase("") && (Integer.parseInt(weight.getText().toString()) > 400 || Integer.parseInt(weight.getText().toString()) < 20)) {
-            test[5] = false;
-            weight.setError(getString(R.string.condition_weight));
-        } else {
-            test[5] = true;
+        if (tmp_weight.isEmpty()) {
+            test.add(true);
         }
-        if (!idr_cv.getText().toString().isEmpty() && Integer.parseInt(idr_cv.getText().toString()) > 100) {
-            test[6] = false;
-            idr_cv.setError(getString(R.string.condition_idr_cv));
-        } else {
-            test[6] = true;
+        else {
+            if ((Integer.parseInt(tmp_weight) > 400 || Integer.parseInt(tmp_weight) < 20)) {
+                test.add(false);
+                weight.setError(getString(R.string.condition_weight));
+            } else {
+                test.add(true);
+            }
         }
-        if (!hypo.getText().toString().isEmpty() && Integer.parseInt(hypo.getText().toString()) > 100) {
-            test[7] = false;
-            hypo.setError(getString(R.string.condition_hypo));
-        } else {
-            test[7] = true;
-        }*/
-        /*if (!transferrin.getText().toString().isEmpty() && Integer.parseInt(transferrin.getText().toString()) > 100) {
-            test[8] = false;
-            transferrin.setError(getString(R.string.condition_transferrin));
-        } else {
-            test[8] = true;
-        }*/
 
-        int i = 0;
-        while (i < test.length) {
-            if (!test[i]) isValid = false;
-            i++;
+        if (tmp_idr_cv.isEmpty()) {
+            test.add(true);
+        }
+        else {
+            if (Integer.parseInt(tmp_idr_cv) > 100) {
+                test.add(false);
+                idr_cv.setError(getString(R.string.condition_idr_cv));
+            } else {
+                test.add(true);
+            }
+        }
+
+        if (tmp_cst.isEmpty()) {
+            test.add(true);
+        }
+        else {
+            if (Integer.parseInt(tmp_cst) > 100) {
+                test.add(false);
+                cst.setError(getString(R.string.condition_cst));
+            } else {
+                test.add(true);
+            }
+        }
+
+        if (tmp_hypo.isEmpty()) {
+            test.add(true);
+        } else {
+            if (Integer.parseInt(tmp_hypo) > 100) {
+                test.add(false);
+                hypo.setError(getString(R.string.condition_hypo));
+            } else {
+                test.add(true);
+            }
+        }
+
+        if (tmp_transferrin.isEmpty()) {
+            test.add(true);
+        } else {
+            if (Integer.parseInt(tmp_transferrin) > 100) {
+                test.add(false);
+                transferrin.setError(getString(R.string.condition_transferrin));
+            } else {
+                test.add(true);
+            }
+        }
+
+        for (Boolean iter : test) {
+            if(!iter){
+                isValid=false;
+
+                if (mToast != null) mToast.cancel();
+                mToast = Toast.makeText(AddPatientActivity.this, getString(R.string.error), Toast.LENGTH_SHORT);
+                mToast.show();
+
+                break;
+            }
         }
 
         return isValid ? true : false;
@@ -513,7 +570,6 @@ public class AddPatientActivity extends AppCompatActivity
                     TRANSFERRIN, SERUM_IRON, UNIT, CST, FIBRINOGEN, CRP, OTHER, "FALSE", PSEUDO, DEFICIENCY));
         }
 
-        Log.i("last ID is ", "AddPatientActivity_java, Last ID set is =" + lastID);
         dbH.close();
         return lastID;
     }
@@ -524,7 +580,6 @@ public class AddPatientActivity extends AppCompatActivity
         // have different date format.
 
         String myFormat = "yyyy-MM-dd"; //ISO8601
-        //SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.getDefault());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(myFormat);
         date_Birth.setText(simpleDateFormat.format(myCalendar.getTime()));
         // }
@@ -543,12 +598,7 @@ public class AddPatientActivity extends AppCompatActivity
 
     private void saveDialog(View view, final long lastID) {
         final long id = lastID; // Not necessary. Could be deleted.
-        final int ID; // Not necessary. could be deleted.
 
-        ID = Integer.parseInt(String.valueOf(id));
-        Log.i("return id", "AddPatientActivity_java, retuuuuurn extra id " + id);
-        Log.i("return id", "AddPatientActivity_java, retuuuuurn extra id "
-                + Integer.parseInt(String.valueOf(lastID)));
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setCancelable(false);
@@ -592,6 +642,7 @@ public class AddPatientActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_patient, menu);
         menu.getItem(0).setEnabled(true);
@@ -602,7 +653,6 @@ public class AddPatientActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-
                 askToLeave();
                 break;
 
@@ -615,18 +665,18 @@ public class AddPatientActivity extends AppCompatActivity
                     } else {
                         lastID2 = 0;
                     }
-                    Log.i("last id", "AddPatient, onItemSemected, last id is :" + lastID2);
                     addNewPatient();
                     saveDialog(new View(getBaseContext()), lastID2);
-                } else {
-                    Toast.makeText(AddPatientActivity.this, "Error",
-                            Toast.LENGTH_LONG);
                 }
+
                 break;
+
             case R.id.takePicture:
                 long id = 0;
                 User user = new User();
+
                 if(isInputValid()) {
+
                     patientsList = getPatient();
                     final long lastID2;
                     if(patientsList.size() != -1) {
@@ -634,19 +684,19 @@ public class AddPatientActivity extends AppCompatActivity
                     } else {
                         lastID2 = 0;
                     }
-                    Log.i("last id", "AddPatient, onItemSemected, last id is :" + lastID2);
                     id = addNewPatient();
+
                     user = dbH.getPatientWithId(Integer.parseInt((Long.toString(id))));
                     saveDialog(new View(getBaseContext()), lastID2);
-                } else {
-                    Toast.makeText(AddPatientActivity.this, "Error",
-                            Toast.LENGTH_LONG);
+
+                    Intent intent = new Intent(AddPatientActivity.this, CameraActivity.class);
+                    Bundle b = new Bundle();
+                    b.putString("pseudo", id + "-" + user.getPseudo());
+                    intent.putExtras(b);
+                    startActivity(intent);
+
                 }
-                Intent intent = new Intent(AddPatientActivity.this, CameraActivity.class);
-                Bundle b = new Bundle();
-                b.putString("pseudo", id + "-" + user.getPseudo());
-                intent.putExtras(b);
-                startActivity(intent);
+
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -717,14 +767,14 @@ public class AddPatientActivity extends AppCompatActivity
                 !other.getText().toString().equals("")) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddPatientActivity.this);
             alertDialogBuilder.setMessage(" Voulez vous vraiment annuler votre saisie ?  ");
-            alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {
                     finish();
                 }
             });
 
-            alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setNegativeButton(R.string.no,new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 

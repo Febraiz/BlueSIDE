@@ -16,6 +16,7 @@ import java.util.Stack;
  */
 
 public class fileModel {
+
     private File mCurrentDir; //Our current location.
     private File mPreviousDir; //Our previous location.
     private Stack<File> mHistory; //Our navigation History.
@@ -29,7 +30,7 @@ public class fileModel {
         mHistory = new Stack<>();
 
         /* The first thing I need to do is check to see if the device's storage is read/write accessible.  If it is not,
-        then why bother continuing?  I guess I could do everything in read only mode, but I'd rather not.
+        then why bother continuing? I guess I could do everything in read only mode, but I'd rather not.
         */
 
         //if the storage device is writable and readable, set the current directory to the external storage location.

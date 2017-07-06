@@ -4,10 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +24,7 @@ import java.util.List;
 
 public class ProfilPatient extends AppCompatActivity {
 
-    private TextView idPatient, name, first_Name, date_Birth, sex,
+    private TextView name, first_Name, date_Birth, sex,
             address, mail, phone, height, weight, hemoglobin,
             vgm, tcmh, idr_cv, hypo, ret_he, platelet, ferritin,
             transferrin, serum_iron, cst, fibrinogen, crp, other, imc, deficiency,nbAcquisition, age;
@@ -49,8 +47,6 @@ public class ProfilPatient extends AppCompatActivity {
         listPosition = extras.getInt("last_ID");
         users = getPatient();
         user = users.get(listPosition -1);
-
-        Log.i("Profil Last ID", "ProfilPatient_java, Get the last ID pleaaase = " + listPosition);
 
         //set toolbar title
         getSupportActionBar().setTitle("Patient "+ listPosition);
@@ -139,13 +135,13 @@ public class ProfilPatient extends AppCompatActivity {
             platelet.setText(users.get(listPosition-1).getPlatelet());
             ferritin.setText(users.get(listPosition-1).getFerritin());
             transferrin.setText(users.get(listPosition - 1).getTransferrin());
+
             String ironValue = users.get(listPosition-1).getSerum_iron();
             String ironUnit = users.get(listPosition-1).getSerum_iron_unit();
-            //Log.i("Serum iron value", "The serum iron value is : " + ironValue
-            // + " ,The serum iron unit is : " + ironUnit);
             if(!ironValue.equals("")) {
-                serum_iron.append(ironValue + " " + ironUnit);
+                serum_iron.setText(ironValue + " " + ironUnit);
             }
+
             cst.setText(users.get(listPosition-1).getCst());
             fibrinogen.setText(users.get(listPosition-1).getFibrinogen());
             crp.setText(users.get(listPosition-1).getCrp());
@@ -171,10 +167,7 @@ public class ProfilPatient extends AppCompatActivity {
 
             nbAcquisition.setText(String.valueOf(dbHelper.getNextAcquisitionNumber(users.get(listPosition-1).getUserID())-1));
 
-            Log.i("get ID", "ProfilPatient, getProfil, listPosition-1 donne : " + (listPosition-1));
-
         } catch (Exception e) {
-            Log.e("DB error", "ProfilPatient_java, It did not read the ID value");
         }
     }
 
@@ -229,8 +222,6 @@ public class ProfilPatient extends AppCompatActivity {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.i("row ID deleted",
-                                "ProfilPatient_java, the row ID wich will be deleted is "+ listPosition);
                         if (deletePatient()) {
                             Toast.makeText(ProfilPatient.this, R.string.patient_deleted,
                                     Toast.LENGTH_LONG).show();
@@ -262,8 +253,6 @@ public class ProfilPatient extends AppCompatActivity {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.i("suppression acq",
-                                "patient : " + listPosition);
                         deleteImages();
                         Toast.makeText(ProfilPatient.this, R.string.images_deleted,
                                     Toast.LENGTH_LONG).show();
@@ -288,7 +277,6 @@ public class ProfilPatient extends AppCompatActivity {
 
         ID = user.getUserID();
 
-        Log.i("deletePatient", "the ID is : " + ID);
         if(dbHelper.openDatabase()){
             dbHelper.deletePatient(ID);
             isDeleted = true;
@@ -304,10 +292,9 @@ public class ProfilPatient extends AppCompatActivity {
         final int ID;
         ID = user.getUserID();
         String directory = ID + "-" + user.getPseudo();
-        Log.i("Directory", directory);
 
         File dir = new File(getExternalFilesDir("")+ "/"+ directory);
-        Log.i("dir", dir.getAbsolutePath());
+
         deleteRecursive(dir);
         dbHelper.deleteUserAcquisition(ID);
     }

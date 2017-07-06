@@ -589,7 +589,7 @@ public class CameraActivity extends AppCompatActivity
         Log.i(TAG, "openCam");
 
         camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-
+        
         cameraConfig(camManager);
 
         Log.i("camId", camId);
@@ -1019,7 +1019,6 @@ public class CameraActivity extends AppCompatActivity
 
         float r,g,b;
         int[] rgb = ColorTemp(temp);
-
 
         r = (float)getRGBToDouble(rgb[0]);
         g = (float)getRGBToDouble(rgb[1])/2;

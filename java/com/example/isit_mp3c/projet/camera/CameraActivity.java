@@ -949,7 +949,8 @@ public class CameraActivity extends AppCompatActivity
             int cptTemp = 0;
 
             // Temps d'exposition
-            tabExp = new long[]{16, 8, 4, 2, 1,-2,-4,-8};//,-16,-32,-64};
+            //tabExp = new long[]{16, 8, 4, 2, 1,-2,-4,-8};//,-16,-32,-64};
+            tabExp = new long[]{2, 1,-2,-4,-8, 16, 8, 4};
 
             //tabTemp = new int[]{0,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000};
             tabTemp = new int[]{0};
@@ -1263,7 +1264,7 @@ public class CameraActivity extends AppCompatActivity
     //select seed point and readjust it to correspond to the size of the image
     private void selectPoint(){
 
-        File file_preview = new File(getExternalFilesDir(directoryFiles), nomsImages.get(4));
+        File file_preview = new File(getExternalFilesDir(directoryFiles), nomsImages.get(2)); //nomsImages.get(4));
         Bitmap img = BitmapFactory.decodeFile(file_preview.getAbsolutePath());
 
         imageDisplay.setImageBitmap(img);
@@ -1305,7 +1306,7 @@ public class CameraActivity extends AppCompatActivity
                 double time;
 
                 String dir = getExternalFilesDir(directoryFiles).getAbsolutePath();
-                String name = "/"+nomsImages.get(4);
+                String name = "/"+nomsImages.get(2);//(4);
 
                 Log.i("name", name);
 
@@ -1336,7 +1337,7 @@ public class CameraActivity extends AppCompatActivity
 
                 String dir = getExternalFilesDir(directoryFiles).getAbsolutePath();
                 String nameSclera = "/" + nomsImages.get(3);
-                String nameRef = "/" + nomsImages.get(4);
+                String nameRef = "/" + nomsImages.get(2);//(4);
                 Log.i("nameSclera", nameSclera);
                 Log.i("nameRef", nameRef);
                 int size_window = 12;

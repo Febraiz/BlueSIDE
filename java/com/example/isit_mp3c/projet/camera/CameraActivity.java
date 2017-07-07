@@ -1316,7 +1316,9 @@ public class CameraActivity extends AppCompatActivity
                 //call native function
                 eyeDetection(name, dir, x, y);
 
-                Log.i(TAG, "end detection native");
+                Log.i(TAG, "end detecti" +
+                        "on native");
+
                 end = System.currentTimeMillis();
                 time = (end - start) / 1000.000;
                 Log.i(TAG, "time: " + String.valueOf(time) + " seconds");

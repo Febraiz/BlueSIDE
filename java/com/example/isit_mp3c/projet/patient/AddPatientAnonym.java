@@ -352,7 +352,6 @@ public class AddPatientAnonym extends AppCompatActivity
         String tmp_weight = weight.getText().toString();
         String tmp_idr_cv = idr_cv.getText().toString();
         String tmp_hypo = hypo.getText().toString();
-        String tmp_transferrin = transferrin.getText().toString();
         String tmp_cst = cst.getText().toString();
 
         if (tmp_pseudo.isEmpty()) {
@@ -373,7 +372,7 @@ public class AddPatientAnonym extends AppCompatActivity
         if (tmp_age.isEmpty()) {
             test.add(true);
         } else {
-            if (Integer.parseInt(tmp_age) <= 0 || Integer.parseInt(tmp_age) >= 130 ) {
+            if (Float.parseFloat(tmp_age) <= 0 || Float.parseFloat(tmp_age) >= 130 ) {
                 test.add(false);
                 age.setError(getString(R.string.condition_age));
             } else {
@@ -400,7 +399,7 @@ public class AddPatientAnonym extends AppCompatActivity
             test.add(true);
         }
         else {
-            if ((Integer.parseInt(tmp_weight) > 400 || Integer.parseInt(tmp_weight) < 20)) {
+            if ((Float.parseFloat(tmp_weight) > 400 || Float.parseFloat(tmp_weight) < 20)) {
                 test.add(false);
                 weight.setError(getString(R.string.condition_weight));
             } else {
@@ -412,7 +411,7 @@ public class AddPatientAnonym extends AppCompatActivity
             test.add(true);
         }
         else {
-            if (Integer.parseInt(tmp_idr_cv) > 100) {
+            if (Float.parseFloat(tmp_idr_cv) > 100) {
                 test.add(false);
                 idr_cv.setError(getString(R.string.condition_idr_cv));
             } else {
@@ -424,7 +423,7 @@ public class AddPatientAnonym extends AppCompatActivity
             test.add(true);
         }
         else {
-            if (Integer.parseInt(tmp_cst) > 100) {
+            if (Float.parseFloat(tmp_cst) > 100) {
                 test.add(false);
                 cst.setError(getString(R.string.condition_cst));
             } else {
@@ -435,20 +434,9 @@ public class AddPatientAnonym extends AppCompatActivity
         if (tmp_hypo.isEmpty()) {
             test.add(true);
         } else {
-            if (Integer.parseInt(tmp_hypo) > 100) {
+            if (Float.parseFloat(tmp_hypo) > 100) {
                 test.add(false);
                 hypo.setError(getString(R.string.condition_hypo));
-            } else {
-                test.add(true);
-            }
-        }
-
-        if (tmp_transferrin.isEmpty()) {
-            test.add(true);
-        } else {
-            if (Integer.parseInt(tmp_transferrin) > 100) {
-                test.add(false);
-                transferrin.setError(getString(R.string.condition_transferrin));
             } else {
                 test.add(true);
             }

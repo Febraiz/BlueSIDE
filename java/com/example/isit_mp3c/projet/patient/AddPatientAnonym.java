@@ -361,7 +361,7 @@ public class AddPatientAnonym extends AppCompatActivity
         }
         else{
 
-            if (tmp_pseudo.matches("[a-zA-Z ]*")) {
+            if (tmp_pseudo.matches("[a-zA-Z0-9 ]*")) {
                 test.add(true);
             } else {
                 test.add(false);

@@ -384,7 +384,7 @@ public class AddPatientActivity extends AppCompatActivity
         String tmp_cst = cst.getText().toString();
 
         if (!tmp_name.isEmpty()) {
-            if (tmp_name.matches("[a-zA-Z ]*")) {
+            if (tmp_name.matches("[a-zA-Z0-9 ]*")) {
                 test.add(true);
             } else {
                 test.add(false);

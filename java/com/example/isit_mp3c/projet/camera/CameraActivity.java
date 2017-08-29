@@ -129,7 +129,7 @@ public class CameraActivity extends AppCompatActivity
 
     //Résolution de la photo
     private int width = 960;
-    private int height = 1260;
+    private int height = 1280;
 
     static int heightEcran;
     static int widthEcran;
